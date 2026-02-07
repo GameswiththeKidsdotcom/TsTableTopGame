@@ -1,6 +1,6 @@
-# C8 – 6-Board Layout and Avatars
+# C8 – Head-to-Head Layout and Avatars (2 Boards)
 
-**Outcome**: Six grids around table; avatars; HUD. Expand from 2 to 6 players. Depends on C7.
+**Outcome**: Two grids (head-to-head); two avatars; HUD. Always 2 players. Depends on C7.
 
 ---
 
@@ -8,8 +8,8 @@
 
 | Step | Task | Validation |
 |------|------|------------|
-| 1 | Layout 6 grids around table (top-down) | Visual check |
-| 2 | Player avatars (6 colored squares) next to grids | Visual check |
+| 1 | Layout 2 grids (e.g. side-by-side or top-down) | Visual check |
+| 2 | Player avatars (2 colored squares) next to grids | Visual check |
 | 3 | Active player highlight | Visual check |
 | 4 | HUD: turn indicator, cash, next capsule | Visual check |
 
@@ -17,10 +17,10 @@
 
 ## Validation
 
-- Full tabletop view on screen; 6 boards visible
+- Full tabletop view on screen; 2 boards visible (head-to-head).
 
 ---
 
 ## Rollback
 
-Revert to 2-grid layout.
+Revert to single-board or minimal 2-grid placeholder.

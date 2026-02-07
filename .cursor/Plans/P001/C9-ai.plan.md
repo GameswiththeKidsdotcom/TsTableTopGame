@@ -1,6 +1,6 @@
 # C9 – AI Opponents
 
-**Outcome**: 5 AI + 1 human play full game. Depends on C8.
+**Outcome**: 1 AI + 1 human play full game (head-to-head). Depends on C8.
 
 ---
 
@@ -12,14 +12,14 @@
 | 2 | Random AI (valid column + rotation) | Unit test |
 | 3 | Greedy AI (prefer immediate matches) | Unit test |
 | 4 | Integrate AI into turn loop with delay (~1–2 sec) | Manual test |
-| 5 | Assign strategies to 5 AI players | Manual test |
+| 5 | Assign strategy to the single AI player (opponent) | Manual test |
 | 6 | AI contract: full-board returns top-out (no crash); every move legal | Unit test |
 
 ---
 
 ## Validation
 
-- 5 AI + 1 human play; AI moves automatically
+- 1 AI + 1 human play (head-to-head); AI moves automatically
 
 ---
 

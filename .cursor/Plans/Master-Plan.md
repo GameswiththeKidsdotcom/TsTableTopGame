@@ -23,7 +23,7 @@ Use exactly one of these values in the **Current state** column:
 
 | Plan ID | Plan name | Priority rank | Description | Current state | Confidence (root cause) | Confidence (solution path) |
 |---------|-----------|---------------|-------------|---------------|--------------------------|-----------------------------|
-| P001 | TabletopGame Spec and Implementation | 1 | Dr. Mario–style 6-player puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test). Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Test plan ready | N/A | 90% |
+| P001 | TabletopGame Spec and Implementation | 1 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test). C8 = 2 boards + avatars. Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Test plan ready | N/A | 90% |
 | P001-LT | TabletopGame Logic-Test (user move validation) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Test plan ready | N/A | 90% |
 
 ---
@@ -35,14 +35,14 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 | Chunk | Outcome | Status |
 |-------|---------|--------|
 | C1 | App launches, placeholder visible | Done |
-| C2 | Empty grid renders | — |
+| C2 | Empty grid renders | Done |
 | C3 | Viruses visible on grid | — |
 | C4 | Capsule move/rotate/drop playable | — |
 | C5 | Match + gravity work | — |
 | C6 | Turn flow, win/elimination (2 players) | — |
 | C7 | Attack + garbage | — |
-| C8 | 6 boards + avatars | — |
-| C9 | AI opponents | — |
+| C8 | 2 boards + avatars (head-to-head) | — |
+| C9 | AI opponent (1 AI + 1 human) | — |
 | C10 | Menus, game over, restart; settings persist | — |
 | C11 | App Store prep (optional) | — |
 

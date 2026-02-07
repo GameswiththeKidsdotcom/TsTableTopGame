@@ -1,6 +1,6 @@
 # P001-LT – Logic-Test (User Move Validation)
 
-**Scope**: Moves, turns, phases, attack, elimination, win/tie. Ensure every allowed move is possible; no unreachable valid moves; state-machine consistency.
+**Scope**: Head-to-head (2 players). Moves, turns, phases, attack, elimination, win/tie. Ensure every allowed move is possible; no unreachable valid moves; state-machine consistency.
 
 ---
 
@@ -23,4 +23,4 @@
 
 ## Edge Cases (Must Cover)
 
-Empty board, first turn, single-player-left, tie (both clear / last two top out), target eliminated, all eliminated, top-out, wall kick, chain 5+ clears, disconnected half, AI no valid move.
+Empty board, first turn, single-player-left (head-to-head: one winner), tie (both clear / last two top out), opponent eliminated, top-out, wall kick, chain 5+ clears, disconnected half, AI no valid move.

@@ -1,14 +1,14 @@
 # TabletopGame Specification
 
-Dr. Mario–style 6-player puzzle game. iOS & iPadOS v1. Single-device, offline-only.
+Dr. Mario–style head-to-head (2-player) puzzle game. iOS & iPadOS v1. Single-device, offline-only.
 
 ---
 
 ## Targeting (Option B)
 
-- **6-player targeting**: Garbage targets the next player clockwise.
-- When target is eliminated, advance to next non-eliminated player clockwise.
-- When all opponents are eliminated, garbage is discarded.
+- **Head-to-head targeting**: Garbage targets the single opponent.
+- When the opponent is eliminated, the game ends (winner).
+- When all viruses are cleared (win condition), garbage is irrelevant for that game.
 
 ---
 
@@ -32,7 +32,7 @@ Dr. Mario–style 6-player puzzle game. iOS & iPadOS v1. Single-device, offline-
 ## Offline-Only
 
 - No network calls.
-- Single-device play; all 6 boards on one screen.
+- Single-device play; both boards (2 players) on one screen.
 - Persistence via UserDefaults only.
 
 ---

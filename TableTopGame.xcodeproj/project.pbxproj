@@ -10,13 +10,28 @@
 		A10000000000000000000001 /* TableTopGameApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000002 /* TableTopGameApp.swift */; };
 		A10000000000000000000003 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000004 /* ContentView.swift */; };
 		A10000000000000000000005 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000006 /* Assets.xcassets */; };
+		A10000000000000000000015 /* PillColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000016 /* PillColor.swift */; };
+		A10000000000000000000017 /* Grid.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000018 /* Grid.swift */; };
+		A10000000000000000000019 /* Capsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000001A /* Capsule.swift */; };
+		A1000000000000000000001B /* Virus.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000001C /* Virus.swift */; };
+		A1000000000000000000001D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000001E /* Player.swift */; };
+		A1000000000000000000001F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000020 /* GameScene.swift */; };
+		A10000000000000000000021 /* TableTopGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000022 /* TableTopGameTests.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		A10000000000000000000000 /* TableTopGame.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TableTopGame.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10000000000000000000023 /* TableTopGameTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TableTopGameTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		A10000000000000000000002 /* TableTopGameApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTopGameApp.swift; sourceTree = "<group>"; };
 		A10000000000000000000004 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A10000000000000000000006 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A10000000000000000000016 /* PillColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PillColor.swift; sourceTree = "<group>"; };
+		A10000000000000000000018 /* Grid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Grid.swift; sourceTree = "<group>"; };
+		A1000000000000000000001A /* Capsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Capsule.swift; sourceTree = "<group>"; };
+		A1000000000000000000001C /* Virus.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Virus.swift; sourceTree = "<group>"; };
+		A1000000000000000000001E /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
+		A10000000000000000000020 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		A10000000000000000000022 /* TableTopGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTopGameTests.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,15 +50,38 @@
 			children = (
 				A10000000000000000000002 /* TableTopGameApp.swift */,
 				A10000000000000000000004 /* ContentView.swift */,
+				A10000000000000000000020 /* GameScene.swift */,
+				A10000000000000000000024 /* Models */,
 				A10000000000000000000006 /* Assets.xcassets */,
 			);
 			path = TableTopGame;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000024 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000016 /* PillColor.swift */,
+				A10000000000000000000018 /* Grid.swift */,
+				A1000000000000000000001A /* Capsule.swift */,
+				A1000000000000000000001C /* Virus.swift */,
+				A1000000000000000000001E /* Player.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		A10000000000000000000025 /* TableTopGameTests */ = {
+			isa = PBXGroup;
+			children = (
+				A10000000000000000000022 /* TableTopGameTests.swift */,
+			);
+			path = TableTopGameTests;
 			sourceTree = "<group>";
 		};
 		A10000000000000000000010 = {
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000008 /* TableTopGame */,
+				A10000000000000000000025 /* TableTopGameTests */,
 				A10000000000000000000009 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -52,6 +90,7 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000000 /* TableTopGame.app */,
+				A10000000000000000000023 /* TableTopGameTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -76,7 +115,43 @@
 			productReference = A10000000000000000000000 /* TableTopGame.app */;
 			productType = "com.apple.product-type.application";
 		};
+		A10000000000000000000026 /* TableTopGameTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A10000000000000000000027 /* Build configuration list for PBXNativeTarget "TableTopGameTests" */;
+			buildPhases = (
+				A10000000000000000000028 /* Sources */,
+				A10000000000000000000029 /* Frameworks */,
+				A1000000000000000000002A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A1000000000000000000002B /* PBXTargetDependency */,
+			);
+			name = TableTopGameTests;
+			productName = TableTopGameTests;
+			productReference = A10000000000000000000023 /* TableTopGameTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
+
+/* Begin PBXTargetDependency section */
+		A1000000000000000000002B /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = A1000000000000000000000A /* TableTopGame */;
+			targetProxy = A1000000000000000000002C /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXContainerItemProxy section */
+		A1000000000000000000002C /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = A1000000000000000000000E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = A1000000000000000000000A;
+			remoteInfo = TableTopGame;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXProject section */
 		A1000000000000000000000E /* Project object */ = {
@@ -105,11 +180,29 @@
 			projectRoot = "";
 			targets = (
 				A1000000000000000000000A /* TableTopGame */,
+				A10000000000000000000026 /* TableTopGameTests */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXFrameworksBuildPhase section */
+		A10000000000000000000029 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
 /* Begin PBXResourcesBuildPhase section */
+		A1000000000000000000002A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		A1000000000000000000000D /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -127,6 +220,20 @@
 			files = (
 				A10000000000000000000001 /* TableTopGameApp.swift in Sources */,
 				A10000000000000000000003 /* ContentView.swift in Sources */,
+				A10000000000000000000015 /* PillColor.swift in Sources */,
+				A10000000000000000000017 /* Grid.swift in Sources */,
+				A10000000000000000000019 /* Capsule.swift in Sources */,
+				A1000000000000000000001B /* Virus.swift in Sources */,
+				A1000000000000000000001D /* Player.swift in Sources */,
+				A1000000000000000000001F /* GameScene.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A10000000000000000000028 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A10000000000000000000021 /* TableTopGameTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -306,6 +413,42 @@
 			};
 			name = Release;
 		};
+		A1000000000000000000002D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tabletopgame.app.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TableTopGame.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TableTopGame";
+			};
+			name = Debug;
+		};
+		A1000000000000000000002E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.0;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.tabletopgame.app.Tests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/TableTopGame.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/TableTopGame";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -314,6 +457,15 @@
 			buildConfigurations = (
 				A10000000000000000000013 /* Debug */,
 				A10000000000000000000014 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A10000000000000000000027 /* Build configuration list for PBXNativeTarget "TableTopGameTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A1000000000000000000002D /* Debug */,
+				A1000000000000000000002E /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
