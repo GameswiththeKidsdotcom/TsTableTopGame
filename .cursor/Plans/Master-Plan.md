@@ -57,5 +57,6 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 ## Where plans live
 
 - **Main plans**: `.cursor/Plans/<plan-id>-<short-name>.plan.md` (e.g. `P001-tabletopgame.plan.md`) — short index with links to sub-plans.
-- **Sub-plans**: `.cursor/Plans/<plan-id>/<sub-id>-<short-name>.plan.md` (e.g. `P001/C1-bootstrap.plan.md`) — full steps, validation, rollback per chunk.
+- **Sub-plans**: `.cursor/Plans/<plan-id>/<sub-id>-<short-name>.plan.md` (e.g. `P001/C2-grid.plan.md`) — full steps, validation, rollback per chunk.
+- **Archived subplans**: `.cursor/Plans/P001/archive/` — completed and validated chunks (e.g. C1-bootstrap).
 - **Comprehensive reference**: `.cursor/plans/tabletopgame_spec_and_implementation_cafdbc90.plan.md` — full spec, elaborations, Investigator gap analysis (load when sub-plan needs more context).

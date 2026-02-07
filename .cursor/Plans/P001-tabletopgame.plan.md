@@ -28,7 +28,7 @@
 
 | Chunk | Outcome | Sub-Plan |
 |-------|---------|----------|
-| **C1** | App launches, placeholder in simulator | [P001/C1-bootstrap.plan.md](P001/C1-bootstrap.plan.md) |
+| **C1** | App launches, placeholder in simulator | [P001/archive/C1-bootstrap.plan.md](P001/archive/C1-bootstrap.plan.md) *(archived)* |
 | **C2** | Empty 8×16 grid renders | [P001/C2-grid.plan.md](P001/C2-grid.plan.md) |
 | **C3** | Viruses visible on grid | [P001/C3-viruses.plan.md](P001/C3-viruses.plan.md) |
 | **C4** | Capsule move/rotate/drop playable | [P001/C4-capsule.plan.md](P001/C4-capsule.plan.md) |

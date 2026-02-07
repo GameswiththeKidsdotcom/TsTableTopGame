@@ -1,4 +1,8 @@
-# C1 – Bootstrap (App Launches, Placeholder)
+# C1 – Bootstrap (App Launches, Placeholder) — Archived
+
+> **Archived**: Completed and validated 2025-02-07. Status: Done. Build succeeded; app launches with placeholder in iPhone simulator.
+
+---
 
 **Outcome**: App runs in iPhone simulator; user sees "TabletopGame" or placeholder. First visible result.
 
