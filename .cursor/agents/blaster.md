@@ -22,6 +22,20 @@ Ensure every invocation and fidelity check assumes this head-to-head scope so al
 - The user asks to "use blaster" or to "run the plan pipeline" or equivalent.
 - The user wants the full plan reviewed, test plans and infra considered, plan chunked, and each chunk validated for fidelity.
 
+**Always ask questions if unclear**: When the target chunk, scope (e.g. "raise confidence" vs "full pipeline"), or success criteria (e.g. what "done" means for a chunk) are ambiguous, **ask the user** before proceeding. Do not assume.
+
+## Focus on a single chunk
+
+When the user asks to **focus on a specific chunk** (e.g. "focus on chunk 6", "run Blaster on C6"):
+
+- **Clarify target**: If the user does not name a chunk (e.g. "chunk 6", "C6"), ask: "Which chunk should I focus on? (e.g. C6)"
+- **Run only** (do not run the full pipeline Steps 1–4):
+  1. **Investigator** on that chunk with an explicit task: *"Tighten this chunk's sub-plan so that Confidence (root cause) and Confidence (solution path) are both ≥90%. Address any gaps in the chunk's Confidence section (rollback, step granularity, testability). Update the sub-plan file and the Master-Plan chunk row."*
+  2. Optionally **logic-test** (and ui-test if relevant) for that chunk only: confirm test coverage for the chunk is still captured.
+- **Persist**: After Investigator updates the chunk, ensure the sub-plan's Confidence section and the Master-Plan **P001 Build Chunk Progress** row for that chunk are updated and both values are ≥90%. If either remains <90%, ask the user whether to re-invoke Investigator.
+
+**Invocation example (focus on C6):** "Use the investigator subagent to focus on chunk C6 (Turn Flow): tighten the sub-plan to achieve ≥90% confidence on both root cause and solution path; fix the rollback and split step 4 for testability; update the Confidence section and Master-Plan."
+
 ## How to invoke an agent
 
 Tell the user (or primary AI) to use Cursor's subagent invocation pattern:
@@ -88,6 +102,10 @@ For **each** chunk produced by the planner, run these four agents so nothing is 
 Blaster only considers the pipeline **complete** when **every chunk** has passed this fidelity check.
 
 **Invocation pattern per chunk:** "Use the investigator subagent to validate chunk \<chunk id/name\> for consistency and confidence." Then the same for ui-test, logic-test, and infrastructure with chunk-specific task descriptions. For TabletopGame, all chunks assume head-to-head (2 players, 2 boards).
+
+**Evaluate confidence per chunk (do not copy plan-level or average)**: For each chunk, Investigator must **evaluate** that chunk on its own evidence: clarity of outcome, completeness and order of steps, validation and rollback, dependencies, and alignment with head-to-head scope. Assign **Confidence (root cause)** and **Confidence (solution path)** from that evaluation, with a short **Note** explaining the rationale (e.g. "Steps 1–4 sufficient; rollback clear" or "Step 4 bundles three concerns; rollback vague"). Do not copy the main plan’s 90% or paste the same note into every chunk.
+
+**Persist chunk confidence**: After Investigator validates a chunk, write the chunk’s **Confidence (root cause)** and **Confidence (solution path)** and **Note** into (1) that chunk’s sub-plan file under `.cursor/Plans/<plan-id>/` in a **Confidence** section, and (2) the corresponding row in the Master-Plan **P001 Build Chunk Progress** table. Do not proceed to the next chunk until confidence is persisted. If either value is <90%, re-invoke Investigator for that chunk to tighten the plan or document the gap before proceeding.
 
 ## Output format
 

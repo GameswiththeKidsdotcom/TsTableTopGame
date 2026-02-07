@@ -25,3 +25,12 @@
 ## Rollback
 
 Disable attack resolution.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 88% | Attack/garbage and head-to-head targeting are specified. Gap: "Dr. Mario column patterns" and row-major detail live in SPEC/game lore; chunk does not reference them. |
+| **Confidence (solution path)** | 90% | Attack calc, garbage gen, targeting (single opponent), insertion, and logic-test step are sufficient; rollback clear. |

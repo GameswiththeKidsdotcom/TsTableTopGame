@@ -24,7 +24,7 @@ Use exactly one of these values in the **Current state** column:
 | Plan ID | Plan name | Priority rank | Description | Current state | Confidence (root cause) | Confidence (solution path) |
 |---------|-----------|---------------|-------------|---------------|--------------------------|-----------------------------|
 | P001 | TabletopGame Spec and Implementation | 1 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test). C8 = 2 boards + avatars. Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Test plan ready | N/A | 90% |
-| P001-LT | TabletopGame Logic-Test (user move validation) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Test plan ready | N/A | 90% |
+| P001-LT | TabletopGame Logic-Test (user move validation) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Test plan ready | 92% | 88% |
 
 ---
 
@@ -32,19 +32,21 @@ Use exactly one of these values in the **Current state** column:
 
 When executing P001, track progress by **Planner Build Chunks** (C1–C10). After each chunk, run in iPhone simulator and confirm the visible outcome before advancing.
 
-| Chunk | Outcome | Status |
-|-------|---------|--------|
-| C1 | App launches, placeholder visible | Done |
-| C2 | Empty grid renders | Done |
-| C3 | Viruses visible on grid | — |
-| C4 | Capsule move/rotate/drop playable | — |
-| C5 | Match + gravity work | — |
-| C6 | Turn flow, win/elimination (2 players) | — |
-| C7 | Attack + garbage | — |
-| C8 | 2 boards + avatars (head-to-head) | — |
-| C9 | AI opponent (1 AI + 1 human) | — |
-| C10 | Menus, game over, restart; settings persist | — |
-| C11 | App Store prep (optional) | — |
+**Chunk-level confidence**: Updated by Blaster/Investigator when running per-chunk fidelity (Step 5). Each sub-plan file under `.cursor/Plans/P001/` must contain a **Confidence** section; keep this table in sync with those sub-plans.
+
+| Chunk | Outcome | Status | Confidence (root cause) | Confidence (solution path) |
+|-------|---------|--------|--------------------------|-----------------------------|
+| C1 | App launches, placeholder visible | Done | 95% | 95% |
+| C2 | Empty grid renders | Done | 92% | 90% |
+| C3 | Viruses visible on grid | Done | 88% | 90% |
+| C4 | Capsule move/rotate/drop playable | Done | 90% | 88% |
+| C5 | Match + gravity work | Done | 90% | 88% |
+| C6 | Turn flow, win/elimination (2 players) | — | 92% | 90% |
+| C7 | Attack + garbage | — | 88% | 90% |
+| C8 | 2 boards + avatars (head-to-head) | — | 90% | 85% |
+| C9 | AI opponent (1 AI + 1 human) | — | 90% | 88% |
+| C10 | Menus, game over, restart; settings persist | — | 88% | 85% |
+| C11 | App Store prep (optional) | — | N/A | N/A |
 
 ---
 

@@ -26,3 +26,12 @@
 ## Rollback
 
 Launch directly into game.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 88% | Menu flow, game over, restart, and settings persistence are specified. Gap: step 5 mixes three concerns (Logic-test E2E, infrastructure, settings persist); scope blend. |
+| **Confidence (solution path)** | 85% | Steps 1–4 cover menu, game over, restart, E2E. Gap: step 5 should be split (E2E, infra, persistence) for clearer validation; rollback clear. Re-invoke Investigator to split step 5 if desired. |

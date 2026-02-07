@@ -27,3 +27,12 @@
 ## Rollback
 
 Revert to C4; disable resolution.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 90% | Match (4-in-a-row H/V), gravity, and resolution loop are specified; fixture set is named and documented. |
+| **Confidence (solution path)** | 88% | Fixtures, detection, clear, gravity, loop, and chain step are sufficient. Gap: "disconnect halves" and orphan rules may need clarification during build; rollback clear. |

@@ -17,6 +17,11 @@
 		A1000000000000000000001D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000001E /* Player.swift */; };
 		A1000000000000000000001F /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000020 /* GameScene.swift */; };
 		A10000000000000000000021 /* TableTopGameTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000022 /* TableTopGameTests.swift */; };
+		A10000000000000000000030 /* GridState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000031 /* GridState.swift */; };
+		A10000000000000000000032 /* MoveValidator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000033 /* MoveValidator.swift */; };
+		A10000000000000000000034 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000035 /* Fixtures.swift */; };
+		A10000000000000000000036 /* MatchResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000037 /* MatchResolver.swift */; };
+		A10000000000000000000038 /* GravityEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000039 /* GravityEngine.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,6 +37,11 @@
 		A1000000000000000000001E /* Player.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		A10000000000000000000020 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
 		A10000000000000000000022 /* TableTopGameTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableTopGameTests.swift; sourceTree = "<group>"; };
+		A10000000000000000000031 /* GridState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridState.swift; sourceTree = "<group>"; };
+		A10000000000000000000033 /* MoveValidator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MoveValidator.swift; sourceTree = "<group>"; };
+		A10000000000000000000035 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
+		A10000000000000000000037 /* MatchResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchResolver.swift; sourceTree = "<group>"; };
+		A10000000000000000000039 /* GravityEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravityEngine.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -65,6 +75,11 @@
 				A1000000000000000000001A /* Capsule.swift */,
 				A1000000000000000000001C /* Virus.swift */,
 				A1000000000000000000001E /* Player.swift */,
+				A10000000000000000000031 /* GridState.swift */,
+				A10000000000000000000033 /* MoveValidator.swift */,
+				A10000000000000000000035 /* Fixtures.swift */,
+				A10000000000000000000037 /* MatchResolver.swift */,
+				A10000000000000000000039 /* GravityEngine.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -226,6 +241,11 @@
 				A1000000000000000000001B /* Virus.swift in Sources */,
 				A1000000000000000000001D /* Player.swift in Sources */,
 				A1000000000000000000001F /* GameScene.swift in Sources */,
+				A10000000000000000000030 /* GridState.swift in Sources */,
+				A10000000000000000000032 /* MoveValidator.swift in Sources */,
+				A10000000000000000000034 /* Fixtures.swift in Sources */,
+				A10000000000000000000036 /* MatchResolver.swift in Sources */,
+				A10000000000000000000038 /* GravityEngine.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

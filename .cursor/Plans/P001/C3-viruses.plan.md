@@ -22,3 +22,12 @@
 ## Rollback
 
 Hide virus rendering; show empty grid.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 88% | Virus display clear; virus init is "random or hardcoded fixture" — count/formula live in SPEC but not referenced here. Gap: tie step 2 to virus count formula. |
+| **Confidence (solution path)** | 90% | Two steps (render + init) are sufficient to get viruses on grid; dependency on C2 explicit; rollback clear. |

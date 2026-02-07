@@ -50,4 +50,92 @@ final class TableTopGameTests: XCTestCase {
         let p2 = Player(id: 0, name: "Human")
         XCTAssertEqual(p2.name, "Human")
     }
+
+    // MARK: - MoveValidator
+
+    func testMoveValidatorSegments() {
+        let segsRight = MoveValidator.segments(col: 3, row: 0, orientation: .right)
+        XCTAssertEqual(segsRight.count, 2)
+        XCTAssertTrue(segsRight.contains { $0.col == 3 && $0.row == 0 })
+        XCTAssertTrue(segsRight.contains { $0.col == 4 && $0.row == 0 })
+
+        let segsDown = MoveValidator.segments(col: 3, row: 1, orientation: .down)
+        XCTAssertTrue(segsDown.contains { $0.col == 3 && $0.row == 1 })
+        XCTAssertTrue(segsDown.contains { $0.col == 3 && $0.row == 2 })
+    }
+
+    func testMoveValidatorCanPlaceEmpty() {
+        var g = GridState()
+        XCTAssertTrue(MoveValidator.canPlace(col: 3, row: 0, orientation: .right, in: g))
+    }
+
+    func testMoveValidatorRejectsOOB() {
+        var g = GridState()
+        XCTAssertFalse(MoveValidator.canPlace(col: 7, row: 0, orientation: .right, in: g))
+        XCTAssertFalse(MoveValidator.canPlace(col: -1, row: 0, orientation: .left, in: g))
+    }
+
+    func testMoveValidatorRejectsBlocked() {
+        var g = GridState()
+        g.set(.red, at: 4, row: 0)
+        XCTAssertFalse(MoveValidator.canPlace(col: 3, row: 0, orientation: .right, in: g))
+    }
+
+    func testMoveValidatorRotation() {
+        XCTAssertEqual(MoveValidator.rotateCW(.up), .right)
+        XCTAssertEqual(MoveValidator.rotateCW(.right), .down)
+        XCTAssertEqual(MoveValidator.rotateCCW(.up), .left)
+    }
+
+    func testMoveValidatorWallKick() {
+        var g = GridState()
+        g.set(.red, at: 7, row: 5)  // Block right; vertical at (6,5) rotating to horizontal kicks left
+        let result = MoveValidator.rotateWithWallKick(col: 6, row: 5, orientation: .up, clockwise: true, in: g)
+        XCTAssertNotNil(result)
+        XCTAssertEqual(result?.col, 5)
+        XCTAssertEqual(result?.orientation, .right)
+    }
+
+    // MARK: - MatchResolver
+
+    func testMatchResolverSingle4H() {
+        let g = Fixtures.single4H()
+        let matches = MatchResolver.findMatches(in: g)
+        XCTAssertEqual(matches.count, 4)
+    }
+
+    func testMatchResolverSingle4V() {
+        let g = Fixtures.single4V()
+        let matches = MatchResolver.findMatches(in: g)
+        XCTAssertEqual(matches.count, 4)
+    }
+
+    func testMatchResolverEmpty() {
+        let g = Fixtures.empty()
+        let matches = MatchResolver.findMatches(in: g)
+        XCTAssertTrue(matches.isEmpty)
+    }
+
+    func testMatchResolverSimultaneousClear() {
+        let g = Fixtures.simultaneousClear()
+        let matches = MatchResolver.findMatches(in: g)
+        XCTAssertEqual(matches.count, 8)
+    }
+
+    // MARK: - GravityEngine
+
+    func testGravityEngineApply() {
+        var g = GridState()
+        g.set(.red, at: 3, row: 0)
+        let changed = GravityEngine.apply(to: &g)
+        XCTAssertTrue(changed)
+        XCTAssertNil(g.color(at: 3, row: 0))
+        XCTAssertEqual(g.color(at: 3, row: 1), .red)
+    }
+
+    func testGravityEngineResolve() {
+        var g = Fixtures.single4H()
+        GravityEngine.resolve(gridState: &g)
+        XCTAssertTrue(g.occupied.isEmpty)
+    }
 }

@@ -27,3 +27,12 @@
 ## Rollback
 
 Disable input handlers; grid still renders.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 90% | Capsule control, lock behavior, and wall kick (vertical→horizontal, blocked right, shift left 1) are well specified. |
+| **Confidence (solution path)** | 88% | Move/rotate/drop and validators cover scope; wall kick explicit. Gap: lock timing (immediate vs delay) not stated; rollback clear. |

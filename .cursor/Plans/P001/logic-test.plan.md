@@ -24,3 +24,12 @@
 ## Edge Cases (Must Cover)
 
 Empty board, first turn, single-player-left (head-to-head: one winner), tie (both clear / last two top out), opponent eliminated, top-out, wall kick, chain 5+ clears, disconnected half, AI no valid move.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 92% | Logic-test scope (moves, turns, attack, win/tie) and head-to-head scope are clear; delegation at C5–C8 checkpoints is explicit. |
+| **Confidence (solution path)** | 88% | Coverage by phase and edge-case list are sufficient for checkpoints. Gap: no test implementation steps in this doc (delegation to Logic-Test agent); acceptable for plan slice. |

@@ -26,3 +26,12 @@
 ## Rollback
 
 Replace AI with human-controlled test mode.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 90% | Single AI opponent (1 human + 1 AI) and AI contract (full-board → top-out, every move legal) are clear. |
+| **Confidence (solution path)** | 88% | AIController interface, Random, Greedy, integration, and contract steps are sufficient. Gap: "prefer immediate matches" for Greedy is underspecified; refine during implementation if needed. |

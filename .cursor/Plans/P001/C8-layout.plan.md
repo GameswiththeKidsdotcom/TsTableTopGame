@@ -24,3 +24,12 @@
 ## Rollback
 
 Revert to single-board or minimal 2-grid placeholder.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 90% | Head-to-head layout (2 boards, 2 avatars, HUD) is specified and aligned with scope. |
+| **Confidence (solution path)** | 85% | Layout, avatars, highlight, HUD steps are sufficient. Gap: "side-by-side or top-down" leaves choice open; viewport/sizing and rotation not specified — may need iteration. Re-invoke Investigator if layout risks arise. |

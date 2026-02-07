@@ -30,3 +30,12 @@
 ## Rollback
 
 Delete project; no external deps.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 95% | Bootstrap outcome and SPEC scope are fully clear; chunk completed and validated. |
+| **Confidence (solution path)** | 95% | Steps executed; build succeeded; simulator outcome confirmed. |

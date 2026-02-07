@@ -25,3 +25,12 @@
 ## Rollback
 
 Remove SpriteView; fall back to C1 ContentView.
+
+---
+
+## Confidence
+
+| | Value | Note |
+|---|-------|------|
+| **Confidence (root cause)** | 92% | Grid requirement and 8×16 spec are explicit in SPEC; outcome is unambiguous. |
+| **Confidence (solution path)** | 90% | Steps 1–4 sufficient; step 1 bundles five models (PillColor, Grid, Capsule, Virus, Player) but scope is bounded; rollback clear. |
