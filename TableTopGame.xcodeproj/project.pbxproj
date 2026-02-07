@@ -22,6 +22,9 @@
 		A10000000000000000000034 /* Fixtures.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000035 /* Fixtures.swift */; };
 		A10000000000000000000036 /* MatchResolver.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000037 /* MatchResolver.swift */; };
 		A10000000000000000000038 /* GravityEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000039 /* GravityEngine.swift */; };
+		A1000000000000000000003A /* GamePhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000003B /* GamePhase.swift */; };
+		A1000000000000000000003C /* WinConditionChecker.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000003D /* WinConditionChecker.swift */; };
+		A1000000000000000000003E /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000003F /* GameState.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -42,6 +45,9 @@
 		A10000000000000000000035 /* Fixtures.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Fixtures.swift; sourceTree = "<group>"; };
 		A10000000000000000000037 /* MatchResolver.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MatchResolver.swift; sourceTree = "<group>"; };
 		A10000000000000000000039 /* GravityEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GravityEngine.swift; sourceTree = "<group>"; };
+		A1000000000000000000003B /* GamePhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GamePhase.swift; sourceTree = "<group>"; };
+		A1000000000000000000003D /* WinConditionChecker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WinConditionChecker.swift; sourceTree = "<group>"; };
+		A1000000000000000000003F /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +86,9 @@
 				A10000000000000000000035 /* Fixtures.swift */,
 				A10000000000000000000037 /* MatchResolver.swift */,
 				A10000000000000000000039 /* GravityEngine.swift */,
+				A1000000000000000000003B /* GamePhase.swift */,
+				A1000000000000000000003D /* WinConditionChecker.swift */,
+				A1000000000000000000003F /* GameState.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -246,6 +255,9 @@
 				A10000000000000000000034 /* Fixtures.swift in Sources */,
 				A10000000000000000000036 /* MatchResolver.swift in Sources */,
 				A10000000000000000000038 /* GravityEngine.swift in Sources */,
+				A1000000000000000000003A /* GamePhase.swift in Sources */,
+				A1000000000000000000003C /* WinConditionChecker.swift in Sources */,
+				A1000000000000000000003E /* GameState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

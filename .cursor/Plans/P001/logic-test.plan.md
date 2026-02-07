@@ -16,7 +16,7 @@
 |-------|----------------------|
 | C5 | Fixtures: top-out, simultaneous clear; no invalid grid |
 | C6 | Turn-order; skip eliminated; single-player-left; win/tie |
-| C7 | Garbage targeting when eliminated; colors match |
+| C7 - Perfected | Garbage targeting when eliminated; colors match |
 | C8 | AI contract; top-out handled |
 
 ---

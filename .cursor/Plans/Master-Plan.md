@@ -41,8 +41,8 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 | C3 | Viruses visible on grid | Done | 88% | 90% |
 | C4 | Capsule move/rotate/drop playable | Done | 90% | 88% |
 | C5 | Match + gravity work | Done | 90% | 88% |
-| C6 | Turn flow, win/elimination (2 players) | — | 92% | 90% |
-| C7 | Attack + garbage | — | 88% | 90% |
+| C6 | Turn flow, win/elimination (2 players) | Done | 92% | 90% |
+| C7 - Perfected | Attack + garbage | — | 95% | 95% |
 | C8 | 2 boards + avatars (head-to-head) | — | 90% | 85% |
 | C9 | AI opponent (1 AI + 1 human) | — | 90% | 88% |
 | C10 | Menus, game over, restart; settings persist | — | 88% | 85% |

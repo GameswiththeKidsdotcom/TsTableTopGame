@@ -1,133 +1,57 @@
 import SpriteKit
 
-/// Game scene with 8×16 grid. Renders grid, viruses, and playable capsule.
+/// Game scene with 8×16 grid. Renders current player's grid, viruses, and playable capsule. C6: turn flow and win/elimination via GameState.
 class GameScene: SKScene {
 
     private let gridColumns = Grid.columns
     private let gridRows = Grid.rows
     private var cellSize: CGFloat = 0
     private let gridNode = SKNode()
-    private var gridState = GridState()
 
-    // Active capsule (pivot position)
-    private var capsuleCol: Int = 3
-    private var capsuleRow: Int = 0
-    private var capsuleOrientation: CapsuleOrientation = .right
-    private var capsuleLeftColor: PillColor = .red
-    private var capsuleRightColor: PillColor = .blue
+    /// C6: Single source of truth for 2-player turn flow, win/elimination, virus init, capsule queue.
+    private var gameState: GameState!
 
     private var dropAccumulator: TimeInterval = 0
     private let dropInterval: TimeInterval = 0.5
-    private var isLocked = false
-    private var inputDisabled = false
 
     override func didMove(to view: SKView) {
         backgroundColor = .black
         addChild(gridNode)
-        let viruses = makeDemoViruses()
-        gridState.addViruses(viruses)
-        spawnCapsule()
+        gameState = GameState(level: 0)
         layoutGrid()
     }
 
     override func didChangeSize(_ oldSize: CGSize) {
+        guard gameState != nil else { return }
         layoutGrid()
     }
 
     override func update(_ currentTime: TimeInterval) {
-        guard !inputDisabled, !isLocked else { return }
+        guard let gameState = gameState else { return }
+        guard gameState.canAcceptInput else { return }
         dropAccumulator += 0.016
         if dropAccumulator >= dropInterval {
             dropAccumulator = 0
-            tryMoveDown()
+            gameState.tryMoveDown()
+            layoutGrid()
         }
     }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        guard let touch = touches.first, !inputDisabled else { return }
+        guard let gameState = gameState, let touch = touches.first, gameState.canAcceptInput else { return }
         let loc = touch.location(in: self)
         let w = size.width
         let h = size.height
 
-        if isLocked { return }
-
         if loc.x < w * 0.25 {
-            tryMoveLeft()
+            gameState.tryMoveLeft()
         } else if loc.x > w * 0.75 {
-            tryMoveRight()
+            gameState.tryMoveRight()
         } else if loc.y > h * 0.8 {
-            hardDrop()
+            gameState.hardDrop()
         } else {
-            tryRotate()
+            gameState.tryRotate()
         }
-    }
-
-    private func makeDemoViruses() -> [Virus] {
-        [
-            Virus(col: 1, row: 2, color: .red),
-            Virus(col: 3, row: 4, color: .blue),
-            Virus(col: 5, row: 6, color: .yellow),
-            Virus(col: 2, row: 8, color: .yellow),
-            Virus(col: 4, row: 10, color: .red),
-            Virus(col: 6, row: 12, color: .blue),
-        ]
-    }
-
-    private func spawnCapsule() {
-        capsuleCol = 3
-        capsuleRow = 0
-        capsuleOrientation = .right
-        capsuleLeftColor = PillColor.allCases.randomElement() ?? .red
-        capsuleRightColor = PillColor.allCases.randomElement() ?? .blue
-        isLocked = false
-        if !MoveValidator.canPlace(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation, in: gridState) {
-            // Game over - spawn blocked
-            inputDisabled = true
-        }
-    }
-
-    private func tryMoveLeft() {
-        guard MoveValidator.canMoveLeft(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation, in: gridState) else { return }
-        capsuleCol -= 1
-        layoutGrid()
-    }
-
-    private func tryMoveRight() {
-        guard MoveValidator.canMoveRight(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation, in: gridState) else { return }
-        capsuleCol += 1
-        layoutGrid()
-    }
-
-    private func tryMoveDown() {
-        guard MoveValidator.canMoveDown(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation, in: gridState) else {
-            lockCapsule()
-            return
-        }
-        capsuleRow += 1
-        layoutGrid()
-    }
-
-    private func tryRotate() {
-        guard let result = MoveValidator.rotateWithWallKick(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation, clockwise: true, in: gridState) else { return }
-        capsuleCol = result.col
-        capsuleOrientation = result.orientation
-        layoutGrid()
-    }
-
-    private func hardDrop() {
-        while MoveValidator.canMoveDown(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation, in: gridState) {
-            capsuleRow += 1
-        }
-        lockCapsule()
-    }
-
-    private func lockCapsule() {
-        isLocked = true
-        let segs = MoveValidator.segments(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation)
-        gridState.set(capsuleLeftColor, at: segs[0].col, row: segs[0].row)
-        gridState.set(capsuleRightColor, at: segs[1].col, row: segs[1].row)
-        GravityEngine.resolve(gridState: &gridState)
-        spawnCapsule()
         layoutGrid()
     }
 
@@ -140,17 +64,19 @@ class GameScene: SKScene {
     }
 
     private func isCapsuleSegment(col: Int, row: Int) -> PillColor? {
-        guard !isLocked else { return nil }
-        let segs = MoveValidator.segments(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation)
-        if segs[0].col == col && segs[0].row == row { return capsuleLeftColor }
-        if segs[1].col == col && segs[1].row == row { return capsuleRightColor }
+        guard let gameState = gameState, !gameState.isCapsuleLocked else { return nil }
+        let segs = MoveValidator.segments(col: gameState.capsuleCol, row: gameState.capsuleRow, orientation: gameState.capsuleOrientation)
+        if segs[0].col == col && segs[0].row == row { return gameState.capsuleLeftColor }
+        if segs[1].col == col && segs[1].row == row { return gameState.capsuleRightColor }
         return nil
     }
 
     private func layoutGrid() {
+        guard let gameState = gameState else { return }
         gridNode.removeAllChildren()
         guard gridColumns > 0, gridRows > 0 else { return }
 
+        let gridState = gameState.currentGridState()
         let w = size.width
         let h = size.height
         let cellW = w / CGFloat(gridColumns)
