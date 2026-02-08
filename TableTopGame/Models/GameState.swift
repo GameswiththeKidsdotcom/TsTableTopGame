@@ -53,9 +53,17 @@ final class GameState {
     /// Queue of (left, right) colors for next capsules. Refilled on spawn.
     private var capsuleQueue: [(PillColor, PillColor)]
 
+    /// C7: Pending garbage rows to insert (per player). Garbage targets opponent; never to eliminated.
+    private var pendingGarbage: [[[(col: Int, color: PillColor)]]]
+
     /// Current player's grid (read-only for display/validation).
     func currentGridState() -> GridState {
         gridStates[currentPlayerIndex]
+    }
+
+    /// C8: Grid for a given player (read-only for head-to-head layout).
+    func gridState(forPlayer playerIndex: Int) -> GridState {
+        gridStates[playerIndex]
     }
 
     /// Current player id.
@@ -90,6 +98,7 @@ final class GameState {
         self.capsuleRightColor = .blue
         self.isCapsuleLocked = false
         self.capsuleQueue = []
+        self.pendingGarbage = Array(repeating: [], count: Self.numberOfPlayers)
 
         for _ in 0..<Self.numberOfPlayers {
             let viruses = makeInitialViruses(level: level)
@@ -209,7 +218,7 @@ final class GameState {
         lockCapsule()
     }
 
-    /// Lock capsule, resolve match+gravity, update virus/cash, check win/elimination, advance turn.
+    /// Lock capsule, resolve match+gravity, apply pending garbage, compute attack, advance turn.
     func lockCapsule() {
         guard canAcceptInput else { return }
         isCapsuleLocked = true
@@ -217,25 +226,48 @@ final class GameState {
         var grid = gridStates[pid]
         var virusPositions = virusPositionsPerPlayer[pid]
 
+        // C7: Apply pending garbage (Trash phase). Insert one row at a time, resolve after each.
+        while !pendingGarbage[pid].isEmpty {
+            let row = pendingGarbage[pid].removeFirst()
+            grid.insertGarbageRow(row)
+            resolveLoop(grid: &grid, virusPositions: &virusPositions, pid: pid)
+        }
+        let virusPositionsBeforeCapsule = virusPositions
+
         let segs = MoveValidator.segments(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation)
         grid.set(capsuleLeftColor, at: segs[0].col, row: segs[0].row)
         grid.set(capsuleRightColor, at: segs[1].col, row: segs[1].row)
 
+        var allMatchGroups: [(color: PillColor, positions: Set<GridPosition>)] = []
         while true {
-            let matches = MatchResolver.findMatches(in: grid)
-            if matches.isEmpty { break }
-            for pos in matches {
-                if virusPositions.contains(pos) {
-                    cash[pid] += 1
-                    virusPositions.remove(pos)
+            let groups = MatchResolver.findMatchGroups(in: grid)
+            if groups.isEmpty { break }
+            allMatchGroups.append(contentsOf: groups)
+            for (_, positions) in groups {
+                for pos in positions {
+                    if virusPositions.contains(pos) {
+                        cash[pid] += 1
+                        virusPositions.remove(pos)
+                    }
+                    grid.remove(at: pos.col, row: pos.row)
                 }
-                grid.remove(at: pos.col, row: pos.row)
             }
             while GravityEngine.apply(to: &grid) { }
         }
 
         gridStates[pid] = grid
         virusPositionsPerPlayer[pid] = virusPositions
+
+        // C7: Compute attack, enqueue garbage for opponent (never to eliminated).
+        let opponent = (pid + 1) % Self.numberOfPlayers
+        if !eliminated.contains(opponent) {
+            let result = AttackCalculator.compute(matchGroups: allMatchGroups, virusPositions: virusPositionsBeforeCapsule)
+            if result.garbageCount > 0 {
+                let row = AttackCalculator.garbagePositions(count: result.garbageCount, colors: result.garbageColors)
+                    .map { (col: $0.col, color: $0.color) }
+                pendingGarbage[opponent].append(row)
+            }
+        }
 
         let clearedAll = WinConditionChecker.hasClearedAllViruses(virusPositions: virusPositions)
         phase = WinConditionChecker.resolveGameOver(
@@ -247,6 +279,24 @@ final class GameState {
         )
         if case .gameOver = phase { return }
         advanceTurn()
+    }
+
+    /// Resolution loop: clear matches, gravity, repeat until stable.
+    private func resolveLoop(grid: inout GridState, virusPositions: inout Set<GridPosition>, pid: Int) {
+        while true {
+            let groups = MatchResolver.findMatchGroups(in: grid)
+            if groups.isEmpty { break }
+            for (_, positions) in groups {
+                for pos in positions {
+                    if virusPositions.contains(pos) {
+                        cash[pid] += 1
+                        virusPositions.remove(pos)
+                    }
+                    grid.remove(at: pos.col, row: pos.row)
+                }
+            }
+            while GravityEngine.apply(to: &grid) { }
+        }
     }
 
     /// Next capsule in queue (for preview). Returns (left, right) or nil.

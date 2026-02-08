@@ -32,4 +32,23 @@ struct GridState {
             set(v.color, at: v.col, row: v.row)
         }
     }
+
+    /// C7: Insert garbage cells at row 0; shift existing content down. Content pushed off row 15 is lost.
+    mutating func insertGarbageRow(_ cells: [(col: Int, color: PillColor)]) {
+        let snapshot = occupied
+        occupied.removeAll()
+        for row in 0..<Grid.rows - 1 {
+            for col in 0..<Grid.columns {
+                let pos = GridPosition(col: col, row: row)
+                if let c = snapshot[pos] {
+                    occupied[GridPosition(col: col, row: row + 1)] = c
+                }
+            }
+        }
+        for (col, color) in cells {
+            if Grid.isValid(col: col, row: 0) {
+                occupied[GridPosition(col: col, row: 0)] = color
+            }
+        }
+    }
 }

@@ -42,8 +42,8 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 | C4 | Capsule move/rotate/drop playable | Done | 90% | 88% |
 | C5 | Match + gravity work | Done | 90% | 88% |
 | C6 | Turn flow, win/elimination (2 players) | Done | 92% | 90% |
-| C7 - Perfected | Attack + garbage | — | 95% | 95% |
-| C8 | 2 boards + avatars (head-to-head) | — | 90% | 85% |
+| C7 - Perfected | Attack + garbage | Done | 95% | 95% |
+| C8 | 2 boards + avatars (head-to-head) | Complete and ready for github push | 92% | 92% |
 | C9 | AI opponent (1 AI + 1 human) | — | 90% | 88% |
 | C10 | Menus, game over, restart; settings persist | — | 88% | 85% |
 | C11 | App Store prep (optional) | — | N/A | N/A |

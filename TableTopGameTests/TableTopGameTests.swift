@@ -248,4 +248,53 @@ final class TableTopGameTests: XCTestCase {
             XCTFail("Game should end (win/elimination/tie) within 500 drops")
         }
     }
+
+    // MARK: - C7 Attack and Garbage
+
+    func testMatchResolverFindMatchGroups() {
+        let g = Fixtures.single4H()
+        let groups = MatchResolver.findMatchGroups(in: g)
+        XCTAssertEqual(groups.count, 1)
+        XCTAssertEqual(groups[0].color, .red)
+        XCTAssertEqual(groups[0].positions.count, 4)
+    }
+
+    func testAttackCalculatorVirusCountAndGarbage() {
+        let groups: [(color: PillColor, positions: Set<GridPosition>)] = [
+            (.red, Set([GridPosition(col: 1, row: 5), GridPosition(col: 2, row: 5), GridPosition(col: 3, row: 5), GridPosition(col: 4, row: 5)]))
+        ]
+        let virusPositions: Set<GridPosition> = [GridPosition(col: 1, row: 5), GridPosition(col: 2, row: 5)]
+        let result = AttackCalculator.compute(matchGroups: groups, virusPositions: virusPositions)
+        XCTAssertEqual(result.virusCount, 2)
+        XCTAssertEqual(result.garbageCount, 1)
+        XCTAssertEqual(result.garbageColors.count, 1)
+        XCTAssertEqual(result.garbageColors[0], .red)
+    }
+
+    func testAttackCalculatorGarbageCountMin4() {
+        let groups: [(color: PillColor, positions: Set<GridPosition>)] = (0..<6).map { i in
+            (.red, Set([GridPosition(col: i % 8, row: i / 8)]))
+        }
+        let result = AttackCalculator.compute(matchGroups: groups, virusPositions: [])
+        XCTAssertEqual(result.garbageCount, 4)
+    }
+
+    func testAttackCalculatorGarbagePositions() {
+        let pos2 = AttackCalculator.garbagePositions(count: 2, colors: [.red, .blue])
+        XCTAssertEqual(pos2.count, 2)
+        XCTAssertEqual(pos2[0].col, 0)
+        XCTAssertEqual(pos2[1].col, 4)
+        let pos4 = AttackCalculator.garbagePositions(count: 4, colors: [.red, .blue, .yellow, .red])
+        XCTAssertEqual(pos4.count, 4)
+        XCTAssertEqual(Set(pos4.map { $0.col }), [0, 2, 4, 6])
+    }
+
+    func testGridStateInsertGarbageRow() {
+        var g = GridState()
+        g.set(.red, at: 3, row: 0)
+        g.insertGarbageRow([(col: 0, color: .blue), (col: 4, color: .yellow)])
+        XCTAssertEqual(g.color(at: 0, row: 0), .blue)
+        XCTAssertEqual(g.color(at: 4, row: 0), .yellow)
+        XCTAssertEqual(g.color(at: 3, row: 1), .red)
+    }
 }
