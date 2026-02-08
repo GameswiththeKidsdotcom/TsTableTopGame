@@ -70,6 +70,19 @@ enum MoveValidator {
         }
     }
 
+    /// All valid (col, orientation) placements at spawn row 0. Used by AI to enumerate moves.
+    static func validPlacementsAtSpawn(in gridState: GridState) -> [(col: Int, orientation: CapsuleOrientation)] {
+        var result: [(col: Int, orientation: CapsuleOrientation)] = []
+        for col in 0..<Grid.columns {
+            for orientation in CapsuleOrientation.allCases {
+                if canPlace(col: col, row: 0, orientation: orientation, in: gridState) {
+                    result.append((col, orientation))
+                }
+            }
+        }
+        return result
+    }
+
     /// Wall kick: if rotation blocked, try shifting left 1. Returns (newCol, newOrientation) or nil if no valid placement.
     static func rotateWithWallKick(
         col: Int, row: Int, orientation: CapsuleOrientation,

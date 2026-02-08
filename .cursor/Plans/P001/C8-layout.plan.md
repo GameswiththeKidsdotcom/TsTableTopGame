@@ -119,6 +119,11 @@ Revert to single-board or minimal 2-grid placeholder. Stub HUD so it compiles bu
 | Touch targets too small | Ensure cell size ≥ 32pt; test on smallest supported device. |
 | HUD obscures grid | Position HUD at top/bottom or sides; keep grids primary. |
 
+### Known limitations (v1)
+
+- **Portrait cramped:** Side-by-side layout may feel tight on small iPhones in portrait. Adaptive layout (top-down in portrait) deferred to C10 or post-v1.
+- **Touch targets:** Minimum cell size enforced at 32pt in `GameScene.layoutGrid()`; manual test on smallest supported device recommended. On very small screens, grids may clip if 32pt minimum is enforced.
+
 ---
 
 ## Confidence
@@ -136,3 +141,4 @@ Revert to single-board or minimal 2-grid placeholder. Stub HUD so it compiles bu
 |------|---------|--------|------|
 | 2026-02-07 | `xcodebuild -scheme TableTopGame -destination 'platform=iOS Simulator,name=iPhone 16' build test` | All tests passed | Full suite; no regressions. |
 | 2026-02-07 | Manual visual check (simulator) | Confirmed | User confirmed basics working: 2 boards, avatars, highlight, HUD, input on current player. |
+| 2026-02-07 | Remaining tasks | Done | Enforced cell size ≥ 32pt in GameScene; documented known limitations (portrait cramped, touch/clip note). All tests passed. |

@@ -2,6 +2,23 @@
 
 Fixtures used by unit tests for C5 (Match and Gravity).
 
+---
+
+## How to move the pill (simulation)
+
+When testing in the iOS Simulator or on device, the pill (capsule) is controlled by tap/click **inside the active player’s board** (the grid with the yellow highlight). Taps outside the active board are ignored.
+
+| Tap/click location (within active board) | Action |
+|------------------------------------------|--------|
+| **Left 25% of board width** | Move pill **left** |
+| **Right 25% of board width** | Move pill **right** |
+| **Top 20% of board height** | **Hard drop** |
+| **Else** (middle 50% width, below top band) | **Rotate** (clockwise) |
+
+- **Simulator:** One mouse click = one tap. Click inside the highlighted board only.
+- The pill also auto-drops every ~0.5 seconds.
+- The two boards never overlap; each fits in its half of the screen.
+
 | Fixture | Description |
 |---------|-------------|
 | empty | No pieces on grid |

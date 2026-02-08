@@ -66,6 +66,12 @@ final class GameState {
         gridStates[playerIndex]
     }
 
+    /// C9: Virus positions for a player (for AI snapshot / Greedy scoring).
+    func virusPositions(forPlayer playerIndex: Int) -> Set<GridPosition> {
+        guard playerIndex >= 0, playerIndex < virusPositionsPerPlayer.count else { return [] }
+        return virusPositionsPerPlayer[playerIndex]
+    }
+
     /// Current player id.
     var currentPlayerId: Int { currentPlayerIndex }
 
@@ -211,7 +217,7 @@ final class GameState {
 
     func hardDrop() {
         guard canAcceptInput else { return }
-        var grid = gridStates[currentPlayerIndex]
+        let grid = gridStates[currentPlayerIndex]
         while MoveValidator.canMoveDown(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation, in: grid) {
             capsuleRow += 1
         }
@@ -302,5 +308,33 @@ final class GameState {
     /// Next capsule in queue (for preview). Returns (left, right) or nil.
     func nextCapsuleInQueue() -> (PillColor, PillColor)? {
         capsuleQueue.first
+    }
+
+    // MARK: - C9 AI
+
+    /// Read-only snapshot for AI: grid, capsule colors, valid moves at spawn, virus positions. Returns nil when current player cannot accept input.
+    func aiSnapshotForCurrentPlayer() -> AISnapshot? {
+        guard canAcceptInput else { return nil }
+        let grid = gridStates[currentPlayerIndex]
+        let validMoves = MoveValidator.validPlacementsAtSpawn(in: grid)
+        let virusPositions = virusPositionsPerPlayer[currentPlayerIndex]
+        return AISnapshot(
+            grid: grid,
+            capsuleLeft: capsuleLeftColor,
+            capsuleRight: capsuleRightColor,
+            validMoves: validMoves,
+            virusPositions: virusPositions
+        )
+    }
+
+    /// Apply AI-chosen move: set capsule at spawn to (col, orientation) and hard-drop. No-op if invalid or not accepting input.
+    func applyAIMove(col: Int, orientation: CapsuleOrientation) {
+        guard canAcceptInput else { return }
+        let grid = gridStates[currentPlayerIndex]
+        guard MoveValidator.canPlace(col: col, row: Self.spawnRow, orientation: orientation, in: grid) else { return }
+        capsuleCol = col
+        capsuleRow = Self.spawnRow
+        capsuleOrientation = orientation
+        hardDrop()
     }
 }

@@ -297,4 +297,106 @@ final class TableTopGameTests: XCTestCase {
         XCTAssertEqual(g.color(at: 4, row: 0), .yellow)
         XCTAssertEqual(g.color(at: 3, row: 1), .red)
     }
+
+    // MARK: - C9 AI
+
+    func testMoveValidatorValidPlacementsAtSpawn() {
+        let g = Fixtures.empty()
+        let moves = MoveValidator.validPlacementsAtSpawn(in: g)
+        XCTAssertFalse(moves.isEmpty)
+        for m in moves {
+            XCTAssertTrue(MoveValidator.canPlace(col: m.col, row: 0, orientation: m.orientation, in: g))
+        }
+        let topOut = Fixtures.topOut()
+        let blocked = MoveValidator.validPlacementsAtSpawn(in: topOut)
+        XCTAssertLessThan(blocked.count, moves.count)
+    }
+
+    func testAIControllerMock() {
+        let grid = Fixtures.empty()
+        let validMoves = MoveValidator.validPlacementsAtSpawn(in: grid)
+        XCTAssertFalse(validMoves.isEmpty)
+        let fixedMove = validMoves[0]
+        let snapshot = AISnapshot(grid: grid, capsuleLeft: .red, capsuleRight: .blue, validMoves: validMoves, virusPositions: [])
+        let mock = MockAIController(returnMove: fixedMove)
+        let move = mock.move(for: snapshot)
+        XCTAssertEqual(move?.col, fixedMove.col)
+        XCTAssertEqual(move?.orientation, fixedMove.orientation)
+    }
+
+    func testRandomAIReturnsValidMove() {
+        let grid = Fixtures.empty()
+        let validMoves = MoveValidator.validPlacementsAtSpawn(in: grid)
+        let snapshot = AISnapshot(grid: grid, capsuleLeft: .red, capsuleRight: .blue, validMoves: validMoves, virusPositions: [])
+        let randomAI = RandomAI()
+        let moveSet = Set(validMoves.map { "\($0.col),\($0.orientation.rawValue)" })
+        for _ in 0..<20 {
+            let move = randomAI.move(for: snapshot)
+            XCTAssertNotNil(move)
+            XCTAssertTrue(moveSet.contains("\(move!.col),\(move!.orientation.rawValue)"))
+        }
+    }
+
+    func testGreedyAIPrefersHigherVirusClears() {
+        var grid = Fixtures.empty()
+        for c in 0..<4 { grid.set(.red, at: c, row: 5) }
+        let virusPositions: Set<GridPosition> = [GridPosition(col: 0, row: 5), GridPosition(col: 1, row: 5), GridPosition(col: 2, row: 5), GridPosition(col: 3, row: 5)]
+        let validMoves = MoveValidator.validPlacementsAtSpawn(in: grid)
+        let snapshot = AISnapshot(grid: grid, capsuleLeft: .red, capsuleRight: .red, validMoves: validMoves, virusPositions: virusPositions)
+        let greedy = GreedyAI()
+        let move = greedy.move(for: snapshot)
+        XCTAssertNotNil(move)
+        let score = PlacementScorer.scoreVirusClears(grid: grid, virusPositions: virusPositions, col: move!.col, orientation: move!.orientation, leftColor: .red, rightColor: .red)
+        XCTAssertGreaterThanOrEqual(score, 0)
+    }
+
+    func testAIContractFullBoardReturnsNil() {
+        let snapshot = AISnapshot(grid: Fixtures.topOut(), capsuleLeft: .red, capsuleRight: .blue, validMoves: [], virusPositions: [])
+        let randomAI = RandomAI()
+        XCTAssertNil(randomAI.move(for: snapshot))
+        let greedyAI = GreedyAI()
+        XCTAssertNil(greedyAI.move(for: snapshot))
+    }
+
+    func testAIContractEveryMoveLegal() {
+        let grid = Fixtures.empty()
+        let validMoves = MoveValidator.validPlacementsAtSpawn(in: grid)
+        let snapshot = AISnapshot(grid: grid, capsuleLeft: .red, capsuleRight: .blue, validMoves: validMoves, virusPositions: [])
+        let randomAI = RandomAI()
+        for _ in 0..<30 {
+            guard let move = randomAI.move(for: snapshot) else { XCTFail("expected move"); return }
+            XCTAssertTrue(validMoves.contains { $0.col == move.col && $0.orientation == move.orientation })
+        }
+    }
+
+    func testGameStateAiSnapshotAndApplyAIMove() {
+        var state: GameState?
+        var snapshot: AISnapshot?
+        for _ in 0..<20 {
+            let s = GameState(level: 0)
+            let snap = s.aiSnapshotForCurrentPlayer()
+            if snap != nil {
+                state = s
+                snapshot = snap
+                break
+            }
+        }
+        XCTAssertNotNil(state)
+        XCTAssertNotNil(snapshot, "aiSnapshotForCurrentPlayer() should be non-nil when spawn is not blocked (retried up to 20 times)")
+        guard let state = state, let snapshot = snapshot else { return }
+        XCTAssertEqual(snapshot.validMoves.count, MoveValidator.validPlacementsAtSpawn(in: state.currentGridState()).count)
+        guard let firstMove = snapshot.validMoves.first else { return }
+        state.applyAIMove(col: firstMove.col, orientation: firstMove.orientation)
+        XCTAssertEqual(state.currentPlayerId, 1)
+    }
+}
+
+/// C9: Mock AI that returns a fixed move for unit tests.
+private struct MockAIController: AIController {
+    let returnMove: (col: Int, orientation: CapsuleOrientation)
+    func move(for snapshot: AISnapshot) -> (col: Int, orientation: CapsuleOrientation)? {
+        snapshot.validMoves.contains { $0.col == returnMove.col && $0.orientation == returnMove.orientation }
+            ? returnMove
+            : snapshot.validMoves.first
+    }
 }

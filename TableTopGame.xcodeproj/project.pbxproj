@@ -27,6 +27,7 @@
 		A1000000000000000000003E /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000003F /* GameState.swift */; };
 		A10000000000000000000040 /* AttackCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000041 /* AttackCalculator.swift */; };
 		A10000000000000000000042 /* GameStateDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000043 /* GameStateDisplay.swift */; };
+		A10000000000000000000044 /* AIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000045 /* AIController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		A1000000000000000000003F /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
 		A10000000000000000000041 /* AttackCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttackCalculator.swift; sourceTree = "<group>"; };
 		A10000000000000000000043 /* GameStateDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateDisplay.swift; sourceTree = "<group>"; };
+		A10000000000000000000045 /* AIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -80,6 +82,7 @@
 		A10000000000000000000024 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				A10000000000000000000045 /* AIController.swift */,
 				A10000000000000000000041 /* AttackCalculator.swift */,
 				A10000000000000000000043 /* GameStateDisplay.swift */,
 				A10000000000000000000016 /* PillColor.swift */,
@@ -264,6 +267,7 @@
 				A1000000000000000000003A /* GamePhase.swift in Sources */,
 				A1000000000000000000003C /* WinConditionChecker.swift in Sources */,
 				A1000000000000000000003E /* GameState.swift in Sources */,
+				A10000000000000000000044 /* AIController.swift in Sources */,
 				A10000000000000000000040 /* AttackCalculator.swift in Sources */,
 				A10000000000000000000042 /* GameStateDisplay.swift in Sources */,
 			);

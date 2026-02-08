@@ -58,6 +58,10 @@ private struct HUDOverlay: View {
                 }
                 .padding(4)
             }
+            Text("Pill: tap inside the active board (highlighted). Left 25% = move left · right 25% = move right · top 20% = drop · middle = rotate (Simulator: mouse click)")
+                .font(.caption2)
+                .foregroundStyle(.white.opacity(0.9))
+                .multilineTextAlignment(.center)
         }
         .padding(12)
         .background(.black.opacity(0.6))
