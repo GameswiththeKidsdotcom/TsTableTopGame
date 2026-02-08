@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste)
 
-Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: Play until P0 or P1 clears all viruses; overlay shows "Player X wins!", cash, Restart, Return to Menu. Agent: Manual / UI-Test. After completion, update Master-Plan.md and this section to the next chunk (C10-V3), and set Testing status for C10-V2 to Done in the Master-Plan C10 Validation Chunks table.
+Execute or validate **C10-V6: Settings sheet** per this plan. Outcome: Menu → Settings; Sound toggle, AI delay slider; Done dismisses. Agent: Manual / UI-Test. After completion, update Master-Plan.md and this section to the next chunk (C10-V7), and set Code/unit and Manual/UI for C10-V6 in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below.
 
 ---
 
@@ -18,21 +18,32 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 
 ---
 
+## Validation status (two gates)
+
+| Status | Meaning |
+|--------|--------|
+| **Code/unit** | Code path verified (static analysis) and relevant unit tests passed. Does *not* mean the app was run or the flow was tapped through. |
+| **Manual/UI** | App run in simulator (or XCUITest) and the stated outcome confirmed by human or automated UI test. Set to Done only when that run has actually been performed. |
+
+Use **Done** when the gate is satisfied; **—** when not yet run.
+
+---
+
 ## Validation Chunks (Execute in Order)
 
-| Chunk | Outcome | Validation | Agent |
-|-------|---------|------------|-------|
-| **C10-V1** | Launch → Menu → New Game | MenuView visible; New Game shows GameView with two boards | Manual / UI-Test |
-| **C10-V2** | Game Over (win) overlay | Play until P0 or P1 clears all viruses; overlay shows "Player X wins!", cash, Restart, Return to Menu | Manual / UI-Test |
-| **C10-V3** | Game Over (lose) overlay | Play until P0 top-outs → "Player 2 wins!"; P1 top-outs → "Player 1 wins!" | Manual / UI-Test |
-| **C10-V4** | Game Over (tie) overlay | Play until both top-out; overlay shows "Tie!" | Manual / UI-Test |
-| **C10-V5** | Restart and Return to Menu | Tap Restart → new game; Tap Return to Menu → MenuView | Manual / UI-Test |
-| **C10-V6** | Settings sheet | Menu → Settings; Sound toggle, AI delay slider; Done dismisses | Manual / UI-Test |
-| **C10-V7** | Settings persist | Change settings, kill app, relaunch; confirm values | Manual |
-| **C10-V8** | Viewport layout | iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible | UI-Test |
-| **C10-V9** | Layout and contrast | GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast | UI-Test |
-| **C10-V10** | Logic-test E2E (optional) | Fixture-based init; force single-player-left, tie, restart clean | Logic-Test |
-| **C10-V11** | Infrastructure | Offline spec; no network calls; optional CI | Static / manual |
+| Chunk | Outcome | Validation | Agent | Code/unit | Manual/UI |
+|-------|---------|------------|-------|-----------|-----------|
+| **C10-V1** | Launch → Menu → New Game | MenuView visible; New Game shows GameView with two boards | Manual / UI-Test | Done | — |
+| **C10-V2** | Game Over (win) overlay | Play until P0 or P1 clears all viruses; overlay shows "Player X wins!", cash, Restart, Return to Menu. | Manual / UI-Test | Done | — |
+| **C10-V3** | Game Over (lose) overlay | Play until P0 top-outs → "Player 2 wins!"; P1 top-outs → "Player 1 wins!" | Manual / UI-Test | Done | — |
+| **C10-V4** | Game Over (tie) overlay | Play until both top-out; overlay shows "Tie!" | Manual / UI-Test | Done | — |
+| **C10-V5** | Restart and Return to Menu | Tap Restart → new game; Tap Return to Menu → MenuView | Manual / UI-Test | Done | — |
+| **C10-V6** | Settings sheet | Menu → Settings; Sound toggle, AI delay slider; Done dismisses | Manual / UI-Test | Done | — |
+| **C10-V7** | Settings persist | Change settings, kill app, relaunch; confirm values | Manual | Done | — |
+| **C10-V8** | Viewport layout | iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible | UI-Test | Done | — |
+| **C10-V9** | Layout and contrast | GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast | UI-Test | Done | — |
+| **C10-V10** | Logic-test E2E (optional) | Fixture-based init; force single-player-left, tie, restart clean | Logic-Test | Done | — |
+| **C10-V11** | Infrastructure | Offline spec; no network calls; optional CI | Static / manual | — | — |
 
 ---
 
@@ -69,6 +80,7 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 | **Investigator** | GameState.phase == .gameOver(winnerId, false) when cleared all viruses. GameOverOverlay binds to stateDisplay.phase. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | WinConditionChecker.resolveGameOver(clearedAllCurrent: true) → gameOver. Unit tested. | Confirmed |
 | **UI-Test** | E2E: play until win → overlay "Player X wins!", cash, Restart, Return to Menu. Covered. | Confirmed |
+| **Validation (C10-V2)** | Code path verified: lockCapsule() → hasClearedAllViruses → resolveGameOver(clearedAllCurrent: true) → phase = .gameOver(winnerId:, isTie: false). GameOverOverlay shows "Player X wins!" (X = winnerId+1), P1/P2 cash, Restart, Return to Menu. layoutGrid() → pushStateToDisplay() so overlay updates. Full test suite passed. **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V3: Game Over (lose) overlay – P0/P1 top-out
 
@@ -77,6 +89,7 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 | **Investigator** | P0 top-out → eliminated.insert(0) → singlePlayerLeft → winnerId=1. GameOverOverlay shows "Player 2 wins!". Same for P1. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | testWinConditionCheckerResolveGameOverLoseScenario, testGameStateTopOutEliminatesPlayerAndOpponentWins. Logic coverage complete. | Confirmed |
 | **UI-Test** | E2E: P0 top-out → "Player 2 wins!"; P1 top-out → "Player 1 wins!". Lose-scenario UI coverage in ui-test.plan. | Confirmed |
+| **Validation (C10-V3)** | Code path verified: spawnCurrentPlayer() when can't place → eliminated.insert(currentPlayerIndex) → singlePlayerLeft → phase = .gameOver(winnerId: sole, isTie: false). P0 top-out → winnerId=1 → overlay "Player \(1+1) wins!" = "Player 2 wins!"; P1 top-out → winnerId=0 → "Player 1 wins!". testWinConditionCheckerResolveGameOverLoseScenario (P0/P1 eliminated cases) and testGameStateTopOutEliminatesPlayerAndOpponentWins (P0 top-out → P1 wins) passed. Full suite passed. **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V4: Game Over (tie) overlay
 
@@ -85,6 +98,7 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 | **Investigator** | Both eliminated → isTie → gameOver(winnerId: nil, isTie: true). GameOverOverlay shows "Tie!". Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | testWinConditionCheckerResolveGameOverTie. Unit tested. | Confirmed |
 | **UI-Test** | E2E: both top-out → overlay "Tie!". Covered. | Confirmed |
+| **Validation (C10-V4)** | Code path verified: spawnCurrentPlayer/advanceTurn → eliminated = {0,1} → phase = .gameOver(winnerId: nil, isTie: true). GameOverOverlay body uses `Text(isTie ? "Tie!" : ...)`. testWinConditionCheckerResolveGameOverTie and testWinConditionCheckerIsTie passed. Full suite passed. **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V5: Restart and Return to Menu
 
@@ -93,6 +107,7 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 | **Investigator** | Restart: startNewGame() → new GameScene. Return to Menu: onReturnToMenu → AppPhase = .menu. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | No game logic; flow only. Defer to UI-Test. | N/A |
 | **UI-Test** | E2E: Tap Restart → new game; Tap Return to Menu → MenuView. Covered. | Confirmed |
+| **Validation (C10-V5)** | Code path verified: GameOverOverlay Restart calls onRestart → startNewGame() (new GameScene/GameState) + onRestart(); RootView onRestart sets appPhase = .playing so GameView shows fresh game. Return to Menu calls onReturnToMenu → RootView sets appPhase = .menu → switch shows MenuView. Full test suite passed. **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V6: Settings sheet
 
@@ -101,6 +116,7 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 | **Investigator** | MenuView → Settings presents SettingsView sheet. Sound toggle, AI delay slider. Done dismisses. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | No game logic. Defer to UI-Test. | N/A |
 | **UI-Test** | E2E: Menu → Settings → sheet with Sound, AI delay; Done. Covered. | Confirmed |
+| **Validation (C10-V6)** | Code path verified: RootView MenuView has Button("Settings") with accessibilityIdentifier("settingsButton") → onSettings sets showSettings = true → .sheet presents SettingsView(). SettingsView: Toggle("Sound", isOn: $settings.soundEnabled) (soundToggle), Slider aiDelaySeconds 0.5–3.0s (aiDelaySlider), Button("Done") calls dismiss() (settingsDoneButton). Unit test suite passed. **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V7: Settings persist
 
@@ -109,6 +125,7 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 | **Investigator** | SettingsManager uses UserDefaults; soundEnabled, aiDelaySeconds persist. Manual: kill app, relaunch, confirm. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | testSettingsManagerSetAndReadBack. Unit tested. | Confirmed |
 | **UI-Test** | Manual validation; no additional UI coverage. | N/A |
+| **Validation (C10-V7)** | Code path verified: SettingsManager init reads from UserDefaults (soundEnabledKey, aiDelaySecondsKey); didSet on soundEnabled/aiDelaySeconds writes to defaults. testSettingsManagerSetAndReadBack sets values, asserts in-memory and UserDefaults. Manual step: change settings in UI, kill app, relaunch, confirm values—required for Manual/UI Done. **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V8: Viewport layout
 
@@ -117,6 +134,7 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 | **Investigator** | GameOverOverlay layout must be legible on iPhone SE (375×667), iPhone 15 Pro Max (430×932), iPad Pro 11 (834×1194). Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | Layout; defer to UI-Test. | N/A |
 | **UI-Test** | Viewport matrix in ui-test.plan. iPhone SE, 15 Pro Max, iPad Pro 11. Covered. | Confirmed |
+| **Validation (C10-V8)** | Code path verified: GameOverOverlay uses SwiftUI VStack(spacing: 24), no fixed frame; .font(.largeTitle), .font(.title2), .font(.headline) (semantic, scale with environment). Color.black.opacity(0.7).ignoresSafeArea() fills viewport. GameScene scaleMode = .resizeFill; didChangeSize → layoutGrid() so scene adapts. Overlay is viewport-agnostic. ui-test.plan viewport matrix: iPhone SE 375×667, iPhone 15 Pro Max 430×932, iPad Pro 11 834×1194. Manual/UI: run on those simulators to confirm legibility. **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V9: Layout and contrast
 
@@ -125,6 +143,7 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 | **Investigator** | GameOverOverlay: white on black 0.7 opacity. Restart (accent), Return to Menu (gray). HUD: black 0.6, white text. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | Contrast; defer to UI-Test. | N/A |
 | **UI-Test** | Layout and contrast section in ui-test.plan. Covered. | Confirmed |
+| **Validation (C10-V9)** | Code path verified: GameOverOverlay — Color.black.opacity(0.7).ignoresSafeArea(); all Text .foregroundStyle(.white). Restart Button .background(Color.accentColor), .foregroundStyle(.white), accessibilityIdentifier("restartButton"); Return to Menu .background(Color.gray), .foregroundStyle(.white), accessibilityIdentifier("returnToMenuButton"); SwiftUI Button = tappable. HUDOverlay — .background(.black.opacity(0.6)), Text .foregroundStyle(.white) / .foregroundStyle(.white.opacity(0.9)). ui-test.plan Layout and Contrast: white on semi-transparent black, Restart (accent), Return to Menu (gray), HUD black 0.6 + white. Manual/UI: run in simulator to confirm contrast and tap targets. **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V10: Logic-test E2E (optional)
 
@@ -133,6 +152,7 @@ Execute or validate **C10-V2: Game Over (win) overlay** per this plan. Outcome: 
 | **Investigator** | Fixture-based GameState init exists. Force single-player-left, tie, restart clean via fixtures. Outcome clear. | 90% root cause, 90% solution path |
 | **Logic-Test** | E2E scope: fixture-based init → assert phase. logic-test.plan covers. Optional. | Confirmed |
 | **UI-Test** | Logic-test scope; defer. | N/A |
+| **Validation (C10-V10)** | Code path verified: GameState(gridStatesForTest:capsuleQueueForTest:) takes [P0 grid, P1 grid], calls spawnCurrentPlayer() → elimination/tie. Single-player-left: testGameStateTopOutEliminatesPlayerAndOpponentWins (Fixtures.topOut + empty → P1 wins). Tie: testWinConditionCheckerResolveGameOverTie, testWinConditionCheckerIsTie (eliminated [0,1]). Restart clean: startNewGame() → new GameScene()/GameState(level:) (C10-V5). All five logic tests passed. Manual/UI: N/A (Logic-Test only). **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V11: Infrastructure
 
