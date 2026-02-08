@@ -11,6 +11,8 @@ isProject: false
 
 **Confidence**: 90% (Investigator validated). Platform: v1 iOS/iPadOS only; Android/web = v2.
 
+**Next hand off (cut & paste)**: See [Master-Plan.md](Master-Plan.md) or [C10-validation-chunks.plan.md](P001/C10-validation-chunks.plan.md) for the current executable prompt.
+
 ---
 
 ## Feature → Object Map
@@ -48,6 +50,7 @@ isProject: false
 | **C8**             | 2 boards + avatars (head-to-head)      | [P001/C8-layout.plan.md](P001/C8-layout.plan.md)                                    |
 | **C9**             | AI opponent (1 AI + 1 human)           | [P001/C9-ai.plan.md](P001/C9-ai.plan.md)                                            |
 | **C10**            | Menus, game over, restart, settings    | [P001/C10-menus.plan.md](P001/C10-menus.plan.md)                                    |
+| **C10 validation** | Small executable chunks (C10-V1–V11)   | [P001/C10-validation-chunks.plan.md](P001/C10-validation-chunks.plan.md)             |
 
 
 ---

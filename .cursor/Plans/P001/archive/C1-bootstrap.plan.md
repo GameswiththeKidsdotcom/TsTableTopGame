@@ -33,6 +33,29 @@ Delete project; no external deps.
 
 ---
 
+## Investigator Note
+
+Investigator validation 2025-02-07: SPEC, project, placeholder (MenuView), CI verified. Confidence warranted.
+
+---
+
+## Notes
+
+### Architecture Evolution
+
+App root evolved: RootView → MenuView (shows "TableTopGame") or GameView. Placeholder outcome preserved.
+
+---
+
+## Validation Strategy
+
+Explicit re-verification steps for future agents:
+
+1. Run `xcodebuild -scheme TableTopGame -destination 'platform=iOS Simulator,name=iPhone 16' build test`
+2. Launch app in simulator; confirm "TableTopGame" visible in main menu
+
+---
+
 ## Confidence
 
 | | Value | Note |

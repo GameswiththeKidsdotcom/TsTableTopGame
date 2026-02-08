@@ -32,7 +32,10 @@ class GameScene: SKScene {
     private var dropAccumulator: TimeInterval = 0
     private let dropInterval: TimeInterval = 0.5
     private var aiDelayAccumulator: TimeInterval = 0
-    private let aiDelay: TimeInterval = 1.5
+    /// C10: AI delay from SettingsManager (persisted).
+    private var aiDelay: TimeInterval {
+        SettingsManager.shared.aiDelaySeconds
+    }
 
     override func didMove(to view: SKView) {
         backgroundColor = .black

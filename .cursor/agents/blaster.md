@@ -20,7 +20,7 @@ Ensure every invocation and fidelity check assumes this head-to-head scope so al
 ## When you are invoked
 
 - The user asks to "use blaster" or to "run the plan pipeline" or equivalent.
-- The user wants the full plan reviewed, test plans and infra considered, plan chunked, and each chunk validated for fidelity.
+- The user wants the full plan reviewed, test plans and infra considered, plan chunked, and each chunk validated for fidelity. Invoke @investigator.md if required to increse confidence levels.
 
 **Always ask questions if unclear**: When the target chunk, scope (e.g. "raise confidence" vs "full pipeline"), or success criteria (e.g. what "done" means for a chunk) are ambiguous, **ask the user** before proceeding. Do not assume.
 

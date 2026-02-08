@@ -116,13 +116,13 @@ Revert to single-board or minimal 2-grid placeholder. Stub HUD so it compiles bu
 | Risk | Mitigation |
 |------|------------|
 | Portrait cramped | Route A acceptable for v1; document as known limitation; add adaptive in C10 if needed. |
-| Touch targets too small | Ensure cell size ≥ 32pt; test on smallest supported device. |
+| Touch targets too small | Cell size = min(halfW/8, h/16) so boards never overlap; on very small screens cells may be < 32pt. Touch zones scoped to active board only. |
 | HUD obscures grid | Position HUD at top/bottom or sides; keep grids primary. |
 
 ### Known limitations (v1)
 
 - **Portrait cramped:** Side-by-side layout may feel tight on small iPhones in portrait. Adaptive layout (top-down in portrait) deferred to C10 or post-v1.
-- **Touch targets:** Minimum cell size enforced at 32pt in `GameScene.layoutGrid()`; manual test on smallest supported device recommended. On very small screens, grids may clip if 32pt minimum is enforced.
+- **Layout:** Cell size is `min(halfW/8, h/16)` so each grid fits in its half (no overlap). No minimum 32pt; on narrow screens cells may be smaller. Touch input is accepted only inside the active player's grid; left/right/top/middle zones (25%/25%/20%/center) are within that board. In-HUD instructions describe pill controls (see docs/FIXTURES.md).
 
 ---
 
@@ -142,3 +142,4 @@ Revert to single-board or minimal 2-grid placeholder. Stub HUD so it compiles bu
 | 2026-02-07 | `xcodebuild -scheme TableTopGame -destination 'platform=iOS Simulator,name=iPhone 16' build test` | All tests passed | Full suite; no regressions. |
 | 2026-02-07 | Manual visual check (simulator) | Confirmed | User confirmed basics working: 2 boards, avatars, highlight, HUD, input on current player. |
 | 2026-02-07 | Remaining tasks | Done | Enforced cell size ≥ 32pt in GameScene; documented known limitations (portrait cramped, touch/clip note). All tests passed. |
+| 2026-02-07 | Pill UX + overlap | Done | In-HUD pill instructions; touch zones scoped to active board (25%/25%/20%/center); cell size = min(halfW/8,h/16) so boards never overlap. Doc updated (FIXTURES.md). Changes committed and pushed to GitHub. |

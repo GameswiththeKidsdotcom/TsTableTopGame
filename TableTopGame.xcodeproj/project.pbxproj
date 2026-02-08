@@ -28,6 +28,10 @@
 		A10000000000000000000040 /* AttackCalculator.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000041 /* AttackCalculator.swift */; };
 		A10000000000000000000042 /* GameStateDisplay.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000043 /* GameStateDisplay.swift */; };
 		A10000000000000000000044 /* AIController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000045 /* AIController.swift */; };
+		A10000000000000000000046 /* SettingsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000047 /* SettingsManager.swift */; };
+		A10000000000000000000048 /* RootView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10000000000000000000049 /* RootView.swift */; };
+		A1000000000000000000004A /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004B /* SettingsView.swift */; };
+		A1000000000000000000004C /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1000000000000000000004D /* GameView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +58,10 @@
 		A10000000000000000000041 /* AttackCalculator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AttackCalculator.swift; sourceTree = "<group>"; };
 		A10000000000000000000043 /* GameStateDisplay.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameStateDisplay.swift; sourceTree = "<group>"; };
 		A10000000000000000000045 /* AIController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AIController.swift; sourceTree = "<group>"; };
+		A10000000000000000000047 /* SettingsManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsManager.swift; sourceTree = "<group>"; };
+		A10000000000000000000049 /* RootView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootView.swift; sourceTree = "<group>"; };
+		A1000000000000000000004B /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		A1000000000000000000004D /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +80,9 @@
 			children = (
 				A10000000000000000000002 /* TableTopGameApp.swift */,
 				A10000000000000000000004 /* ContentView.swift */,
+				A1000000000000000000004D /* GameView.swift */,
+				A10000000000000000000049 /* RootView.swift */,
+				A1000000000000000000004B /* SettingsView.swift */,
 				A10000000000000000000020 /* GameScene.swift */,
 				A10000000000000000000024 /* Models */,
 				A10000000000000000000006 /* Assets.xcassets */,
@@ -83,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				A10000000000000000000045 /* AIController.swift */,
+				A10000000000000000000047 /* SettingsManager.swift */,
 				A10000000000000000000041 /* AttackCalculator.swift */,
 				A10000000000000000000043 /* GameStateDisplay.swift */,
 				A10000000000000000000016 /* PillColor.swift */,
@@ -253,6 +265,9 @@
 			files = (
 				A10000000000000000000001 /* TableTopGameApp.swift in Sources */,
 				A10000000000000000000003 /* ContentView.swift in Sources */,
+				A1000000000000000000004C /* GameView.swift in Sources */,
+				A10000000000000000000048 /* RootView.swift in Sources */,
+				A1000000000000000000004A /* SettingsView.swift in Sources */,
 				A10000000000000000000015 /* PillColor.swift in Sources */,
 				A10000000000000000000017 /* Grid.swift in Sources */,
 				A10000000000000000000019 /* Capsule.swift in Sources */,
@@ -268,6 +283,7 @@
 				A1000000000000000000003C /* WinConditionChecker.swift in Sources */,
 				A1000000000000000000003E /* GameState.swift in Sources */,
 				A10000000000000000000044 /* AIController.swift in Sources */,
+				A10000000000000000000046 /* SettingsManager.swift in Sources */,
 				A10000000000000000000040 /* AttackCalculator.swift in Sources */,
 				A10000000000000000000042 /* GameStateDisplay.swift in Sources */,
 			);

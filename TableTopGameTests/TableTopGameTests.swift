@@ -51,6 +51,24 @@ final class TableTopGameTests: XCTestCase {
         XCTAssertEqual(p2.name, "Human")
     }
 
+    // MARK: - SettingsManager (C10)
+
+    func testSettingsManagerSetAndReadBack() {
+        let m = SettingsManager.shared
+        let origSound = m.soundEnabled
+        let origDelay = m.aiDelaySeconds
+        defer {
+            m.soundEnabled = origSound
+            m.aiDelaySeconds = origDelay
+        }
+        m.soundEnabled = false
+        m.aiDelaySeconds = 2.0
+        XCTAssertFalse(m.soundEnabled)
+        XCTAssertEqual(m.aiDelaySeconds, 2.0)
+        XCTAssertEqual(UserDefaults.standard.bool(forKey: "soundEnabled"), false)
+        XCTAssertEqual(UserDefaults.standard.double(forKey: "aiDelaySeconds"), 2.0)
+    }
+
     // MARK: - MoveValidator
 
     func testMoveValidatorSegments() {
@@ -196,6 +214,28 @@ final class TableTopGameTests: XCTestCase {
         }
     }
 
+    /// Lose scenario: when one player is eliminated (e.g. top-out), the other wins. Explicitly asserts loser outcome.
+    func testWinConditionCheckerResolveGameOverLoseScenario() {
+        // Player 1 eliminated → Player 0 wins (Player 1 loses)
+        let phase = WinConditionChecker.resolveGameOver(clearedAllCurrent: false, currentPlayerId: 0, eliminated: [1], playerCount: 2, cash: [0, 0])
+        if case let .gameOver(winnerId, isTie) = phase {
+            XCTAssertEqual(winnerId, 0, "Eliminated player's opponent should win")
+            XCTAssertFalse(isTie)
+            XCTAssertTrue(winnerId != 1, "Eliminated player should not win; they lost")
+        } else {
+            XCTFail("Expected gameOver when one player eliminated")
+        }
+        // Player 0 eliminated → Player 1 wins (Player 0 loses)
+        let phase2 = WinConditionChecker.resolveGameOver(clearedAllCurrent: false, currentPlayerId: 1, eliminated: [0], playerCount: 2, cash: [0, 0])
+        if case let .gameOver(winnerId2, isTie2) = phase2 {
+            XCTAssertEqual(winnerId2, 1, "Eliminated player's opponent should win")
+            XCTAssertFalse(isTie2)
+            XCTAssertTrue(winnerId2 != 0, "Eliminated player should not win; they lost")
+        } else {
+            XCTFail("Expected gameOver when one player eliminated")
+        }
+    }
+
     func testWinConditionCheckerResolveGameOverTie() {
         let phase = WinConditionChecker.resolveGameOver(clearedAllCurrent: false, currentPlayerId: 0, eliminated: [0, 1], playerCount: 2, cash: [0, 0])
         if case let .gameOver(winnerId, isTie) = phase {
@@ -246,6 +286,19 @@ final class TableTopGameTests: XCTestCase {
         }
         if case .playing = state.phase {
             XCTFail("Game should end (win/elimination/tie) within 500 drops")
+        }
+    }
+
+    /// Top-out lose scenario: P0 has spawn blocked → P0 eliminated → P1 wins. Drives GameState through full elimination path.
+    func testGameStateTopOutEliminatesPlayerAndOpponentWins() {
+        let p0TopOut = Fixtures.topOut()
+        let p1Empty = Fixtures.empty()
+        let state = GameState(gridStatesForTest: [p0TopOut, p1Empty])
+        if case let .gameOver(winnerId, isTie) = state.phase {
+            XCTAssertEqual(winnerId, 1, "P0 top-out → P0 loses, P1 wins")
+            XCTAssertFalse(isTie)
+        } else {
+            XCTFail("Expected gameOver when P0 spawn blocked (top-out); got \(state.phase)")
         }
     }
 

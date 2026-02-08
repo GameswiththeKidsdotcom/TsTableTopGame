@@ -1,5 +1,11 @@
 # Master Plan
 
+## Next hand off (cut & paste)
+
+Execute or validate **C10-V2: Game Over (win) overlay** per [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). Outcome: Play until P0 or P1 clears all viruses; overlay shows "Player X wins!", cash, Restart, Return to Menu. Agent: Manual / UI-Test. After completion, update this prompt and the same section in the sub-plan to the next chunk (C10-V3), and set Testing status for C10-V2 to Done in the C10 Validation Chunks table below.
+
+---
+
 This file is the **single source of truth** for plan navigation, priority, and status. All plans created by agents (e.g., Investigator, UI-Test, logic-test, infrastructure) must be registered here so that priority ordering and current state are visible in one place.
 
 ## Valid plan states
@@ -23,8 +29,9 @@ Use exactly one of these values in the **Current state** column:
 
 | Plan ID | Plan name | Priority rank | Description | Current state | Confidence (root cause) | Confidence (solution path) |
 |---------|-----------|---------------|-------------|---------------|--------------------------|-----------------------------|
-| P001 | TabletopGame Spec and Implementation | 1 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test). C8 = 2 boards + avatars. Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Test plan ready | N/A | 90% |
+| P001 | TabletopGame Spec and Implementation | 1 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test, ui-test). C10 validation chunks: [C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md) (C10-V1–V11). Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Test plan ready | N/A | 90% |
 | P001-LT | TabletopGame Logic-Test (user move validation) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Test plan ready | 92% | 88% |
+| P001-UI | TabletopGame UI-Test (E2E, layout, contrast) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/ui-test.plan.md](.cursor/Plans/P001/ui-test.plan.md). E2E user journeys, win/lose/tie overlay validation, iPhone/iPad viewports, layout and contrast. Delegate at C10. | Test plan ready | N/A | N/A |
 
 ---
 
@@ -45,8 +52,31 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 | C7 - Perfected | Attack + garbage | Done | 95% | 95% |
 | C8 | 2 boards + avatars (head-to-head) | Done | 92% | 92% |
 | C9 | AI opponent (1 AI + 1 human) | Done | 92% | 91% |
-| C10 | Menus, game over, restart; settings persist | — | 88% | 85% |
+| C10 | Menus, game over, restart; settings persist | Code built | 92% | 92% |
 | C11 | App Store prep (optional) | — | N/A | N/A |
+
+---
+
+## P001 C10 Validation Chunks (Small Executable Pieces)
+
+C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). **E2E execution strategy** (phases, regression command, XCUITest, builder steps): E2E Optimized Test Plan — use the plan in context or `.cursor/plans/e2e_optimized_test_plan_1e64f74b.plan.md`.
+
+**Plan status**: Chunk plan and confidence validated by Blaster/Investigator/Logic-Test/UI-Test.  
+**Testing status**: Whether manual or E2E validation has been run for this chunk (— = not yet run, Done = run and passed).
+
+| Chunk | Outcome | Plan status | Testing status | Confidence (root cause) | Confidence (solution path) |
+|-------|---------|-------------|----------------|--------------------------|----------------------------|
+| C10-V1 | Launch → Menu → New Game | Validated | Done | 92% | 92% |
+| C10-V2 | Game Over (win) overlay | Validated | — | 92% | 92% |
+| C10-V3 | Game Over (lose) overlay – P0/P1 top-out | Validated | — | 92% | 92% |
+| C10-V4 | Game Over (tie) overlay | Validated | — | 92% | 92% |
+| C10-V5 | Restart, Return to Menu | Validated | — | 92% | 92% |
+| C10-V6 | Settings sheet | Validated | — | 92% | 92% |
+| C10-V7 | Settings persist (kill app, relaunch) | Validated | — | 92% | 92% |
+| C10-V8 | Viewport layout (iPhone SE, 15 Pro Max, iPad) | Validated | — | 92% | 92% |
+| C10-V9 | Layout and contrast (GameOverOverlay, buttons, HUD) | Validated | — | 92% | 92% |
+| C10-V10 | Logic-test E2E (fixture-based; optional) | Validated | — | 90% | 90% |
+| C10-V11 | Infrastructure (offline, no network) | Validated | — | 92% | 92% |
 
 ---
 

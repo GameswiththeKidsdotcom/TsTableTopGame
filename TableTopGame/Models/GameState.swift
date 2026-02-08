@@ -122,6 +122,32 @@ final class GameState {
         spawnCurrentPlayer()
     }
 
+    /// Test-only init with fixture grid states. Used for deterministic top-out and lose-scenario tests.
+    /// - Parameters:
+    ///   - gridStatesForTest: [P0 grid, P1 grid]. P0 goes first.
+    ///   - capsuleQueueForTest: Initial capsule queue. Must have at least one element. Default: [(.red, .blue)].
+    init(gridStatesForTest gridStates: [GridState], capsuleQueueForTest: [(PillColor, PillColor)] = [(.red, .blue)]) {
+        precondition(gridStates.count == Self.numberOfPlayers)
+        precondition(!capsuleQueueForTest.isEmpty)
+        self.players = (0..<Self.numberOfPlayers).map { Player(id: $0) }
+        self.gridStates = gridStates
+        self.virusPositionsPerPlayer = Array(repeating: [], count: Self.numberOfPlayers)
+        self.eliminated = []
+        self.cash = [0, 0]
+        self.currentPlayerIndex = 0
+        self.phase = .playing
+        self.capsuleCol = Self.spawnCol
+        self.capsuleRow = Self.spawnRow
+        self.capsuleOrientation = Self.initialOrientation
+        self.capsuleLeftColor = .red
+        self.capsuleRightColor = .blue
+        self.isCapsuleLocked = false
+        self.capsuleQueue = capsuleQueueForTest
+        self.pendingGarbage = Array(repeating: [], count: Self.numberOfPlayers)
+        refillCapsuleQueue()
+        spawnCurrentPlayer()
+    }
+
     private func refillCapsuleQueue() {
         while capsuleQueue.count < 2 {
             let left = PillColor.allCases.randomElement() ?? .red

@@ -28,7 +28,8 @@ You are **user-invoked** (not auto-delegated). You are appropriate to use when:
 3. **Implement** – Develop the solution following the plan, using bite-size changes that you can verify as you go.
 4. **Unit testing** – When ready to finish, run or add unit tests to confirm everything works.
 5. **Streamlined test harness** – Build or extend the test harness as part of the work so that the full suite runs efficiently and validates the implementation.
-6. **Confirm completion** – Ensure no new regressions; if any appear, resolve them or execute the rollback plan.
+6. **E2E harness (when in scope)** – When the plan or feature includes E2E/user-journey coverage (e.g. C10 validation, new screens, or menu flows), invoke the **e2e-harness** subagent to design or validate the E2E harness (journeys, viewports, user-usable objects). If implementation or logic validation is needed, e2e-harness will invoke Investigator (to assess the plan), infrastructure (when needed for memory/stability), and ui-test and/or logic-test when not already in context; otherwise proceed with the design in context.
+7. **Confirm completion** – Ensure no new regressions; if any appear, resolve them or execute the rollback plan.
 
 ## Quality Standards
 

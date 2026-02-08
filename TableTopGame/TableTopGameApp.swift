@@ -4,7 +4,7 @@ import SwiftUI
 struct TableTopGameApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootView()
         }
     }
 }
