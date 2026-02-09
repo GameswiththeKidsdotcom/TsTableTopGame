@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste)
 
-Execute or validate **C10-V9: Layout and contrast** per [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). Outcome: GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast. Agent: UI-Test. After completion, update this prompt and the same section in the sub-plan to the next chunk (C10-V10), and set Code/unit and Manual/UI for C10-V9 in the C10 Validation Chunks table below.
+Execute **A2: Add game HUD wait constant** per [e2e_active_wait_and_simulator_boot](.cursor/plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). File: TableTopGameUITests/TableTopGameUITests.swift. In runFullPlaythrough, add gameHudReadyTimeout constant (e.g. 10s), ensure turn-label wait uses it; consider replacing post-tap sleep(3) with active wait for HUD when stepDelayMs > 1000. Verify: xcodebuild test -only-testing:TableTopGameUITests/testFullPlaythroughUntilGameOverSlow. Agent: Blaster or UI-Test. After completion, update this prompt to B1 and advance the plan.
 
 ---
 
@@ -29,7 +29,7 @@ Use exactly one of these values in the **Current state** column:
 
 | Plan ID | Plan name | Priority rank | Description | Current state | Confidence (root cause) | Confidence (solution path) |
 |---------|-----------|---------------|-------------|---------------|--------------------------|-----------------------------|
-| P001-E2E-WATCH | E2E watchable boot/wait fix | 1 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). Chunks A1–A2 (test), B1–B2 (script), C1–C2 (docs, Master-Plan). | Validated | 95% | 92% |
+| P001-E2E-WATCH | E2E watchable boot/wait fix | 1 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). **A1 done** (menu wait); A2–C2 pending. | Testing in progress | 95% | 92% |
 | P001 | TabletopGame Spec and Implementation | 1 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test, ui-test). C10 validation chunks: [C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md) (C10-V1–V11). Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Test plan ready | N/A | 90% |
 | P001-LT | TabletopGame Logic-Test (user move validation) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Test plan ready | 92% | 88% |
 | P001-UI | TabletopGame UI-Test (E2E, layout, contrast) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/ui-test.plan.md](.cursor/Plans/P001/ui-test.plan.md). E2E user journeys, win/lose/tie overlay validation, iPhone/iPad viewports, layout and contrast. Delegate at C10. | Test plan ready | N/A | N/A |
@@ -79,7 +79,7 @@ C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plan
 | C10-V6 | Settings sheet | Validated | Done | — | 92% | 92% |
 | C10-V7 | Settings persist (kill app, relaunch) | Validated | Done | — | 92% | 92% |
 | C10-V8 | Viewport layout (iPhone SE, 15 Pro Max, iPad) | Validated | Done | Done | 92% | 92% |
-| C10-V9 | Layout and contrast (GameOverOverlay, buttons, HUD) | Validated | Done | — | 92% | 92% |
+| C10-V9 | Layout and contrast (GameOverOverlay, buttons, HUD) | Validated | Done | Done | 92% | 92% |
 | C10-V10 | Logic-test E2E (fixture-based; optional) | Validated | Done | — | 90% | 90% |
 | C10-V11 | Infrastructure (offline, no network) | Validated | — | — | 92% | 92% |
 

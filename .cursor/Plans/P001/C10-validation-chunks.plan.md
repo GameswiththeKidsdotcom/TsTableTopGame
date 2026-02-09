@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste)
 
-Execute or validate **C10-V9: Layout and contrast** per this plan. Outcome: GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast. Agent: UI-Test. After completion, update Master-Plan.md and this section to the next chunk (C10-V10), and set Code/unit and Manual/UI for C10-V9 in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below.
+Execute or validate **C10-V10: Logic-test E2E (optional)** per this plan. Outcome: Fixture-based init; force single-player-left, tie, restart clean. Agent: Logic-Test. After completion, update Master-Plan.md and this section to the next chunk (C10-V11), and set Code/unit and Manual/UI for C10-V10 in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below.
 
 ---
 
@@ -41,7 +41,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **C10-V6** | Settings sheet | Menu → Settings; Sound toggle, AI delay slider; Done dismisses | Manual / UI-Test | Done | — |
 | **C10-V7** | Settings persist | Change settings, kill app, relaunch; confirm values | Manual | Done | — |
 | **C10-V8** | Viewport layout | iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible | UI-Test | Done | Done |
-| **C10-V9** | Layout and contrast | GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast | UI-Test | Done | — |
+| **C10-V9** | Layout and contrast | GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast | UI-Test | Done | Done |
 | **C10-V10** | Logic-test E2E (optional) | Fixture-based init; force single-player-left, tie, restart clean | Logic-Test | Done | — |
 | **C10-V11** | Infrastructure | Offline spec; no network calls; optional CI | Static / manual | — | — |
 
@@ -143,7 +143,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **Investigator** | GameOverOverlay: white on black 0.7 opacity. Restart (accent), Return to Menu (gray). HUD: black 0.6, white text. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | Contrast; defer to UI-Test. | N/A |
 | **UI-Test** | Layout and contrast section in ui-test.plan. Covered. | Confirmed |
-| **Validation (C10-V9)** | Code path verified: GameOverOverlay — Color.black.opacity(0.7).ignoresSafeArea(); all Text .foregroundStyle(.white). Restart Button .background(Color.accentColor), .foregroundStyle(.white), accessibilityIdentifier("restartButton"); Return to Menu .background(Color.gray), .foregroundStyle(.white), accessibilityIdentifier("returnToMenuButton"); SwiftUI Button = tappable. HUDOverlay — .background(.black.opacity(0.6)), Text .foregroundStyle(.white) / .foregroundStyle(.white.opacity(0.9)). ui-test.plan Layout and Contrast: white on semi-transparent black, Restart (accent), Return to Menu (gray), HUD black 0.6 + white. Manual/UI: run in simulator to confirm contrast and tap targets. **Code/unit: Done. Manual/UI: —** | — |
+| **Validation (C10-V9)** | Code path verified: GameOverOverlay — Color.black.opacity(0.7).ignoresSafeArea(); all Text .foregroundStyle(.white). Restart Button .background(Color.accentColor), .foregroundStyle(.white), accessibilityIdentifier("restartButton"); Return to Menu .background(Color.gray), .foregroundStyle(.white), accessibilityIdentifier("returnToMenuButton"); SwiftUI Button = tappable. HUDOverlay — .background(.black.opacity(0.6)), Text .foregroundStyle(.white) / .foregroundStyle(.white.opacity(0.9)). UI-Test: added testC10V9LayoutAndContrast — GameOver fixture win → overlay title + Restart/Return to Menu hittable; tap Restart → GameView HUD (turn label, P1/P2 cash) visible. **Code/unit: Done. Manual/UI: Done.** | — |
 
 ### C10-V10: Logic-test E2E (optional)
 

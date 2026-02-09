@@ -49,6 +49,8 @@ final class TableTopGameUITests: XCTestCase {
 
     /// Menu ready timeout (seconds) for simulator boot; per e2e_active_wait_and_simulator_boot plan.
     private let menuReadyTimeout: TimeInterval = 60
+    /// Game HUD ready timeout (seconds) for turn label after New Game tap; per e2e_active_wait plan.
+    private let gameHudReadyTimeout: TimeInterval = 10
 
     var app: XCUIApplication!
 
@@ -95,6 +97,22 @@ final class TableTopGameUITests: XCTestCase {
         XCTAssertTrue(app.staticTexts["P2: $0"].waitForExistence(timeout: 2), "P2 cash legible")
         XCTAssertTrue(app.buttons["restartButton"].waitForExistence(timeout: 2) && app.buttons["restartButton"].isHittable, "Restart tappable")
         XCTAssertTrue(app.buttons["returnToMenuButton"].waitForExistence(timeout: 2) && app.buttons["returnToMenuButton"].isHittable, "Return to Menu tappable")
+    }
+
+    // C10-V9: Layout and contrast – GameOverOverlay white-on-black; Restart/Return to Menu tappable; HUD contrast.
+    func testC10V9LayoutAndContrast() throws {
+        // Overlay: white-on-black (0.7), buttons tappable
+        app.launchArguments = ["-GameOverFixture", "win"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Player 1 wins!"].waitForExistence(timeout: 5), "Overlay title (white on black) visible")
+        XCTAssertTrue(app.buttons["restartButton"].waitForExistence(timeout: 2) && app.buttons["restartButton"].isHittable, "Restart tappable")
+        XCTAssertTrue(app.buttons["returnToMenuButton"].waitForExistence(timeout: 2) && app.buttons["returnToMenuButton"].isHittable, "Return to Menu tappable")
+        // Tap Restart → game view; HUD (black 0.6, white text) visible
+        app.buttons["restartButton"].tap()
+        let playerTurn = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "turn")).firstMatch
+        XCTAssertTrue(playerTurn.waitForExistence(timeout: 5), "HUD turn label visible (contrast)")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "P1:")).firstMatch.waitForExistence(timeout: 2), "HUD P1 cash visible")
+        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label BEGINSWITH %@", "P2:")).firstMatch.waitForExistence(timeout: 2), "HUD P2 cash visible")
     }
 
     // E2E-OverlayAssert (C10-V2/V3/V4): GameOver fixture – win
@@ -160,10 +178,8 @@ final class TableTopGameUITests: XCTestCase {
         let newGameButton = app.buttons["newGameButton"]
         XCTAssertTrue(newGameButton.waitForExistence(timeout: menuReadyTimeout), "Menu with New Game button did not appear within \(menuReadyTimeout)s")
         newGameButton.tap()
-        XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "turn")).firstMatch.waitForExistence(timeout: 5))
-        if stepDelayMs > 1000 {
-            sleep(3)
-        }
+        let turnLabel = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "turn")).firstMatch
+        XCTAssertTrue(turnLabel.waitForExistence(timeout: gameHudReadyTimeout), "Game HUD (turn label) did not appear within \(gameHudReadyTimeout)s")
 
         let window = app.windows.firstMatch
         let deadline = Date().addingTimeInterval(totalTimeout)
