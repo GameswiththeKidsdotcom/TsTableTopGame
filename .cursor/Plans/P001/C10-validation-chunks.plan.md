@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste)
 
-Execute or validate **C10-V10: Logic-test E2E (optional)** per this plan. Outcome: Fixture-based init; force single-player-left, tie, restart clean. Agent: Logic-Test. After completion, update Master-Plan.md and this section to the next chunk (C10-V11), and set Code/unit and Manual/UI for C10-V10 in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below.
+Complete **C10 Manual/UI validation** for C10-V1 through C10-V7 and C10-V10: run app in simulator or run XCUITests (`testLaunchShowsMenu`, `testNewGameShowsGameView`, `testGameOverFixture*`, `testSettings*`, `testFullPlaythroughUntilGameOver`); confirm each outcome; set Manual/UI = Done in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below. Agent: **UI-Test** or tester. Plan: this file. Expected outcome: All listed chunks show Manual/UI Done; Master-Plan and this file updated. (Matches Master-Plan Lane A.)
 
 ---
 
@@ -43,7 +43,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **C10-V8** | Viewport layout | iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible | UI-Test | Done | Done |
 | **C10-V9** | Layout and contrast | GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast | UI-Test | Done | Done |
 | **C10-V10** | Logic-test E2E (optional) | Fixture-based init; force single-player-left, tie, restart clean | Logic-Test | Done | — |
-| **C10-V11** | Infrastructure | Offline spec; no network calls; optional CI | Static / manual | — | — |
+| **C10-V11** | Infrastructure | Offline spec; no network calls; optional CI | Static / manual | Done | Done |
 
 ---
 
@@ -161,6 +161,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **Investigator** | SPEC: offline-only; no network. Optional CI. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | Infrastructure; defer. | N/A |
 | **UI-Test** | Infrastructure; defer. | N/A |
+| **Validation (C10-V11)** | **Static verification**: Grep across app/tests for URLSession, NSURLSession, URL(, Data(contentsOf:URL), NWConnection, Network., Alamofire, URLRequest, http/https, .dataTask — no matches. Imports: Foundation and Combine only (no Network framework). project.pbxproj has no Network framework. **Spec**: docs/SPEC.md § Offline-Only confirms "No network calls. Single-device play; both boards on one screen. Persistence via UserDefaults only." **CI**: .github/workflows/test.yml — build-and-test (unit + build on iPhone 16), viewport-matrix (GameOver fixture tests on iPhone SE, 15 Pro Max, iPad Pro 11). CI already present; no code changes. **Code/unit: Done. Manual/UI: Done.** | — |
 
 ---
 

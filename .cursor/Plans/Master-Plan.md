@@ -22,7 +22,20 @@ When in doubt, run one agent at a time. Planner: when updating hand offs, if a s
 
 ## Next hand off (cut & paste) — Lane A
 
-*P001-E2E-WATCH complete.* No active hand off. See plan matrix for next priority.
+Complete **C10 Manual/UI validation** for chunks that still have Manual/UI = —. Run the app in the iPhone simulator (or run the relevant XCUITests: `testLaunchShowsMenu`, `testNewGameShowsGameView`, `testGameOverFixtureWin/Lose/Tie`, `testGameOverFixtureRestart`, `testGameOverFixtureReturnToMenu`, `testSettingsSheet`, `testSettingsPersist`, `testFullPlaythroughUntilGameOver`). For each of C10-V1 through C10-V7 and C10-V10, confirm the stated outcome and set Manual/UI = Done in the Master-Plan C10 Validation Chunks table and in `.cursor/Plans/P001/C10-validation-chunks.plan.md`. Agent: **UI-Test** or tester. Plan: [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). Expected outcome: All C10-V1–V7 and C10-V10 rows show Manual/UI Done where applicable; Master-Plan and sub-plan tables updated.
+
+## Second hand off (cut & paste) — Lane B
+
+Execute **C10-V11 Infrastructure**: Verify the app is offline-only (no network calls in codebase), document or confirm the spec, and optionally add or document CI. Update the Master-Plan C10 Validation Chunks table and C10-validation-chunks.plan.md to set Code/unit and Manual/UI for C10-V11 when done. Agent: **Investigator** or infrastructure. Plan: [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). Does not conflict with Lane A (no shared file edits; Lane A is validation/table updates, Lane B is static verification/docs).
+
+### Next priorities (summary)
+
+| Priority | What | Agent | Plan / notes |
+|----------|------|--------|---------------|
+| 1 (Lane A) | C10 Manual/UI validation: close — for V1–V7, V10 via simulator or XCUITest; update tables | UI-Test / tester | C10-validation-chunks.plan.md |
+| 2 (Lane B) | C10-V11 Infrastructure: offline-only, no network; optional CI; update C10-V11 gates | Investigator / infrastructure | C10-validation-chunks.plan.md |
+| 3 | P001-E2E-WATCH is complete and ready for github push — push when ready | — | e2e_active_wait_and_simulator_boot plan |
+| 4 | E2E full playthrough: P1–P7b implemented; optional E2E-P8 viewport matrix; run full test suite | UI-Test | E2E-full-playthrough.plan.md |
 
 ---
 
@@ -101,7 +114,7 @@ C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plan
 | C10-V8 | Viewport layout (iPhone SE, 15 Pro Max, iPad) | Validated | Done | Done | 92% | 92% |
 | C10-V9 | Layout and contrast (GameOverOverlay, buttons, HUD) | Validated | Done | Done | 92% | 92% |
 | C10-V10 | Logic-test E2E (fixture-based; optional) | Validated | Done | — | 90% | 90% |
-| C10-V11 | Infrastructure (offline, no network) | Validated | — | — | 92% | 92% |
+| C10-V11 | Infrastructure (offline, no network) | Validated | Done | Done | 92% | 92% |
 
 ---
 
