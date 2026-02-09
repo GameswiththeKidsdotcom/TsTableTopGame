@@ -1,8 +1,28 @@
 # Master Plan
 
-## Next hand off (cut & paste)
+## Concurrent agents (max 2)
 
-Execute **A2: Add game HUD wait constant** per [e2e_active_wait_and_simulator_boot](.cursor/plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). File: TableTopGameUITests/TableTopGameUITests.swift. In runFullPlaythrough, add gameHudReadyTimeout constant (e.g. 10s), ensure turn-label wait uses it; consider replacing post-tap sleep(3) with active wait for HUD when stepDelayMs > 1000. Verify: xcodebuild test -only-testing:TableTopGameUITests/testFullPlaythroughUntilGameOverSlow. Agent: Blaster or UI-Test. After completion, update this prompt to B1 and advance the plan.
+At most **two agents** may work in parallel. Two hand offs are allowed only when their work **does not conflict**.
+
+**Conflicts (do not run both if any apply):**
+- Same file or overlapping file set is edited by both.
+- Same plan chunk or same sub-plan is executed by both.
+- Both update the same Master-Plan row or same plan state.
+- One change depends on the other's outcome (order required).
+
+**Non-conflicting examples (safe for two agents):**
+- **Lane A** in app code (e.g. `GameState.swift`), **Lane B** in test code only (e.g. `TableTopGameUITests.swift` or `TableTopGameTests.swift`) with no shared files.
+- **Lane A** UI-Test / E2E (XCUITest), **Lane B** Logic-Test / unit tests (no app code edits).
+- **Lane A** one sub-plan or chunk (e.g. P001-E2E-WATCH A2), **Lane B** a different sub-plan or chunk with no file overlap (e.g. P001 C10 validation in a different area).
+- One agent runs tests only (read-only validation) while the other edits a disjoint set of files.
+
+When in doubt, run one agent at a time. Planner: when updating hand offs, if a second non-conflicting task exists, add it under **Second hand off** and state the non-conflict reason briefly.
+
+---
+
+## Next hand off (cut & paste) — Lane A
+
+*P001-E2E-WATCH complete.* No active hand off. See plan matrix for next priority.
 
 ---
 
@@ -29,7 +49,7 @@ Use exactly one of these values in the **Current state** column:
 
 | Plan ID | Plan name | Priority rank | Description | Current state | Confidence (root cause) | Confidence (solution path) |
 |---------|-----------|---------------|-------------|---------------|--------------------------|-----------------------------|
-| P001-E2E-WATCH | E2E watchable boot/wait fix | 1 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). **A1 done** (menu wait); A2–C2 pending. | Testing in progress | 95% | 92% |
+| P001-E2E-WATCH | E2E watchable boot/wait fix | 1 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). **All chunks done** (A1–C2). | Complete and ready for github push | 95% | 92% |
 | P001 | TabletopGame Spec and Implementation | 1 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test, ui-test). C10 validation chunks: [C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md) (C10-V1–V11). Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Test plan ready | N/A | 90% |
 | P001-LT | TabletopGame Logic-Test (user move validation) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Test plan ready | 92% | 88% |
 | P001-UI | TabletopGame UI-Test (E2E, layout, contrast) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/ui-test.plan.md](.cursor/Plans/P001/ui-test.plan.md). E2E user journeys, win/lose/tie overlay validation, iPhone/iPad viewports, layout and contrast. Delegate at C10. | Test plan ready | N/A | N/A |

@@ -24,11 +24,9 @@ fi
 echo "Building..."
 xcodebuild -scheme TableTopGame -destination "$DEST" build
 
-echo "Bringing Simulator to foreground..."
-open -a Simulator
-sleep 1
-osascript -e 'tell application "Simulator" to activate'
-sleep 2
+# Extract device name from destination (e.g. "platform=iOS Simulator,name=iPhone 16" -> "iPhone 16")
+DEVICE_NAME="${DEST#*name=}"
+./scripts/wait-for-simulator.sh "$DEVICE_NAME"
 
 echo "Running E2E (watch the Simulator)..."
 xcodebuild -scheme TableTopGame -destination "$DEST" \
