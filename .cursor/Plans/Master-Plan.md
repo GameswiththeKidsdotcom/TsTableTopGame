@@ -22,20 +22,20 @@ When in doubt, run one agent at a time. Planner: when updating hand offs, if a s
 
 ## Next hand off (cut & paste) — Lane A
 
-C10 Manual/UI validation complete. All C10-V1–V10 chunks validated 2026-02-08.
+Run **P001-E2E** full playthrough validation: open [.cursor/Plans/P001/E2E-full-playthrough.plan.md](.cursor/Plans/P001/E2E-full-playthrough.plan.md), run full `xcodebuild test` (unit + UI) and confirm all tests pass. Optionally implement **E2E-P8** (viewport matrix: overlay legibility on iPhone SE, 15 Pro Max, iPad Pro 11). Update P001-E2E state in Master-Plan when done. Agent: **UI-Test**. Expected outcome: full test suite green; optional E2E-P8 documented or implemented.
 
 ## Second hand off (cut & paste) — Lane B
 
-**Lane B complete.** P001-LT Logic-Test validation run completed 2026-02-08 (all 44 TableTopGameTests passed; see [logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md) Validation run table). No conflict-free second task available; Lane B hand off empty until Lane A completes or a new non-conflicting task is identified.
+**Lane B empty.** P001-LT Logic-Test validation completed 2026-02-08. No conflict-free second task while Lane A is on P001-E2E (full test suite / E2E-P8); E2E work uses TableTopGameUITests. Add a Lane B prompt when a non-conflicting task is identified (e.g. unit-test-only or docs).
 
 
 ### Next priorities (summary)
 
 | Priority | What | Agent | Plan / notes |
 |----------|------|--------|---------------|
-| 1 | C10 Manual/UI validation: close — for V1–V7, V10 via simulator or XCUITest; update tables | UI-Test / tester | C10-validation-chunks.plan.md |
-| 2 | P001-E2E-WATCH pushed 2026-02-08 | — | e2e_active_wait_and_simulator_boot plan |
-| 3 | E2E full playthrough: P1–P7b implemented; optional E2E-P8 viewport matrix; run full test suite | UI-Test | E2E-full-playthrough.plan.md |
+| 1 | E2E full playthrough — run full test suite; optional E2E-P8 viewport matrix | UI-Test | E2E-full-playthrough.plan.md |
+| 2 | C10 Manual/UI validation — complete (all C10-V1–V11 done 2026-02-08) | — | C10-validation-chunks.plan.md |
+| 3 | P001-E2E-WATCH pushed 2026-02-08 | — | e2e_active_wait_and_simulator_boot plan |
 
 *C10-V11 complete. Lane B (E2E-WATCH) pushed.*
 
@@ -89,7 +89,7 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 | C7 - Perfected | Attack + garbage | Done | 95% | 95% |
 | C8 | 2 boards + avatars (head-to-head) | Done | 92% | 92% |
 | C9 | AI opponent (1 AI + 1 human) | Done | 92% | 91% |
-| C10 | Menus, game over, restart; settings persist | Code built | 92% | 92% |
+| C10 | Menus, game over, restart; settings persist | Done | 92% | 92% |
 | C11 | App Store prep (optional) | — | N/A | N/A |
 
 ---

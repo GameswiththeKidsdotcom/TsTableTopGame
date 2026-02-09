@@ -1,8 +1,8 @@
 # Full Playthrough E2E Harness Plan
 
-## Next hand off (cut & paste)
+## Next hand off (cut & paste) — Lane A
 
-**E2E-P1–P7b are implemented** (TableTopGameUITests target exists; tests for Launch→Menu, New Game, board tap helper, play until game over, overlay, Restart, Return to Menu). Next optional work: **E2E-P8** (viewport matrix — overlay legibility on iPhone SE, 15 Pro Max, iPad Pro 11) or run full `xcodebuild test` (unit + UI) and confirm all pass, then update P001-E2E state in Master-Plan if appropriate. Agent: UI-Test. Plan: this file. Current Master-Plan Lane A is C10 Manual/UI validation (C10-validation-chunks.plan.md); use this E2E plan when E2E-specific work is next.
+Run **P001-E2E** full playthrough validation: open this file, run full `xcodebuild test` (unit + UI) and confirm all tests pass. Optionally implement **E2E-P8** (viewport matrix: overlay legibility on iPhone SE, 15 Pro Max, iPad Pro 11). Update P001-E2E state in Master-Plan when done. Agent: **UI-Test**. Expected outcome: full test suite green; optional E2E-P8 documented or implemented.
 
 ---
 
