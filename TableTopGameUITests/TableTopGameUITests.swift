@@ -220,22 +220,28 @@ final class TableTopGameUITests: XCTestCase {
     func testSettingsPersist() throws {
         app.launch()
         app.buttons["settingsButton"].tap()
-        XCTAssertTrue(app.switches["soundToggle"].waitForExistence(timeout: 3))
-        let soundOn = (app.switches["soundToggle"].value as? String) == "1"
-        if soundOn {
-            app.switches["soundToggle"].tap()
+        let soundToggle = app.switches["soundToggle"]
+        XCTAssertTrue(soundToggle.waitForExistence(timeout: 5))
+        // Force sound OFF (toggle if currently on)
+        let val = soundToggle.value
+        if (val as? String) == "1" || (val as? NSNumber)?.intValue == 1 {
+            soundToggle.tap()
         }
-        app.sliders["aiDelaySlider"].adjust(toNormalizedSliderPosition: 0.2)
+        // Set AI delay to 2.5s (normalized 0.8 on 0.5–3.0) – distinctive for persistence assert
+        app.sliders["aiDelaySlider"].adjust(toNormalizedSliderPosition: 0.8)
         app.buttons["settingsDoneButton"].tap()
         app.terminate()
         app.launch()
         app.buttons["settingsButton"].tap()
-        XCTAssertTrue(app.switches["soundToggle"].waitForExistence(timeout: 3))
-        XCTAssertEqual(app.switches["soundToggle"].value as? String, "0")
-        XCTAssertTrue(
-            app.staticTexts["AI delay: 1.0s"].waitForExistence(timeout: 2) ||
-            app.staticTexts["AI delay: 1.1s"].waitForExistence(timeout: 1)
-        )
+        XCTAssertTrue(soundToggle.waitForExistence(timeout: 5), "Settings sheet did not appear after relaunch")
+        // Assert sound is OFF; SwiftUI Toggle value can be "0", 0, or "off" depending on iOS version
+        let soundVal = soundToggle.value
+        let soundOff = (soundVal as? String) == "0" || (soundVal as? String)?.lowercased() == "off"
+            || (soundVal as? NSNumber)?.intValue == 0
+        XCTAssertTrue(soundOff, "Expected sound OFF after persist; got \(String(describing: soundVal))")
+        // AI delay 2.5s (0.8 normalized); distinctive value proves persistence
+        XCTAssertTrue(app.staticTexts["AI delay: 2.5s"].waitForExistence(timeout: 3),
+                      "Expected AI delay 2.5s after persist; check Settings UI")
         app.buttons["settingsDoneButton"].tap()
     }
 }

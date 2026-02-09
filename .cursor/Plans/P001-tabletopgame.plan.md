@@ -66,5 +66,5 @@ isProject: false
 
 - **SpriteKit–SwiftUI**: Use SpriteView; keep GameScene simple. Rollback: remove SpriteView, fall back to placeholder.
 - **Logic bugs**: Logic-Test coverage per sub-plan. Rollback: revert to last passing commit.
-- **Plan file**: Full spec (Part A), elaborations, Investigator gap analysis, Logic-Test tables, Infrastructure review, and Phase 1–10 detail: `.cursor/plans/tabletopgame_spec_and_implementation_cafdbc90.plan.md` (comprehensive reference; load when sub-plan needs more context).
+- **Plan file**: Sub-plans under `.cursor/Plans/P001/` are the source of detail. An optional comprehensive reference (single large spec/elaboration file) may be added under `.cursor/Plans/` if needed; see Master-Plan "Where plans live."
 

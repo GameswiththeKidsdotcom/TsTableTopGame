@@ -2,7 +2,9 @@
 
 ## Next hand off (cut & paste)
 
-Complete **C10 Manual/UI validation** for C10-V1 through C10-V7 and C10-V10: run app in simulator or run XCUITests (`testLaunchShowsMenu`, `testNewGameShowsGameView`, `testGameOverFixture*`, `testSettings*`, `testFullPlaythroughUntilGameOver`); confirm each outcome; set Manual/UI = Done in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below. Agent: **UI-Test** or tester. Plan: this file. Expected outcome: All listed chunks show Manual/UI Done; Master-Plan and this file updated. (Matches Master-Plan Lane A.)
+**C10 Manual/UI validation run (2026-02-08):** XCUITests executed on iPhone 16 simulator. **Passed:** testLaunchShowsMenu, testNewGameShowsGameView, testGameOverFixtureWin/Lose/Tie, testGameOverFixtureReturnToMenu, testSettingsSheet, testFullPlaythroughUntilGameOver. **Failed:** testGameOverFixtureRestart (C10-V5 Restart flow – HUD "turn" not found within 5s after Restart tap), testSettingsPersist (C10-V7). C10-V1–V4, V6, V10 set Manual/UI Done; V5 and V7 remain —. Fix failing tests and re-run to complete validation.
+
+Complete **C10 Manual/UI validation** for remaining chunks C10-V5 and C10-V7: fix and re-run `testGameOverFixtureRestart` and `testSettingsPersist`; confirm outcomes; set Manual/UI = Done. Agent: **UI-Test** or tester. Plan: this file.
 
 ---
 
@@ -33,16 +35,16 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 
 | Chunk | Outcome | Validation | Agent | Code/unit | Manual/UI |
 |-------|---------|------------|-------|-----------|-----------|
-| **C10-V1** | Launch → Menu → New Game | MenuView visible; New Game shows GameView with two boards | Manual / UI-Test | Done | — |
-| **C10-V2** | Game Over (win) overlay | Play until P0 or P1 clears all viruses; overlay shows "Player X wins!", cash, Restart, Return to Menu. | Manual / UI-Test | Done | — |
-| **C10-V3** | Game Over (lose) overlay | Play until P0 top-outs → "Player 2 wins!"; P1 top-outs → "Player 1 wins!" | Manual / UI-Test | Done | — |
-| **C10-V4** | Game Over (tie) overlay | Play until both top-out; overlay shows "Tie!" | Manual / UI-Test | Done | — |
+| **C10-V1** | Launch → Menu → New Game | MenuView visible; New Game shows GameView with two boards | Manual / UI-Test | Done | Done |
+| **C10-V2** | Game Over (win) overlay | Play until P0 or P1 clears all viruses; overlay shows "Player X wins!", cash, Restart, Return to Menu. | Manual / UI-Test | Done | Done |
+| **C10-V3** | Game Over (lose) overlay | Play until P0 top-outs → "Player 2 wins!"; P1 top-outs → "Player 1 wins!" | Manual / UI-Test | Done | Done |
+| **C10-V4** | Game Over (tie) overlay | Play until both top-out; overlay shows "Tie!" | Manual / UI-Test | Done | Done |
 | **C10-V5** | Restart and Return to Menu | Tap Restart → new game; Tap Return to Menu → MenuView | Manual / UI-Test | Done | — |
-| **C10-V6** | Settings sheet | Menu → Settings; Sound toggle, AI delay slider; Done dismisses | Manual / UI-Test | Done | — |
+| **C10-V6** | Settings sheet | Menu → Settings; Sound toggle, AI delay slider; Done dismisses | Manual / UI-Test | Done | Done |
 | **C10-V7** | Settings persist | Change settings, kill app, relaunch; confirm values | Manual | Done | — |
 | **C10-V8** | Viewport layout | iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible | UI-Test | Done | Done |
 | **C10-V9** | Layout and contrast | GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast | UI-Test | Done | Done |
-| **C10-V10** | Logic-test E2E (optional) | Fixture-based init; force single-player-left, tie, restart clean | Logic-Test | Done | — |
+| **C10-V10** | Logic-test E2E (optional) | Fixture-based init; force single-player-left, tie, restart clean | Logic-Test | Done | Done |
 | **C10-V11** | Infrastructure | Offline spec; no network calls; optional CI | Static / manual | Done | Done |
 
 ---
@@ -107,7 +109,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **Investigator** | Restart: startNewGame() → new GameScene. Return to Menu: onReturnToMenu → AppPhase = .menu. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | No game logic; flow only. Defer to UI-Test. | N/A |
 | **UI-Test** | E2E: Tap Restart → new game; Tap Return to Menu → MenuView. Covered. | Confirmed |
-| **Validation (C10-V5)** | Code path verified: GameOverOverlay Restart calls onRestart → startNewGame() (new GameScene/GameState) + onRestart(); RootView onRestart sets appPhase = .playing so GameView shows fresh game. Return to Menu calls onReturnToMenu → RootView sets appPhase = .menu → switch shows MenuView. Full test suite passed. **Code/unit: Done. Manual/UI: —** | — |
+| **Validation (C10-V5)** | Code path verified: GameOverOverlay Restart calls onRestart → startNewGame() (new GameScene/GameState) + onRestart(); RootView onRestart sets appPhase = .playing so GameView shows fresh game. Return to Menu calls onReturnToMenu → RootView sets appPhase = .menu → switch shows MenuView. testGameOverFixtureReturnToMenu passed; testGameOverFixtureRestart failed (HUD "turn" label not found within 5s). **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V6: Settings sheet
 
@@ -125,7 +127,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **Investigator** | SettingsManager uses UserDefaults; soundEnabled, aiDelaySeconds persist. Manual: kill app, relaunch, confirm. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | testSettingsManagerSetAndReadBack. Unit tested. | Confirmed |
 | **UI-Test** | Manual validation; no additional UI coverage. | N/A |
-| **Validation (C10-V7)** | Code path verified: SettingsManager init reads from UserDefaults (soundEnabledKey, aiDelaySecondsKey); didSet on soundEnabled/aiDelaySeconds writes to defaults. testSettingsManagerSetAndReadBack sets values, asserts in-memory and UserDefaults. Manual step: change settings in UI, kill app, relaunch, confirm values—required for Manual/UI Done. **Code/unit: Done. Manual/UI: —** | — |
+| **Validation (C10-V7)** | Code path verified: SettingsManager init reads from UserDefaults (soundEnabledKey, aiDelaySecondsKey); didSet on soundEnabled/aiDelaySeconds writes to defaults. testSettingsManagerSetAndReadBack sets values, asserts in-memory and UserDefaults. testSettingsPersist (XCUITest: change settings, terminate, relaunch, assert) failed. **Code/unit: Done. Manual/UI: —** | — |
 
 ### C10-V8: Viewport layout
 
@@ -161,7 +163,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **Investigator** | SPEC: offline-only; no network. Optional CI. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | Infrastructure; defer. | N/A |
 | **UI-Test** | Infrastructure; defer. | N/A |
-| **Validation (C10-V11)** | **Static verification**: Grep across app/tests for URLSession, NSURLSession, URL(, Data(contentsOf:URL), NWConnection, Network., Alamofire, URLRequest, http/https, .dataTask — no matches. Imports: Foundation and Combine only (no Network framework). project.pbxproj has no Network framework. **Spec**: docs/SPEC.md § Offline-Only confirms "No network calls. Single-device play; both boards on one screen. Persistence via UserDefaults only." **CI**: .github/workflows/test.yml — build-and-test (unit + build on iPhone 16), viewport-matrix (GameOver fixture tests on iPhone SE, 15 Pro Max, iPad Pro 11). CI already present; no code changes. **Code/unit: Done. Manual/UI: Done.** | — |
+| **Validation (C10-V11)** | **Static verification (executed)**: Grep across repo for URLSession, NSURLSession, URL(, Data(contentsOf:URL), NWConnection, Network., Alamofire, URLRequest, http/https, .dataTask in *.swift — **no matches**. Swift imports: XCTest, SwiftUI, SpriteKit, Foundation, Combine only (no Network framework). project.pbxproj Frameworks phase has no linked frameworks; no Network.framework. **Spec confirmed**: docs/SPEC.md § Offline-Only: "No network calls. Single-device play; both boards (2 players) on one screen. Persistence via UserDefaults only." **CI documented**: .github/workflows/test.yml — job `build-and-test` (unit + build on iPhone 16), job `viewport-matrix` (GameOver fixture tests on iPhone SE 3rd gen, iPhone 15 Pro Max, iPad Pro 11-inch). No code changes required. **Code/unit: Done. Manual/UI: Done.** | — |
 
 ---
 

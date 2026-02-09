@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste)
 
-Implement **E2E-P1** per this plan: Add TableTopGameUITests (or equivalent) UI test target to the Xcode project; ensure the scheme runs both the app and the UI test target; run `xcodebuild test` and confirm both unit and UI tests are executed. Agent: Builder or ui-test. After completion, update this prompt to E2E-P2 (Launch → Menu assertions) and update Master-Plan next hand off to match.
+**E2E-P1–P7b are implemented** (TableTopGameUITests target exists; tests for Launch→Menu, New Game, board tap helper, play until game over, overlay, Restart, Return to Menu). Next optional work: **E2E-P8** (viewport matrix — overlay legibility on iPhone SE, 15 Pro Max, iPad Pro 11) or run full `xcodebuild test` (unit + UI) and confirm all pass, then update P001-E2E state in Master-Plan if appropriate. Agent: UI-Test. Plan: this file. Current Master-Plan Lane A is C10 Manual/UI validation (C10-validation-chunks.plan.md); use this E2E plan when E2E-specific work is next.
 
 ---
 

@@ -22,20 +22,21 @@ When in doubt, run one agent at a time. Planner: when updating hand offs, if a s
 
 ## Next hand off (cut & paste) — Lane A
 
-Complete **C10 Manual/UI validation** for chunks that still have Manual/UI = —. Run the app in the iPhone simulator (or run the relevant XCUITests: `testLaunchShowsMenu`, `testNewGameShowsGameView`, `testGameOverFixtureWin/Lose/Tie`, `testGameOverFixtureRestart`, `testGameOverFixtureReturnToMenu`, `testSettingsSheet`, `testSettingsPersist`, `testFullPlaythroughUntilGameOver`). For each of C10-V1 through C10-V7 and C10-V10, confirm the stated outcome and set Manual/UI = Done in the Master-Plan C10 Validation Chunks table and in `.cursor/Plans/P001/C10-validation-chunks.plan.md`. Agent: **UI-Test** or tester. Plan: [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). Expected outcome: All C10-V1–V7 and C10-V10 rows show Manual/UI Done where applicable; Master-Plan and sub-plan tables updated.
+Complete **C10 Manual/UI validation** for remaining chunks C10-V5 and C10-V7: fix and re-run `testGameOverFixtureRestart` and `testSettingsPersist`; confirm outcomes; set Manual/UI = Done. Agent: **UI-Test** or tester. Plan: [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). C10-V1–V4, V6, V10 validated 2026-02-08.
 
 ## Second hand off (cut & paste) — Lane B
 
-Execute **C10-V11 Infrastructure**: Verify the app is offline-only (no network calls in codebase), document or confirm the spec, and optionally add or document CI. Update the Master-Plan C10 Validation Chunks table and C10-validation-chunks.plan.md to set Code/unit and Manual/UI for C10-V11 when done. Agent: **Investigator** or infrastructure. Plan: [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). Does not conflict with Lane A (no shared file edits; Lane A is validation/table updates, Lane B is static verification/docs).
+**Lane B complete.** P001-E2E-WATCH pushed 2026-02-08. No further hand offs for this plan.
 
 ### Next priorities (summary)
 
 | Priority | What | Agent | Plan / notes |
 |----------|------|--------|---------------|
-| 1 (Lane A) | C10 Manual/UI validation: close — for V1–V7, V10 via simulator or XCUITest; update tables | UI-Test / tester | C10-validation-chunks.plan.md |
-| 2 (Lane B) | C10-V11 Infrastructure: offline-only, no network; optional CI; update C10-V11 gates | Investigator / infrastructure | C10-validation-chunks.plan.md |
-| 3 | P001-E2E-WATCH is complete and ready for github push — push when ready | — | e2e_active_wait_and_simulator_boot plan |
-| 4 | E2E full playthrough: P1–P7b implemented; optional E2E-P8 viewport matrix; run full test suite | UI-Test | E2E-full-playthrough.plan.md |
+| 1 | C10 Manual/UI validation: close — for V1–V7, V10 via simulator or XCUITest; update tables | UI-Test / tester | C10-validation-chunks.plan.md |
+| 2 | P001-E2E-WATCH pushed 2026-02-08 | — | e2e_active_wait_and_simulator_boot plan |
+| 3 | E2E full playthrough: P1–P7b implemented; optional E2E-P8 viewport matrix; run full test suite | UI-Test | E2E-full-playthrough.plan.md |
+
+*C10-V11 complete. Lane B (E2E-WATCH) pushed.*
 
 ---
 
@@ -62,7 +63,7 @@ Use exactly one of these values in the **Current state** column:
 
 | Plan ID | Plan name | Priority rank | Description | Current state | Confidence (root cause) | Confidence (solution path) |
 |---------|-----------|---------------|-------------|---------------|--------------------------|-----------------------------|
-| P001-E2E-WATCH | E2E watchable boot/wait fix | 1 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). **All chunks done** (A1–C2). | Complete and ready for github push | 95% | 92% |
+| P001-E2E-WATCH | E2E watchable boot/wait fix | 1 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/Plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). **All chunks done** (A1–C2). **Pushed 2026-02-08.** | Complete and ready for github push | 95% | 92% |
 | P001 | TabletopGame Spec and Implementation | 1 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test, ui-test). C10 validation chunks: [C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md) (C10-V1–V11). Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Test plan ready | N/A | 90% |
 | P001-LT | TabletopGame Logic-Test (user move validation) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Test plan ready | 92% | 88% |
 | P001-UI | TabletopGame UI-Test (E2E, layout, contrast) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/ui-test.plan.md](.cursor/Plans/P001/ui-test.plan.md). E2E user journeys, win/lose/tie overlay validation, iPhone/iPad viewports, layout and contrast. Delegate at C10. | Test plan ready | N/A | N/A |
@@ -94,7 +95,7 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 
 ## P001 C10 Validation Chunks (Small Executable Pieces)
 
-C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). **E2E execution strategy** (phases, regression command, XCUITest, builder steps): E2E Optimized Test Plan — use the plan in context or `.cursor/plans/e2e_optimized_test_plan_1e64f74b.plan.md`.
+C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). **E2E execution strategy** (phases, regression command, XCUITest, builder steps): See C10-validation-chunks.plan.md and E2E-full-playthrough.plan.md; use E2E optimized test plan in context if referenced elsewhere.
 
 **Plan status**: Chunk plan and confidence validated by Blaster/Investigator/Logic-Test/UI-Test.
 
@@ -104,16 +105,16 @@ C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plan
 
 | Chunk | Outcome | Plan status | Code/unit | Manual/UI | Confidence (root cause) | Confidence (solution path) |
 |-------|---------|-------------|-----------|-----------|--------------------------|----------------------------|
-| C10-V1 | Launch → Menu → New Game | Validated | Done | — | 92% | 92% |
-| C10-V2 | Game Over (win) overlay | Validated | Done | — | 92% | 92% |
-| C10-V3 | Game Over (lose) overlay – P0/P1 top-out | Validated | Done | — | 92% | 92% |
-| C10-V4 | Game Over (tie) overlay | Validated | Done | — | 92% | 92% |
+| C10-V1 | Launch → Menu → New Game | Validated | Done | Done | 92% | 92% |
+| C10-V2 | Game Over (win) overlay | Validated | Done | Done | 92% | 92% |
+| C10-V3 | Game Over (lose) overlay – P0/P1 top-out | Validated | Done | Done | 92% | 92% |
+| C10-V4 | Game Over (tie) overlay | Validated | Done | Done | 92% | 92% |
 | C10-V5 | Restart, Return to Menu | Validated | Done | — | 92% | 92% |
-| C10-V6 | Settings sheet | Validated | Done | — | 92% | 92% |
+| C10-V6 | Settings sheet | Validated | Done | Done | 92% | 92% |
 | C10-V7 | Settings persist (kill app, relaunch) | Validated | Done | — | 92% | 92% |
 | C10-V8 | Viewport layout (iPhone SE, 15 Pro Max, iPad) | Validated | Done | Done | 92% | 92% |
 | C10-V9 | Layout and contrast (GameOverOverlay, buttons, HUD) | Validated | Done | Done | 92% | 92% |
-| C10-V10 | Logic-test E2E (fixture-based; optional) | Validated | Done | — | 90% | 90% |
+| C10-V10 | Logic-test E2E (fixture-based; optional) | Validated | Done | Done | 90% | 90% |
 | C10-V11 | Infrastructure (offline, no network) | Validated | Done | Done | 92% | 92% |
 
 ---
@@ -129,5 +130,24 @@ C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plan
 - **Main plans**: `.cursor/Plans/<plan-id>-<short-name>.plan.md` (e.g. `P001-tabletopgame.plan.md`) — short index with links to sub-plans.
 - **Sub-plans**: `.cursor/Plans/<plan-id>/<sub-id>-<short-name>.plan.md` (e.g. `P001/C2-grid.plan.md`) — full steps, validation, rollback per chunk.
 - **Archived subplans**: `.cursor/Plans/P001/archive/` — completed and validated chunks (e.g. C1-bootstrap).
-- **E2E watchable fix**: `.cursor/plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md` — active waits, Simulator boot wait; chunks A1–C2.
-- **Comprehensive reference**: `.cursor/plans/tabletopgame_spec_and_implementation_cafdbc90.plan.md` — full spec, elaborations, Investigator gap analysis (load when sub-plan needs more context).
+- **E2E watchable fix**: `.cursor/Plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md` — active waits, Simulator boot wait; chunks A1–C2.
+- **Comprehensive reference**: Optional; if a single large spec/elaboration file is added, place under `.cursor/Plans/` and link from the main plan. No such file is required for current execution.
+
+### Plan folder layout (current)
+
+```
+.cursor/Plans/
+├── Master-Plan.md
+├── P001-tabletopgame.plan.md          # P001 index; links to P001/*
+├── e2e_active_wait_and_simulator_boot_afb0c50c.plan.md   # P001-E2E-WATCH
+└── P001/
+    ├── archive/
+    │   └── C1-bootstrap.plan.md
+    ├── C2-grid.plan.md … C10-menus.plan.md   # build chunks
+    ├── C10-validation-chunks.plan.md        # C10-V1–V11 validation
+    ├── E2E-full-playthrough.plan.md
+    ├── logic-test.plan.md
+    └── ui-test.plan.md
+```
+
+All matrix links use paths under `.cursor/Plans/` (capital P). Keep sub-plan files small; one logical unit per file.
