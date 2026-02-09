@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste)
 
-Execute or validate **C10-V6: Settings sheet** per [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). Outcome: Menu → Settings; Sound toggle, AI delay slider; Done dismisses. Agent: Manual / UI-Test. After completion, update this prompt and the same section in the sub-plan to the next chunk (C10-V7), and set Code/unit and Manual/UI for C10-V6 in the C10 Validation Chunks table below.
+Execute or validate **C10-V8: Viewport layout** per [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). Outcome: iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible. Agent: UI-Test. After completion, update this prompt and the same section in the sub-plan to the next chunk (C10-V9), and set Code/unit and Manual/UI for C10-V8 in the C10 Validation Chunks table below.
 
 ---
 

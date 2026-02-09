@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste)
 
-Execute or validate **C10-V6: Settings sheet** per this plan. Outcome: Menu → Settings; Sound toggle, AI delay slider; Done dismisses. Agent: Manual / UI-Test. After completion, update Master-Plan.md and this section to the next chunk (C10-V7), and set Code/unit and Manual/UI for C10-V6 in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below.
+Execute or validate **C10-V8: Viewport layout** per this plan. Outcome: iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible. Agent: UI-Test. After completion, update Master-Plan.md and this section to the next chunk (C10-V9), and set Code/unit and Manual/UI for C10-V8 in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below.
 
 ---
 
