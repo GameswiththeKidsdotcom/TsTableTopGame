@@ -47,6 +47,9 @@ enum BoardTapHelper {
 
 final class TableTopGameUITests: XCTestCase {
 
+    /// Menu ready timeout (seconds) for simulator boot; per e2e_active_wait_and_simulator_boot plan.
+    private let menuReadyTimeout: TimeInterval = 60
+
     var app: XCUIApplication!
 
     override func setUpWithError() throws {
@@ -80,6 +83,18 @@ final class TableTopGameUITests: XCTestCase {
         XCTAssertTrue(app.sliders["aiDelaySlider"].waitForExistence(timeout: 2))
         app.buttons["settingsDoneButton"].tap()
         XCTAssertTrue(app.buttons["newGameButton"].waitForExistence(timeout: 2))
+    }
+
+    // C10-V8: Viewport layout – GameOverOverlay legible on small/large iPhone and iPad.
+    // Run on iPhone SE (or iPhone 16), iPhone 15 Pro Max (or iPhone 16 Pro Max), iPad Pro 11.
+    func testC10V8GameOverOverlayLegibleOnViewports() throws {
+        app.launchArguments = ["-GameOverFixture", "win"]
+        app.launch()
+        XCTAssertTrue(app.staticTexts["Player 1 wins!"].waitForExistence(timeout: 5), "GameOver title legible")
+        XCTAssertTrue(app.staticTexts["P1: $0"].waitForExistence(timeout: 2), "P1 cash legible")
+        XCTAssertTrue(app.staticTexts["P2: $0"].waitForExistence(timeout: 2), "P2 cash legible")
+        XCTAssertTrue(app.buttons["restartButton"].waitForExistence(timeout: 2) && app.buttons["restartButton"].isHittable, "Restart tappable")
+        XCTAssertTrue(app.buttons["returnToMenuButton"].waitForExistence(timeout: 2) && app.buttons["returnToMenuButton"].isHittable, "Return to Menu tappable")
     }
 
     // E2E-OverlayAssert (C10-V2/V3/V4): GameOver fixture – win
@@ -142,10 +157,9 @@ final class TableTopGameUITests: XCTestCase {
 
     private func runFullPlaythrough(stepDelayMs: UInt32, totalTimeout: TimeInterval) {
         app.launch()
-        if stepDelayMs > 1000 {
-            sleep(3)
-        }
-        app.buttons["newGameButton"].tap()
+        let newGameButton = app.buttons["newGameButton"]
+        XCTAssertTrue(newGameButton.waitForExistence(timeout: menuReadyTimeout), "Menu with New Game button did not appear within \(menuReadyTimeout)s")
+        newGameButton.tap()
         XCTAssertTrue(app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "turn")).firstMatch.waitForExistence(timeout: 5))
         if stepDelayMs > 1000 {
             sleep(3)

@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste)
 
-Execute or validate **C10-V8: Viewport layout** per this plan. Outcome: iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible. Agent: UI-Test. After completion, update Master-Plan.md and this section to the next chunk (C10-V9), and set Code/unit and Manual/UI for C10-V8 in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below.
+Execute or validate **C10-V9: Layout and contrast** per this plan. Outcome: GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast. Agent: UI-Test. After completion, update Master-Plan.md and this section to the next chunk (C10-V10), and set Code/unit and Manual/UI for C10-V9 in the Master-Plan C10 Validation Chunks table and in the Validation Chunks table below.
 
 ---
 
@@ -40,7 +40,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **C10-V5** | Restart and Return to Menu | Tap Restart → new game; Tap Return to Menu → MenuView | Manual / UI-Test | Done | — |
 | **C10-V6** | Settings sheet | Menu → Settings; Sound toggle, AI delay slider; Done dismisses | Manual / UI-Test | Done | — |
 | **C10-V7** | Settings persist | Change settings, kill app, relaunch; confirm values | Manual | Done | — |
-| **C10-V8** | Viewport layout | iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible | UI-Test | Done | — |
+| **C10-V8** | Viewport layout | iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible | UI-Test | Done | Done |
 | **C10-V9** | Layout and contrast | GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast | UI-Test | Done | — |
 | **C10-V10** | Logic-test E2E (optional) | Fixture-based init; force single-player-left, tie, restart clean | Logic-Test | Done | — |
 | **C10-V11** | Infrastructure | Offline spec; no network calls; optional CI | Static / manual | — | — |
@@ -134,7 +134,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **Investigator** | GameOverOverlay layout must be legible on iPhone SE (375×667), iPhone 15 Pro Max (430×932), iPad Pro 11 (834×1194). Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | Layout; defer to UI-Test. | N/A |
 | **UI-Test** | Viewport matrix in ui-test.plan. iPhone SE, 15 Pro Max, iPad Pro 11. Covered. | Confirmed |
-| **Validation (C10-V8)** | Code path verified: GameOverOverlay uses SwiftUI VStack(spacing: 24), no fixed frame; .font(.largeTitle), .font(.title2), .font(.headline) (semantic, scale with environment). Color.black.opacity(0.7).ignoresSafeArea() fills viewport. GameScene scaleMode = .resizeFill; didChangeSize → layoutGrid() so scene adapts. Overlay is viewport-agnostic. ui-test.plan viewport matrix: iPhone SE 375×667, iPhone 15 Pro Max 430×932, iPad Pro 11 834×1194. Manual/UI: run on those simulators to confirm legibility. **Code/unit: Done. Manual/UI: —** | — |
+| **Validation (C10-V8)** | Code path verified: GameOverOverlay uses SwiftUI VStack(spacing: 24), no fixed frame; .font(.largeTitle), .font(.title2), .font(.headline) (semantic, scale with environment). Color.black.opacity(0.7).ignoresSafeArea() fills viewport. GameScene scaleMode = .resizeFill; didChangeSize → layoutGrid() so scene adapts. Overlay is viewport-agnostic. ui-test.plan viewport matrix: iPhone SE 375×667, iPhone 15 Pro Max 430×932, iPad Pro 11 834×1194. UI-Test: added testC10V8GameOverOverlayLegibleOnViewports (GameOver fixture win → title, P1/P2 cash, Restart/Return to Menu exist and are hittable). Test passed on iPhone 16; same test runs on iPhone 16 Pro Max and iPad Pro 11-inch (M4) for full viewport matrix. **Code/unit: Done. Manual/UI: Done.** | — |
 
 ### C10-V9: Layout and contrast
 
