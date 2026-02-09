@@ -150,8 +150,9 @@ final class TableTopGameUITests: XCTestCase {
         app.launch()
         XCTAssertTrue(app.buttons["restartButton"].waitForExistence(timeout: 3))
         app.buttons["restartButton"].tap()
+        // GameView + GameScene need time to initialize; use same timeout as full playthrough
         let playerTurn = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "turn")).firstMatch
-        XCTAssertTrue(playerTurn.waitForExistence(timeout: 5))
+        XCTAssertTrue(playerTurn.waitForExistence(timeout: gameHudReadyTimeout), "HUD turn label did not appear after Restart tap")
     }
 
     // E2E-P7b: Fixture Return to Menu → MenuView

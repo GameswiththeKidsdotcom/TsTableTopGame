@@ -10,6 +10,10 @@ Per Master-Plan P001-E2E-WATCH. Active waits for menu and game HUD; script waits
 
 **Plan complete.** All chunks A1–C2 done. P001-E2E-WATCH marked complete in Master-Plan. No further hand offs for this plan.
 
+## Second hand off (cut & paste) — Lane B
+
+Prepare and push **P001-E2E-WATCH**: confirm all chunks (A1–C2) are done per this plan, then commit and push. Does not conflict with Lane A (no shared files; Lane A = C10 validation, Lane B = E2E-WATCH plan / git). Agent: optional (user or planner). Plan: this file. Expected outcome: E2E-WATCH changes pushed; Master-Plan can mark pushed if desired.
+
 ---
 
 ## Chunks
