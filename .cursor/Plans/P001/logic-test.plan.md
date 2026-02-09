@@ -1,5 +1,12 @@
 # P001-LT – Logic-Test (User Move Validation)
 
+## Next hand off (cut & paste) — Lane B
+
+**Complete.** Lane B validation run 2026-02-08: all 44 unit tests passed. No further hand off from this plan; see Master-Plan for next Lane B when one exists.
+
+
+---
+
 **Scope**: Head-to-head (2 players). Moves, turns, phases, attack, elimination, win/tie. Ensure every allowed move is possible; no unreachable valid moves; state-machine consistency.
 
 ---
@@ -38,6 +45,14 @@ Empty board, first turn, single-player-left (head-to-head: one winner), tie (bot
 **UI-Test cross-reference**: E2E validation of lose scenarios (overlay shows "Player X wins!" when opponent loses) is in [P001/ui-test.plan.md](ui-test.plan.md).
 
 **C10 Validation Chunks (Logic-Test scope)**: C10-V2 (win overlay), C10-V3 (lose overlay), C10-V4 (tie overlay), C10-V7 (settings persist), C10-V10 (Logic-test E2E). Logic-test confirmed coverage for each. See [C10-validation-chunks.plan.md](C10-validation-chunks.plan.md).
+
+---
+
+## Validation run (Lane B)
+
+| Date | Target | Result | Note |
+|------|--------|--------|------|
+| 2026-02-08 | TableTopGameTests only | **All 44 tests passed** | xcodebuild test -only-testing:TableTopGameTests, iPhone 16 Simulator. Lose-scenario tests (testWinConditionCheckerResolveGameOverLoseScenario, testGameStateTopOutEliminatesPlayerAndOpponentWins) and all edge-case coverage green. No gaps; no code changes. |
 
 ---
 

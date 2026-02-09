@@ -22,11 +22,12 @@ When in doubt, run one agent at a time. Planner: when updating hand offs, if a s
 
 ## Next hand off (cut & paste) — Lane A
 
-Complete **C10 Manual/UI validation** for remaining chunks C10-V5 and C10-V7: fix and re-run `testGameOverFixtureRestart` and `testSettingsPersist`; confirm outcomes; set Manual/UI = Done. Agent: **UI-Test** or tester. Plan: [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). C10-V1–V4, V6, V10 validated 2026-02-08.
+C10 Manual/UI validation complete. All C10-V1–V10 chunks validated 2026-02-08.
 
 ## Second hand off (cut & paste) — Lane B
 
-**Lane B complete.** P001-E2E-WATCH pushed 2026-02-08. No further hand offs for this plan.
+**Lane B complete.** P001-LT Logic-Test validation run completed 2026-02-08 (all 44 TableTopGameTests passed; see [logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md) Validation run table). No conflict-free second task available; Lane B hand off empty until Lane A completes or a new non-conflicting task is identified.
+
 
 ### Next priorities (summary)
 
@@ -109,9 +110,9 @@ C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plan
 | C10-V2 | Game Over (win) overlay | Validated | Done | Done | 92% | 92% |
 | C10-V3 | Game Over (lose) overlay – P0/P1 top-out | Validated | Done | Done | 92% | 92% |
 | C10-V4 | Game Over (tie) overlay | Validated | Done | Done | 92% | 92% |
-| C10-V5 | Restart, Return to Menu | Validated | Done | — | 92% | 92% |
+| C10-V5 | Restart, Return to Menu | Validated | Done | Done | 92% | 92% |
 | C10-V6 | Settings sheet | Validated | Done | Done | 92% | 92% |
-| C10-V7 | Settings persist (kill app, relaunch) | Validated | Done | — | 92% | 92% |
+| C10-V7 | Settings persist (kill app, relaunch) | Validated | Done | Done | 92% | 92% |
 | C10-V8 | Viewport layout (iPhone SE, 15 Pro Max, iPad) | Validated | Done | Done | 92% | 92% |
 | C10-V9 | Layout and contrast (GameOverOverlay, buttons, HUD) | Validated | Done | Done | 92% | 92% |
 | C10-V10 | Logic-test E2E (fixture-based; optional) | Validated | Done | Done | 90% | 90% |

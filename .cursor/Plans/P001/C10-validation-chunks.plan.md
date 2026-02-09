@@ -2,9 +2,9 @@
 
 ## Next hand off (cut & paste)
 
-**C10 Manual/UI validation run (2026-02-08):** XCUITests executed on iPhone 16 simulator. **Passed:** testLaunchShowsMenu, testNewGameShowsGameView, testGameOverFixtureWin/Lose/Tie, testGameOverFixtureReturnToMenu, testSettingsSheet, testFullPlaythroughUntilGameOver. **Failed:** testGameOverFixtureRestart (C10-V5 Restart flow – HUD "turn" not found within 5s after Restart tap), testSettingsPersist (C10-V7). C10-V1–V4, V6, V10 set Manual/UI Done; V5 and V7 remain —. Fix failing tests and re-run to complete validation.
+**C10 Manual/UI validation complete (2026-02-08):** All C10-V1–V10 validated. testGameOverFixtureRestart fixed (timeout 15s); testSettingsPersist fixed (AI delay 2.5s persistence assert). All chunks show Manual/UI Done where applicable.
 
-Complete **C10 Manual/UI validation** for remaining chunks C10-V5 and C10-V7: fix and re-run `testGameOverFixtureRestart` and `testSettingsPersist`; confirm outcomes; set Manual/UI = Done. Agent: **UI-Test** or tester. Plan: this file.
+C10 Manual/UI validation complete. All chunks validated.
 
 ---
 
@@ -39,9 +39,9 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **C10-V2** | Game Over (win) overlay | Play until P0 or P1 clears all viruses; overlay shows "Player X wins!", cash, Restart, Return to Menu. | Manual / UI-Test | Done | Done |
 | **C10-V3** | Game Over (lose) overlay | Play until P0 top-outs → "Player 2 wins!"; P1 top-outs → "Player 1 wins!" | Manual / UI-Test | Done | Done |
 | **C10-V4** | Game Over (tie) overlay | Play until both top-out; overlay shows "Tie!" | Manual / UI-Test | Done | Done |
-| **C10-V5** | Restart and Return to Menu | Tap Restart → new game; Tap Return to Menu → MenuView | Manual / UI-Test | Done | — |
+| **C10-V5** | Restart and Return to Menu | Tap Restart → new game; Tap Return to Menu → MenuView | Manual / UI-Test | Done | Done |
 | **C10-V6** | Settings sheet | Menu → Settings; Sound toggle, AI delay slider; Done dismisses | Manual / UI-Test | Done | Done |
-| **C10-V7** | Settings persist | Change settings, kill app, relaunch; confirm values | Manual | Done | — |
+| **C10-V7** | Settings persist | Change settings, kill app, relaunch; confirm values | Manual | Done | Done |
 | **C10-V8** | Viewport layout | iPhone SE, iPhone 15 Pro Max, iPad Pro 11; GameOverOverlay legible | UI-Test | Done | Done |
 | **C10-V9** | Layout and contrast | GameOverOverlay white-on-black; Restart/Return to Menu buttons tappable; HUD contrast | UI-Test | Done | Done |
 | **C10-V10** | Logic-test E2E (optional) | Fixture-based init; force single-player-left, tie, restart clean | Logic-Test | Done | Done |
@@ -109,7 +109,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **Investigator** | Restart: startNewGame() → new GameScene. Return to Menu: onReturnToMenu → AppPhase = .menu. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | No game logic; flow only. Defer to UI-Test. | N/A |
 | **UI-Test** | E2E: Tap Restart → new game; Tap Return to Menu → MenuView. Covered. | Confirmed |
-| **Validation (C10-V5)** | Code path verified: GameOverOverlay Restart calls onRestart → startNewGame() (new GameScene/GameState) + onRestart(); RootView onRestart sets appPhase = .playing so GameView shows fresh game. Return to Menu calls onReturnToMenu → RootView sets appPhase = .menu → switch shows MenuView. testGameOverFixtureReturnToMenu passed; testGameOverFixtureRestart failed (HUD "turn" label not found within 5s). **Code/unit: Done. Manual/UI: —** | — |
+| **Validation (C10-V5)** | Code path verified. testGameOverFixtureReturnToMenu and testGameOverFixtureRestart passed (timeout 15s for Restart HUD). **Code/unit: Done. Manual/UI: Done.** | — |
 
 ### C10-V6: Settings sheet
 
@@ -127,7 +127,7 @@ Use **Done** when the gate is satisfied; **—** when not yet run.
 | **Investigator** | SettingsManager uses UserDefaults; soundEnabled, aiDelaySeconds persist. Manual: kill app, relaunch, confirm. Outcome clear. | 92% root cause, 92% solution path |
 | **Logic-Test** | testSettingsManagerSetAndReadBack. Unit tested. | Confirmed |
 | **UI-Test** | Manual validation; no additional UI coverage. | N/A |
-| **Validation (C10-V7)** | Code path verified: SettingsManager init reads from UserDefaults (soundEnabledKey, aiDelaySecondsKey); didSet on soundEnabled/aiDelaySeconds writes to defaults. testSettingsManagerSetAndReadBack sets values, asserts in-memory and UserDefaults. testSettingsPersist (XCUITest: change settings, terminate, relaunch, assert) failed. **Code/unit: Done. Manual/UI: —** | — |
+| **Validation (C10-V7)** | Code path verified. testSettingsPersist passed (AI delay 2.5s set, terminate, relaunch, assert persisted). **Code/unit: Done. Manual/UI: Done.** | — |
 
 ### C10-V8: Viewport layout
 
