@@ -5,6 +5,7 @@ import SpriteKit
 struct GameView: View {
     @StateObject private var stateDisplay = GameStateDisplay()
     @State private var scene: GameScene?
+    @State private var sceneIdentity = UUID()
 
     let onRestart: () -> Void
     let onReturnToMenu: () -> Void
@@ -13,6 +14,7 @@ struct GameView: View {
         ZStack(alignment: .top) {
             if let scene = scene {
                 SpriteView(scene: scene)
+                    .id(sceneIdentity)
                     .ignoresSafeArea()
             } else {
                 Color.black
@@ -40,6 +42,7 @@ struct GameView: View {
     }
 
     private func startNewGame() {
+        sceneIdentity = UUID()
         let s = GameScene()
         s.scaleMode = .resizeFill
         s.stateDisplay = stateDisplay

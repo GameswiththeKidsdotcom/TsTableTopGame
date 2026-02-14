@@ -22,22 +22,25 @@ When in doubt, run one agent at a time. Planner: when updating hand offs, if a s
 
 ## Next hand off (cut & paste) — Lane A
 
-Run **P001-E2E** full playthrough validation: open [.cursor/Plans/P001/E2E-full-playthrough.plan.md](.cursor/Plans/P001/E2E-full-playthrough.plan.md), run full `xcodebuild test` (unit + UI) and confirm all tests pass. Optionally implement **E2E-P8** (viewport matrix: overlay legibility on iPhone SE, 15 Pro Max, iPad Pro 11). Update P001-E2E state in Master-Plan when done. Agent: **UI-Test**. Expected outcome: full test suite green; optional E2E-P8 documented or implemented.
+**P001-RestartFix — Push or R2 (optional).** R1 complete 2026-02-14; full xcodebuild test passed. Push to GitHub or add R2 (`testGameOverRealGameRestart`) for real-game Restart path. Next: P002 G1 (GravityEngine delta API) or P001-C11 A1 (App icon).
 
 ## Second hand off (cut & paste) — Lane B
 
-**Lane B empty.** P001-LT Logic-Test validation completed 2026-02-08. No conflict-free second task while Lane A is on P001-E2E (full test suite / E2E-P8); E2E work uses TableTopGameUITests. Add a Lane B prompt when a non-conflicting task is identified (e.g. unit-test-only or docs).
+**P001-C11 A1 — App Icon.** [C11-A1-app-icon.plan.md](.cursor/Plans/P001-C11/C11-A1-app-icon.plan.md). Builder: Add 1024x1024 PNG to `TableTopGame/Assets.xcassets/AppIcon.appiconset/` and update Contents.json with `filename`. Validate: build succeeds; icon visible in Simulator. No conflict with Lane A (RestartFix touches GameView; A1 touches Assets).
 
 
 ### Next priorities (summary)
 
 | Priority | What | Agent | Plan / notes |
 |----------|------|--------|---------------|
-| 1 | E2E full playthrough — run full test suite; optional E2E-P8 viewport matrix | UI-Test | E2E-full-playthrough.plan.md |
-| 2 | C10 Manual/UI validation — complete (all C10-V1–V11 done 2026-02-08) | — | C10-validation-chunks.plan.md |
-| 3 | P001-E2E-WATCH pushed 2026-02-08 | — | e2e_active_wait_and_simulator_boot plan |
+| 1 | P001-RestartFix — Complete (R1 done 2026-02-14; push or R2 optional) | — | P001-RestartFix.plan.md |
+| 2 | P002 G1 — GravityEngine delta API | Investigator, Builder | P002-gravity-animation.plan.md |
+| 3 | E2E full playthrough — complete (full suite green 2026-02-08; E2E-P8 implemented) | — | E2E-full-playthrough.plan.md |
+| 4 | P001-C11 App Store prep | Builder, human | P001-C11-app-store.plan.md (chunks A1–A5) |
+| 5 | P003 AI animated drop | Builder | P003-ai-animated-drop.plan.md (chunks A1–A2) |
+| 6 | C10 Manual/UI validation — complete (all C10-V1–V11 done 2026-02-08) | — | C10-validation-chunks.plan.md |
 
-*C10-V11 complete. Lane B (E2E-WATCH) pushed.*
+*P001-RestartFix: highest priority. C11 (App Store prep) available as Lane B; A1 (App icon) non-conflicting. P003 queued after P001-C11; UX enhancement (see AI moving pieces).*
 
 ---
 
@@ -64,11 +67,15 @@ Use exactly one of these values in the **Current state** column:
 
 | Plan ID | Plan name | Priority rank | Description | Current state | Confidence (root cause) | Confidence (solution path) |
 |---------|-----------|---------------|-------------|---------------|--------------------------|-----------------------------|
-| P001-E2E-WATCH | E2E watchable boot/wait fix | 1 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/Plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). **All chunks done** (A1–C2). **Pushed 2026-02-08.** | Complete and ready for github push | 95% | 92% |
-| P001 | TabletopGame Spec and Implementation | 1 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test, ui-test). C10 validation chunks: [C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md) (C10-V1–V11). Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Test plan ready | N/A | 90% |
-| P001-LT | TabletopGame Logic-Test (user move validation) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Test plan ready | 92% | 88% |
-| P001-UI | TabletopGame UI-Test (E2E, layout, contrast) | 1 | Sub-plan of P001. See [.cursor/Plans/P001/ui-test.plan.md](.cursor/Plans/P001/ui-test.plan.md). E2E user journeys, win/lose/tie overlay validation, iPhone/iPad viewports, layout and contrast. Delegate at C10. | Test plan ready | N/A | N/A |
-| P001-E2E | Full playthrough E2E harness | 1 | XCUITest full playthrough: Launch → Menu → New Game → Play until game over → Overlay → Restart/Return to Menu. Chunks E2E-P1–P8. Plan: [.cursor/Plans/P001/E2E-full-playthrough.plan.md](.cursor/Plans/P001/E2E-full-playthrough.plan.md). Watchable improvements: P001-E2E-WATCH. | Test plan ready | N/A | 90% |
+| P001-RestartFix | Restart button at game over | 1 | Restart button at game ending does not work. Root cause: SpriteView does not replace presented SKScene when scene parameter changes. Fix: `.id(sceneIdentity)` on SpriteView; change identity in startNewGame(). Plan: [P001-RestartFix.plan.md](.cursor/Plans/P001-RestartFix.plan.md). **R1 complete 2026-02-14**; full suite passed. | Testing complete | 92% | 90% |
+| P001-E2E-WATCH | E2E watchable boot/wait fix | 2 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/Plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). **All chunks done** (A1–C2). **Pushed 2026-02-08.** | Complete and ready for github push | 95% | 92% |
+| P001 | TabletopGame Spec and Implementation | 2 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001-tabletopgame.plan.md](.cursor/Plans/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test, ui-test). C10 validation chunks: [C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md) (C10-V1–V11). Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Complete and ready for github push | N/A | 90% |
+| P001-LT | TabletopGame Logic-Test (user move validation) | 2 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Testing complete | 92% | 88% |
+| P001-UI | TabletopGame UI-Test (E2E, layout, contrast) | 2 | Sub-plan of P001. See [.cursor/Plans/P001/ui-test.plan.md](.cursor/Plans/P001/ui-test.plan.md). E2E user journeys, win/lose/tie overlay validation, iPhone/iPad viewports, layout and contrast. Delegate at C10. | Testing complete | N/A | N/A |
+| P001-E2E | Full playthrough E2E harness | 2 | XCUITest full playthrough: Launch → Menu → New Game → Play until game over → Overlay → Restart/Return to Menu. Chunks E2E-P1–P8. Plan: [.cursor/Plans/P001/E2E-full-playthrough.plan.md](.cursor/Plans/P001/E2E-full-playthrough.plan.md). Watchable improvements: P001-E2E-WATCH. **Full suite green 2026-02-08** (unit + UI on iPhone 16). E2E-P8 viewport matrix implemented (testC10V8 + CI). | Testing complete | N/A | 90% |
+| P002 | Gravity drop animation | 3 | Animated gravity when matches cleared; pips drop slowly to final position. Plan: [.cursor/Plans/P002-gravity-animation.plan.md](.cursor/Plans/P002-gravity-animation.plan.md). Chunks G1–G4. G1: GravityEngine delta API. | Pending analysis | 95% | 90% |
+| P001-C11 | App Store prep | 4 | Gap strategy for App Store submission. Plan: [.cursor/Plans/P001-C11-app-store.plan.md](.cursor/Plans/P001-C11-app-store.plan.md). Sub-plans: [.cursor/Plans/P001-C11/](.cursor/Plans/P001-C11/) (C11-A1–A5). Chunks: App icon, Support URL, ASC metadata, screenshots, upload/submit. | Validated | 92% | 90% |
+| P003 | AI animated drop | 5 | AI capsule drops row-by-row (visible) instead of instant hard-drop. Plan: [.cursor/Plans/P003-ai-animated-drop.plan.md](.cursor/Plans/P003-ai-animated-drop.plan.md). Chunks A1 (GameState place-only), A2 (GameScene two-phase AI). | Validated | 95% | 92% |
 
 ---
 
@@ -90,7 +97,9 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 | C8 | 2 boards + avatars (head-to-head) | Done | 92% | 92% |
 | C9 | AI opponent (1 AI + 1 human) | Done | 92% | 91% |
 | C10 | Menus, game over, restart; settings persist | Done | 92% | 92% |
-| C11 | App Store prep (optional) | — | N/A | N/A |
+| C11 | App Store prep | Plan ready | 92% | 90% |
+
+**C11 chunks (P001-C11)**: A1 App icon, A2 Support URL, A3 ASC setup, A4 Screenshots, A5 Upload/submit. See [P001-C11-app-store.plan.md](.cursor/Plans/P001-C11-app-store.plan.md).
 
 ---
 
@@ -132,6 +141,9 @@ C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plan
 - **Sub-plans**: `.cursor/Plans/<plan-id>/<sub-id>-<short-name>.plan.md` (e.g. `P001/C2-grid.plan.md`) — full steps, validation, rollback per chunk.
 - **Archived subplans**: `.cursor/Plans/P001/archive/` — completed and validated chunks (e.g. C1-bootstrap).
 - **E2E watchable fix**: `.cursor/Plans/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md` — active waits, Simulator boot wait; chunks A1–C2.
+- **Gravity animation (P002)**: `.cursor/Plans/P002-gravity-animation.plan.md` — pips drop slowly when matches cleared; chunks G1–G4 (GravityEngine delta, GameState step-wise resolution, GameScene animation, wire AI).
+- **App Store prep (P001-C11)**: `.cursor/Plans/P001-C11-app-store.plan.md` — index; sub-plans under `.cursor/Plans/P001-C11/` (C11-A1–A5).
+- **AI animated drop (P003)**: `.cursor/Plans/P003-ai-animated-drop.plan.md` — AI capsule drops row-by-row; chunks A1–A2.
 - **Comprehensive reference**: Optional; if a single large spec/elaboration file is added, place under `.cursor/Plans/` and link from the main plan. No such file is required for current execution.
 
 ### Plan folder layout (current)
@@ -139,16 +151,26 @@ C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plan
 ```
 .cursor/Plans/
 ├── Master-Plan.md
+├── P001-RestartFix.plan.md             # P001-RestartFix: Restart button fix (highest priority)
 ├── P001-tabletopgame.plan.md          # P001 index; links to P001/*
+├── P001-C11-app-store.plan.md         # P001-C11 App Store prep index
+├── P002-gravity-animation.plan.md     # P002 (chunks G1–G4)
+├── P003-ai-animated-drop.plan.md      # P003 (chunks A1–A2)
 ├── e2e_active_wait_and_simulator_boot_afb0c50c.plan.md   # P001-E2E-WATCH
-└── P001/
-    ├── archive/
-    │   └── C1-bootstrap.plan.md
-    ├── C2-grid.plan.md … C10-menus.plan.md   # build chunks
-    ├── C10-validation-chunks.plan.md        # C10-V1–V11 validation
-    ├── E2E-full-playthrough.plan.md
-    ├── logic-test.plan.md
-    └── ui-test.plan.md
+├── P001/
+│   ├── archive/
+│   │   └── C1-bootstrap.plan.md
+│   ├── C2-grid.plan.md … C10-menus.plan.md   # build chunks
+│   ├── C10-validation-chunks.plan.md        # C10-V1–V11 validation
+│   ├── E2E-full-playthrough.plan.md
+│   ├── logic-test.plan.md
+│   └── ui-test.plan.md
+└── P001-C11/
+    ├── C11-A1-app-icon.plan.md
+    ├── C11-A2-support-url.plan.md
+    ├── C11-A3-asc-setup.plan.md
+    ├── C11-A4-screenshots.plan.md
+    └── C11-A5-upload-submit.plan.md
 ```
 
 All matrix links use paths under `.cursor/Plans/` (capital P). Keep sub-plan files small; one logical unit per file.
