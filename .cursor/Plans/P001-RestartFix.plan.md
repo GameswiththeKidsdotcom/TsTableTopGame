@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste)
 
-**P001-RestartFix R1 — Complete.** Fix implemented and verified 2026-02-14. Full xcodebuild test passed (44 unit, 14 UI); `testGameOverFixtureRestart` and `testFullPlaythroughUntilGameOver` green. R2 (testGameOverRealGameRestart) optional for real-game path; manual validation sufficient. Ready for github push.
+**P001-RestartFix R1+R2 — Complete.** R1 implemented 2026-02-14; R2 (`testGameOverRealGameRestart`) added. Full suite: 44 unit, 15 UI tests (incl. real-game Restart path). Ready for github push.
 
 ---
 

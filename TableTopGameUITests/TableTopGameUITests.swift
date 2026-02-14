@@ -164,6 +164,12 @@ final class TableTopGameUITests: XCTestCase {
         XCTAssertTrue(app.buttons["newGameButton"].waitForExistence(timeout: 3))
     }
 
+    // P001-RestartFix R2: Real-game Restart path. No -GameOverFixture; uses GameView/GameScene/GameOverOverlay.
+    // Plays until game over, taps Restart, asserts HUD turn label (validates sceneIdentity fix in real path).
+    func testGameOverRealGameRestart() throws {
+        runFullPlaythrough(stepDelayMs: 400, totalTimeout: 180, thenTapRestart: true)
+    }
+
     // E2E-P4+P5: Full playthrough until game over (timeout 180s). Taps active board per FIXTURES zones.
     func testFullPlaythroughUntilGameOver() throws {
         runFullPlaythrough(stepDelayMs: 400, totalTimeout: 180)
@@ -174,7 +180,7 @@ final class TableTopGameUITests: XCTestCase {
         runFullPlaythrough(stepDelayMs: 2000, totalTimeout: 300)
     }
 
-    private func runFullPlaythrough(stepDelayMs: UInt32, totalTimeout: TimeInterval) {
+    private func runFullPlaythrough(stepDelayMs: UInt32, totalTimeout: TimeInterval, thenTapRestart: Bool = false) {
         app.launch()
         let newGameButton = app.buttons["newGameButton"]
         XCTAssertTrue(newGameButton.waitForExistence(timeout: menuReadyTimeout), "Menu with New Game button did not appear within \(menuReadyTimeout)s")
@@ -214,6 +220,12 @@ final class TableTopGameUITests: XCTestCase {
         )
         XCTAssertTrue(app.buttons["restartButton"].isHittable)
         XCTAssertTrue(app.buttons["returnToMenuButton"].isHittable)
+
+        if thenTapRestart {
+            app.buttons["restartButton"].tap()
+            let playerTurn = app.staticTexts.matching(NSPredicate(format: "label CONTAINS %@", "turn")).firstMatch
+            XCTAssertTrue(playerTurn.waitForExistence(timeout: 20), "HUD turn label did not appear after Restart tap (real-game path)")
+        }
     }
 
     // E2E-SettingsPersist (C10-V7): Change settings, terminate, relaunch, assert values.
