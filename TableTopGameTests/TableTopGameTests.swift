@@ -57,16 +57,28 @@ final class TableTopGameTests: XCTestCase {
         let m = SettingsManager.shared
         let origSound = m.soundEnabled
         let origDelay = m.aiDelaySeconds
+        let origGameLevel = m.gameLevel
         defer {
             m.soundEnabled = origSound
             m.aiDelaySeconds = origDelay
+            m.gameLevel = origGameLevel
         }
         m.soundEnabled = false
         m.aiDelaySeconds = 2.0
+        m.gameLevel = 5
         XCTAssertFalse(m.soundEnabled)
         XCTAssertEqual(m.aiDelaySeconds, 2.0)
+        XCTAssertEqual(m.gameLevel, 5)
         XCTAssertEqual(UserDefaults.standard.bool(forKey: "soundEnabled"), false)
         XCTAssertEqual(UserDefaults.standard.double(forKey: "aiDelaySeconds"), 2.0)
+        XCTAssertEqual(UserDefaults.standard.integer(forKey: "gameLevel"), 5)
+    }
+
+    func testGameStateLevel5VirusCount() {
+        let state = GameState(level: 5)
+        XCTAssertEqual(virusCount(level: 5), 14)
+        XCTAssertEqual(state.virusPositions(forPlayer: 0).count, 14)
+        XCTAssertEqual(state.virusPositions(forPlayer: 1).count, 14)
     }
 
     // MARK: - MoveValidator
@@ -155,6 +167,33 @@ final class TableTopGameTests: XCTestCase {
         var g = Fixtures.single4H()
         GravityEngine.resolve(gridState: &g)
         XCTAssertTrue(g.occupied.isEmpty)
+    }
+
+    /// P002 G1: applyReturningMoves returns move deltas; grid state matches apply(to:).
+    func testGravityEngineApplyReturningMoves() {
+        var g = GridState()
+        g.set(.red, at: 3, row: 0)
+        g.set(.blue, at: 3, row: 2)
+        let (changed, moves) = GravityEngine.applyReturningMoves(to: &g)
+        XCTAssertTrue(changed)
+        XCTAssertEqual(moves.count, 2)
+        XCTAssertTrue(moves.contains { $0.col == 3 && $0.fromRow == 0 && $0.toRow == 1 && $0.color == .red })
+        XCTAssertTrue(moves.contains { $0.col == 3 && $0.fromRow == 2 && $0.toRow == 3 && $0.color == .blue })
+        XCTAssertNil(g.color(at: 3, row: 0))
+        XCTAssertEqual(g.color(at: 3, row: 1), .red)
+        XCTAssertNil(g.color(at: 3, row: 2))
+        XCTAssertEqual(g.color(at: 3, row: 3), .blue)
+    }
+
+    /// P002 G1: applyReturningMoves and apply(to:) produce identical grid state.
+    func testGravityEngineApplyReturningMovesMatchesApply() {
+        var g1 = GridState()
+        g1.set(.red, at: 2, row: 0)
+        g1.set(.yellow, at: 2, row: 1)
+        var g2 = g1
+        _ = GravityEngine.applyReturningMoves(to: &g1)
+        _ = GravityEngine.apply(to: &g2)
+        XCTAssertEqual(g1.occupied, g2.occupied)
     }
 
     // MARK: - GamePhase

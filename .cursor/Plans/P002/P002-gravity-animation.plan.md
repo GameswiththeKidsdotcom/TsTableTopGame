@@ -9,9 +9,9 @@ isProject: false
 
 ## Next hand off (cut & paste)
 
-**Investigator/Planner:** Validate this plan for 90%+ confidence. Then implement Chunk G1 (GravityEngine delta API). Plan: [P002-gravity-animation.plan.md](.cursor/Plans/P002/P002-gravity-animation.plan.md). Expected outcome: `GravityEngine.applyReturningMoves` exists and is unit tested; no behavior change to existing callers. Agent: Investigator for validation; builder for implementation.
+**P002 G2 — GameState step-wise resolution.** G1 complete. Builder: add `isResolving`, `ResolutionStep`, `advanceResolutionStep()`; refactor `lockCapsule()`. Logic-Test checkpoint after G2.
 
-**Sequence (after validation):** G1 → G2 → Logic-Test checkpoint → G3 → G4 → UI-Test checkpoint. Establish test baseline before G1.
+**Sequence:** G1 done → G2 → Logic-Test checkpoint → G3 → G4 → UI-Test checkpoint.
 
 ## Scope
 

@@ -29,30 +29,31 @@ When in doubt, run one agent at a time. Planner: when updating hand offs, if a s
 
 ## Next hand off (cut & paste) — Lane A
 
-**P002 G1 — GravityEngine delta API.** [P002-gravity-animation.plan.md](.cursor/Plans/P002/P002-gravity-animation.plan.md). Investigator: validate plan for 90%+ confidence. Builder: add `GravityEngine.applyReturningMoves(to:)` that mutates grid and returns `(changed: Bool, moves: [(col, fromRow, toRow, color)])`. Keep existing `apply(to:)`. Unit test; no behavior change to callers. Establish test baseline before G1.
+**P002 G2 — GameState step-wise resolution.** [P002-gravity-animation.plan.md](.cursor/Plans/P002/P002-gravity-animation.plan.md). G1 complete. Builder: add `isResolving`, `ResolutionStep`, `advanceResolutionStep()`; refactor `lockCapsule()`. Logic-Test checkpoint after G2. Plan: `.cursor/Plans/P002/P002-gravity-animation.plan.md`.
 
 ## Second hand off (cut & paste) — Lane B
 
-**P001-C11 A3 — ASC setup** (human) or **P006 G1 — Level selection** (Builder). [C11-A3-asc-setup.plan.md](.cursor/Plans/P001-C11/C11-A3-asc-setup.plan.md) | [P006-G1-level-selection.plan.md](.cursor/Plans/P006/P006-G1-level-selection.plan.md). A3: Create App Store Connect app; metadata, privacy, age rating. P006 G1: Add level picker to Settings; pass to GameState(level:). No conflict with Lane A (P002 G1 touches GravityEngine; P006 G1 touches SettingsManager, GameView).
+**P006 G1 — Level selection** (Builder). [P006-G1-level-selection.plan.md](.cursor/Plans/P006/P006-G1-level-selection.plan.md). Add level picker to Settings; pass to GameState(level:). No conflict with Lane A (P002 G1 touches GravityEngine; P006 G1 touches SettingsManager, GameView).
 
-**C11-A1**: Done. **C11-A2**: Done. **C11-A3**: Runbook ready ([asc-setup-runbook.md](.cursor/Plans/P001-C11/asc-setup-runbook.md)); human executes in ASC.
+**C11-A1**: Done. **C11-A2**: Done. **C11-A3**: Deferred until P005 monetization built; runbook ready ([asc-setup-runbook.md](.cursor/Plans/P001-C11/asc-setup-runbook.md)).
 
 
 ### Next priorities (summary)
 
 | Priority | What | Agent | Plan / notes |
 |----------|------|--------|---------------|
-| 1 | P002 G1 — GravityEngine delta API | Investigator, Builder | P002/P002-gravity-animation.plan.md |
+| 1 | P002 G2 — GameState step-wise resolution (G1 done) | Builder, Logic-Test | P002/P002-gravity-animation.plan.md |
 | 2 | P001-RestartFix — Complete (R1+R2 done 2026-02-14) | — | P001-RestartFix/P001-RestartFix.plan.md |
 | 3 | E2E full playthrough — complete (full suite green 2026-02-08; E2E-P8 implemented) | — | .cursor/Plans/P001/E2E-full-playthrough.plan.md |
-| 4 | P001-C11 App Store prep | Builder, human | P001-C11/P001-C11-app-store.plan.md (chunks A1–A5) |
+| 4 | P001-C11 App Store prep (A4, A5) | Builder, human | P001-C11/P001-C11-app-store.plan.md (chunks A1–A5) |
 | 5 | P006 Spec gaps (G1 Level, G2 AI strength, G3 ContentView) | Builder | P006/P006-spec-gaps.plan.md (G1–G3) |
 | 6 | P003 AI animated drop | Builder | P003/P003-ai-animated-drop.plan.md (chunks A1–A2) |
 | 7 | C10 Manual/UI validation — complete (all C10-V1–V11 done 2026-02-08) | — | C10-validation-chunks.plan.md |
 | 8 | P004 Power-up System — Pending | Investigator, Builder | .cursor/Plans/P004/P004-power-up-planner-review.md |
 | 9 | P005 Monetization — Pending | Investigator, Builder | P005/P005-monetization.plan.md (M1–M6) |
+| — | C11-A3 ASC setup (human) | Human | After P005 (and P004) built; runbook ready |
 
-*P002 G1 next. P001-RestartFix R1+R2 complete. C11-A1/A2 done; A3 runbook ready. P006 (spec gaps) fleshed out; features-for-planner.md provides elaboration for Planner. P003 queued after P001-C11. P005: paid = no ads, power-ups anytime; free = ads after win only.*
+*P002 G1 next. P001-RestartFix R1+R2 complete. C11-A1/A2 done; C11-A3 deferred until P005 built. P006 (spec gaps) fleshed out; features-for-planner.md provides elaboration for Planner. P003 queued after P001-C11. P005: paid = no ads, power-ups anytime; free = ads after win only.*
 
 ---
 
@@ -85,8 +86,8 @@ Use exactly one of these values in the **Current state** column:
 | P001-LT | TabletopGame Logic-Test (user move validation) | 2 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Testing complete | 92% | 88% |
 | P001-UI | TabletopGame UI-Test (E2E, layout, contrast) | 2 | Sub-plan of P001. See [.cursor/Plans/P001/ui-test.plan.md](.cursor/Plans/P001/ui-test.plan.md). E2E user journeys, win/lose/tie overlay validation, iPhone/iPad viewports, layout and contrast. Delegate at C10. | Testing complete | N/A | N/A |
 | P001-E2E | Full playthrough E2E harness | 2 | XCUITest full playthrough: Launch → Menu → New Game → Play until game over → Overlay → Restart/Return to Menu. Chunks E2E-P1–P8. Plan: [.cursor/Plans/P001/E2E-full-playthrough.plan.md](.cursor/Plans/P001/E2E-full-playthrough.plan.md). Watchable improvements: P001-E2E-WATCH. **Full suite green 2026-02-08** (unit + UI on iPhone 16). E2E-P8 viewport matrix implemented (testC10V8 + CI). | Testing complete | N/A | 90% |
-| P002 | Gravity drop animation | 3 | Animated gravity when matches cleared; pips drop slowly to final position. Plan: [.cursor/Plans/P002/P002-gravity-animation.plan.md](.cursor/Plans/P002/P002-gravity-animation.plan.md). Chunks G1–G4. G1: GravityEngine delta API. | Pending analysis | 95% | 90% |
-| P001-C11 | App Store prep | 4 | Gap strategy for App Store submission. Plan: [.cursor/Plans/P001-C11/P001-C11-app-store.plan.md](.cursor/Plans/P001-C11/P001-C11-app-store.plan.md). Sub-plans: [.cursor/Plans/P001-C11/](.cursor/Plans/P001-C11/) (C11-A1–A5). Chunks: App icon, Support URL, ASC metadata, screenshots, upload/submit. | Validated | 92% | 90% |
+| P002 | Gravity drop animation | 3 | Animated gravity when matches cleared; pips drop slowly to final position. Plan: [.cursor/Plans/P002/P002-gravity-animation.plan.md](.cursor/Plans/P002/P002-gravity-animation.plan.md). Chunks G1–G4. **G1 complete** (applyReturningMoves); G2 next. | Code built (G1) | 95% | 90% |
+| P001-C11 | App Store prep | 4 | Gap strategy for App Store submission. Plan: [.cursor/Plans/P001-C11/P001-C11-app-store.plan.md](.cursor/Plans/P001-C11/P001-C11-app-store.plan.md). Sub-plans: [.cursor/Plans/P001-C11/](.cursor/Plans/P001-C11/) (C11-A1–A5). Chunks: App icon, Support URL, ASC metadata, screenshots, upload/submit. A3 sequenced after P005 built; runbook will be updated for IAP/ads. | Validated | 92% | 90% |
 | P006 | Spec gap features | 5 | Level selection UI, AI strength (Easy/Hard), ContentView cleanup. Plan: [P006-spec-gaps.plan.md](.cursor/Plans/P006/P006-spec-gaps.plan.md). Sub-plans: [P006/](.cursor/Plans/P006/) (G1–G3). Reference: [features-for-planner.md](.cursor/Plans/features-for-planner.md). | Validated | 98% | 95% |
 | P003 | AI animated drop | 6 | AI capsule drops row-by-row (visible) instead of instant hard-drop. Plan: [.cursor/Plans/P003/P003-ai-animated-drop.plan.md](.cursor/Plans/P003/P003-ai-animated-drop.plan.md). Chunks A1 (GameState place-only), A2 (GameScene two-phase AI). | Validated | 95% | 92% |
 | P004 | Power-up System | 7 | Purchase power-ups with cash; hold 1; Clear Row, Send Garbage, Double Cash. AI same rules. Planner review: [P004-power-up-planner-review.md](.cursor/Plans/P004/P004-power-up-planner-review.md). Main plan and sub-plans (P1–P5) to be created per review. | Pending analysis | N/A | N/A |
@@ -112,7 +113,7 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 | C8 | 2 boards + avatars (head-to-head) | Done | 92% | 92% |
 | C9 | AI opponent (1 AI + 1 human) | Done | 92% | 91% |
 | C10 | Menus, game over, restart; settings persist | Done | 92% | 92% |
-| C11 | App Store prep | A1–A2 done; A3 runbook ready | 92% | 90% |
+| C11 | App Store prep | A1–A2 done; A3 deferred until P005 built; runbook ready | 92% | 90% |
 
 **C11 chunks (P001-C11)**: A1 App icon, A2 Support URL, A3 ASC setup, A4 Screenshots, A5 Upload/submit. See [P001-C11-app-store.plan.md](.cursor/Plans/P001-C11/P001-C11-app-store.plan.md).
 
