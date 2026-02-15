@@ -9,9 +9,9 @@ isProject: false
 
 ## Next hand off (cut & paste)
 
-**P002 G2 — GameState step-wise resolution.** G1 complete. Builder: add `isResolving`, `ResolutionStep`, `advanceResolutionStep()`; refactor `lockCapsule()`. Logic-Test checkpoint after G2.
+**P002 complete.** UI-Test checkpoint passed 2026-02-14. Fixture tests (testGameOverFixtureWin, testGameOverFixtureTie, testGameOverFixtureRestart, testNewGameShowsGameView) passed. Gravity drop animation ready for commit. Optional: add testGravityAnimationVisible or run full playthrough for additional validation.
 
-**Sequence:** G1 done → G2 → Logic-Test checkpoint → G3 → G4 → UI-Test checkpoint.
+**Sequence:** G1 done → G2 done → Logic-Test passed → G3 done → G4 done → UI-Test checkpoint done.
 
 ## Scope
 
@@ -152,15 +152,15 @@ flowchart TB
 
 ### Phase 4: Wire Resolution Start and AI
 
-**Chunk G4** – Ensure resolution is triggered and runs to completion:
+**Chunk G4** – Ensure resolution is triggered and runs to completion: ✅ **Complete 2026-02-14**
 
-1. `lockCapsule()` (or `beginResolution()`) must be invoked from `hardDrop()`, `tryMoveDown()` (when locking), and `applyAIMove()`.
-2. For AI: resolution runs with animation (user sees opponent board animate). If `aiDelay` is very low, animations may overlap; acceptable for v1.
-3. Block input and auto-drop during `isResolving`: `canAcceptInput` already false; ensure `update()` does not trigger `tryMoveDown` when resolving.
+1. `lockCapsule()` (or `beginResolution()`) must be invoked from `hardDrop()`, `tryMoveDown()` (when locking), and `applyAIMove()`. **Done:** All three call lockCapsule.
+2. For AI: resolution runs with animation (user sees opponent board animate). If `aiDelay` is very low, animations may overlap; acceptable for v1. **Done:** GameScene uses runResolutionSynchronously=false; driveResolutionIfReady animates.
+3. Block input and auto-drop during `isResolving`: `canAcceptInput` already false; ensure `update()` does not trigger `tryMoveDown` when resolving. **Done:** update() returns early when isResolving; Logic-Test `testCanAcceptInputFalseWhileResolving` added.
 
-**Files:** [GameState.swift](TableTopGame/Models/GameState.swift), [GameScene.swift](TableTopGame/GameScene.swift)
+**Files:** [GameState.swift](TableTopGame/Models/GameState.swift), [GameScene.swift](TableTopGame/GameScene.swift), [TableTopGameTests.swift](TableTopGameTests/TableTopGameTests.swift)
 
-**Validation:** AI turn: opponent’s board animates; turn switches only after resolution completes. Full playthrough E2E still passes.
+**Validation:** opponent’s board animates; turn switches only after resolution completes. Unit tests: 50 pass (incl. testCanAcceptInputFalseWhileResolving). Fixture UI tests pass.
 
 ---
 
@@ -285,6 +285,8 @@ Add to [Master-Plan.md](../Master-Plan.md) matrix:
 2. **Viewports:** Run fixture-based game-over test on iPhone SE, iPhone 15 Pro Max, iPad Pro 11 (existing viewport-matrix CI). If animation is subtle on smallest viewport, note; no change required for v1.
 3. **Contrast:** Animation does not affect GameOverOverlay contrast (unchanged).
 4. **Efficiency:** Reuse existing `testGameOverFixtureWin`, `testGameOverFixtureTie`; add optional `testGravityAnimationVisible` only if manual validation insufficient—tap until match, assert grid updates within timeout.
+
+**UI-Test checkpoint (2026-02-14):** testGameOverFixtureWin, testGameOverFixtureTie, testGameOverFixtureRestart, testNewGameShowsGameView — all passed. P002 ready for commit.
 
 **Tooling:** XCUITest, `accessibilityIdentifier` where needed. No Playwright.
 

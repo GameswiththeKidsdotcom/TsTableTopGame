@@ -8,8 +8,10 @@ final class SettingsManager: ObservableObject {
     private let defaults = UserDefaults.standard
     private static let soundEnabledKey = "soundEnabled"
     private static let aiDelaySecondsKey = "aiDelaySeconds"
+    private static let gameLevelKey = "gameLevel"
     private static let defaultSoundEnabled = true
     private static let defaultAiDelaySeconds = 1.5
+    private static let defaultGameLevel = 0
 
     @Published var soundEnabled: Bool {
         didSet {
@@ -23,8 +25,15 @@ final class SettingsManager: ObservableObject {
         }
     }
 
+    @Published var gameLevel: Int {
+        didSet {
+            defaults.set(gameLevel, forKey: Self.gameLevelKey)
+        }
+    }
+
     private init() {
         self.soundEnabled = defaults.object(forKey: Self.soundEnabledKey) as? Bool ?? Self.defaultSoundEnabled
         self.aiDelaySeconds = defaults.object(forKey: Self.aiDelaySecondsKey) as? Double ?? Self.defaultAiDelaySeconds
+        self.gameLevel = defaults.object(forKey: Self.gameLevelKey) as? Int ?? Self.defaultGameLevel
     }
 }

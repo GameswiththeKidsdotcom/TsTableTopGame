@@ -20,6 +20,12 @@ struct SettingsView: View {
                             .accessibilityIdentifier("aiDelaySlider")
                     }
                 }
+                Section("Game") {
+                    Stepper(value: $settings.gameLevel, in: 0...10) {
+                        Text("Difficulty: Level \(settings.gameLevel)")
+                    }
+                    .accessibilityIdentifier("gameLevelStepper")
+                }
             }
             .navigationTitle("Settings")
             .navigationBarTitleDisplayMode(.inline)

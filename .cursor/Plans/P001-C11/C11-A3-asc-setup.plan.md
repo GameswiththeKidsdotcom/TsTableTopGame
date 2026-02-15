@@ -9,6 +9,12 @@ overview: Create app record, metadata, privacy nutrition label, and age rating i
 
 ---
 
+## Prerequisites
+
+P005 monetization code (M1–M6) and P004 power-up built. Execute A3 only after these are complete so privacy (ads) and age rating (IAP) can be set correctly.
+
+When A3 is executed post-monetization, the runbook must use the P005 M3 / ads-updated version (privacy identifiers if ads, In-App Purchases = Yes).
+
 ## Outcome
 
 App Store Connect app record created with complete metadata, privacy, and age rating.

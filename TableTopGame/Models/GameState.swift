@@ -24,6 +24,14 @@ func makeInitialViruses(level: Int) -> [Virus] {
     return viruses
 }
 
+/// P002 G2: One step of resolution for animation. Either clears + one gravity pass, or one gravity pass, or nil when done.
+struct ResolutionStep {
+    /// Positions cleared this step (matched cells).
+    let cleared: Set<GridPosition>
+    /// Pills that fell one row: (col, fromRow, toRow, color).
+    let moved: [(col: Int, fromRow: Int, toRow: Int, color: PillColor)]
+}
+
 /// Two-player game state: turn order, two grids, virus positions, win/elimination, capsule queue.
 final class GameState {
 
@@ -42,6 +50,12 @@ final class GameState {
     private(set) var currentPlayerIndex: Int
     private(set) var phase: GamePhase
 
+    /// P002 G2: True during match+gravity resolution (capsule locked, stepping). Blocks input.
+    private(set) var isResolving: Bool = false
+
+    /// P002 G3: When true, lockCapsule runs resolution to completion synchronously (for unit tests). When false, only beginResolution; GameScene drives steps.
+    var runResolutionSynchronously: Bool = false
+
     /// Current capsule in play (only valid when phase == .playing and not eliminated).
     private(set) var capsuleCol: Int
     private(set) var capsuleRow: Int
@@ -55,6 +69,11 @@ final class GameState {
 
     /// C7: Pending garbage rows to insert (per player). Garbage targets opponent; never to eliminated.
     private var pendingGarbage: [[[(col: Int, color: PillColor)]]]
+
+    /// P002 G2: Resolution context when isResolving. Cleared when resolution completes.
+    private var resolutionPid: Int?
+    private var resolutionVirusPositionsBeforeCapsule: Set<GridPosition>?
+    private var resolutionAllMatchGroups: [(color: PillColor, positions: Set<GridPosition>)] = []
 
     /// Current player's grid (read-only for display/validation).
     func currentGridState() -> GridState {
@@ -75,11 +94,12 @@ final class GameState {
     /// Current player id.
     var currentPlayerId: Int { currentPlayerIndex }
 
-    /// True if the current player can receive input (playing, not locked, not eliminated).
+    /// True if the current player can receive input (playing, not locked, not eliminated, not resolving).
     var canAcceptInput: Bool {
         if case .gameOver = phase { return false }
         if eliminated.contains(currentPlayerIndex) { return false }
         if isCapsuleLocked { return false }
+        if isResolving { return false }
         return true
     }
 
@@ -251,6 +271,7 @@ final class GameState {
     }
 
     /// Lock capsule, resolve match+gravity, apply pending garbage, compute attack, advance turn.
+    /// P002 G2: Places capsule, begins resolution, then runs step loop to completion (sync path for tests/AI).
     func lockCapsule() {
         guard canAcceptInput else { return }
         isCapsuleLocked = true
@@ -266,17 +287,43 @@ final class GameState {
         }
         let virusPositionsBeforeCapsule = virusPositions
 
+        // Place capsule.
         let segs = MoveValidator.segments(col: capsuleCol, row: capsuleRow, orientation: capsuleOrientation)
         grid.set(capsuleLeftColor, at: segs[0].col, row: segs[0].row)
         grid.set(capsuleRightColor, at: segs[1].col, row: segs[1].row)
+        gridStates[pid] = grid
+        virusPositionsPerPlayer[pid] = virusPositions
 
-        var allMatchGroups: [(color: PillColor, positions: Set<GridPosition>)] = []
-        while true {
-            let groups = MatchResolver.findMatchGroups(in: grid)
-            if groups.isEmpty { break }
-            allMatchGroups.append(contentsOf: groups)
+        // P002 G2/G3: Begin step-wise resolution. Sync path (tests) runs to completion; async path returns and GameScene drives steps.
+        beginResolution(pid: pid, virusPositionsBeforeCapsule: virusPositionsBeforeCapsule)
+        if runResolutionSynchronously {
+            while advanceResolutionStep() != nil { }
+        }
+    }
+
+    /// P002 G2: Begin resolution after capsule placed. Sets isResolving and stores context.
+    private func beginResolution(pid: Int, virusPositionsBeforeCapsule: Set<GridPosition>) {
+        isResolving = true
+        resolutionPid = pid
+        resolutionVirusPositionsBeforeCapsule = virusPositionsBeforeCapsule
+        resolutionAllMatchGroups = []
+    }
+
+    /// P002 G2: Advance one resolution step. Returns step to animate, or nil when done.
+    /// When nil, has already computed attack, updated phase, and called advanceTurn().
+    func advanceResolutionStep() -> ResolutionStep? {
+        guard let pid = resolutionPid else { return nil }
+        var grid = gridStates[pid]
+        var virusPositions = virusPositionsPerPlayer[pid]
+
+        // 1. Find matches.
+        let groups = MatchResolver.findMatchGroups(in: grid)
+        if !groups.isEmpty {
+            resolutionAllMatchGroups.append(contentsOf: groups)
+            var cleared = Set<GridPosition>()
             for (_, positions) in groups {
                 for pos in positions {
+                    cleared.insert(pos)
                     if virusPositions.contains(pos) {
                         cash[pid] += 1
                         virusPositions.remove(pos)
@@ -284,13 +331,37 @@ final class GameState {
                     grid.remove(at: pos.col, row: pos.row)
                 }
             }
-            while GravityEngine.apply(to: &grid) { }
+            gridStates[pid] = grid
+            virusPositionsPerPlayer[pid] = virusPositions
+            // One gravity pass.
+            let (changed, moves) = GravityEngine.applyReturningMoves(to: &grid)
+            gridStates[pid] = grid
+            return ResolutionStep(cleared: cleared, moved: moves)
         }
 
-        gridStates[pid] = grid
-        virusPositionsPerPlayer[pid] = virusPositions
+        // 2. No matches; run gravity once.
+        let (changed, moves) = GravityEngine.applyReturningMoves(to: &grid)
+        if changed {
+            gridStates[pid] = grid
+            return ResolutionStep(cleared: [], moved: moves)
+        }
 
-        // C7: Compute attack, enqueue garbage for opponent (never to eliminated).
+        // 3. Stable: finish resolution.
+        finishResolution(pid: pid, virusPositions: virusPositions)
+        return nil
+    }
+
+    /// P002 G2: Called when resolution is done. Compute attack, phase, advanceTurn.
+    private func finishResolution(pid: Int, virusPositions: Set<GridPosition>) {
+        let virusPositionsBeforeCapsule = resolutionVirusPositionsBeforeCapsule ?? []
+        let allMatchGroups = resolutionAllMatchGroups
+
+        resolutionPid = nil
+        resolutionVirusPositionsBeforeCapsule = nil
+        resolutionAllMatchGroups = []
+        isResolving = false
+
+        // C7: Compute attack, enqueue garbage for opponent.
         let opponent = (pid + 1) % Self.numberOfPlayers
         if !eliminated.contains(opponent) {
             let result = AttackCalculator.compute(matchGroups: allMatchGroups, virusPositions: virusPositionsBeforeCapsule)

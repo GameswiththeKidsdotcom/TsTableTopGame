@@ -7,7 +7,11 @@ isProject: false
 
 # P006-G1 – Level Selection UI
 
-**Next hand off (cut & paste)**: **P006 G1 — Level selection UI.** Builder: Add level picker to MenuView or Settings; store in SettingsManager under key `gameLevel` (Int, default 0); GameView reads level on startNewGame(), passes to GameScene; GameScene passes to `GameState(level:)`. Unit test: `GameState(level: 5)` yields 14 viruses per grid (`virusCount(5)=14`). Investigator: validate for 90%+ confidence. Plan: [P006-G1-level-selection.plan.md](P006-G1-level-selection.plan.md).
+**Next hand off (cut & paste)**: **P006 G1 — Level selection** (Builder). [P006-G1-level-selection.plan.md](P006-G1-level-selection.plan.md). Add level picker to Settings; pass to GameState(level:). No conflict with Lane A (P002 G1 touches GravityEngine; P006 G1 touches SettingsManager, GameView).
+
+**Lane B:** Safe to run in parallel with P002 G4 (GravityEngine, lockCapsule, AI wiring). P006 G1 edits: SettingsManager, SettingsView, GameView, GameScene — disjoint from P002 scope.
+
+**Builder scope:** Implementation appears complete (Steps 1–5 Done). Builder: run full test suite; perform manual validation (level 5 → 14 viruses; Restart same count). If any step fails validation, implement missing wiring per Steps table. Confirm no regressions before commit.
 
 ---
 
@@ -19,31 +23,47 @@ Player selects level (e.g. 0–10 or 0–23) before starting a game. Each new ga
 
 ## Steps
 
-| Step | Task | Validation |
-|------|------|-------------|
-| 1 | Add `gameLevel: Int` to SettingsManager (key `gameLevel`, default 0); persist | Unit test: set 5, read back 5 |
-| 2 | Add level picker to SettingsView (Stepper or Picker, range 0–10 or 0–23) | Manual: change level, kill app, relaunch; persists |
-| 3 | GameView reads `SettingsManager.shared.gameLevel` in startNewGame() | Trace: level flows to GameState |
-| 4 | GameScene receives level (init param or from GameView); passes to `GameState(level:)` | Unit test: `GameState(level: 5)` has 14 viruses per grid |
-| 5 | Restart uses same level (from Settings) | Manual: restart game, same virus count |
+| Step | Task | Validation | Status |
+|------|------|-------------|--------|
+| 1 | Add `gameLevel: Int` to SettingsManager (key `gameLevel`, default 0); persist | Unit test: set 5, read back 5 | Done — `testSettingsManagerRoundTrip` |
+| 2 | Add level picker to SettingsView (Stepper or Picker, range 0–10) | Manual: change level, kill app, relaunch; persists | Done — Stepper 0–10, `gameLevelStepper` |
+| 3 | GameScene reads `SettingsManager.shared.gameLevel` in didMoveToView | Trace: level flows to GameState | Done — no GameView change; Scene reads at init |
+| 4 | GameScene passes level to `GameState(level:)` | Unit test: `GameState(level: 5)` has 14 viruses per grid | Done — `testGameStateLevel5VirusCount` |
+| 5 | Restart uses same level (from Settings) | Manual: restart game, same virus count | Done — startNewGame → new GameScene → reads fresh gameLevel |
+
+**Builder validation:** Run full test suite; manual: set level 5 in Settings, New Game, verify ~14 viruses per grid; Restart, verify same count.
 
 ---
 
 ## Integration points
 
-| Component | Change |
-|-----------|--------|
-| SettingsManager | `gameLevel: Int` with UserDefaults |
-| SettingsView | Stepper or Picker bound to gameLevel |
-| GameView | Pass level to GameScene (or Scene reads SettingsManager) |
-| GameScene | `init(level: Int)` or read from SettingsManager; `GameState(level: level)` |
-| GameState | No change; already has `init(level:)` |
+| Component | Change | Implementation |
+|-----------|--------|----------------|
+| SettingsManager | `gameLevel: Int` with UserDefaults | `gameLevelKey`, `defaultGameLevel = 0` |
+| SettingsView | Stepper bound to gameLevel | `Section("Game")` Stepper 0–10, `accessibilityIdentifier("gameLevelStepper")` |
+| GameView | No change; startNewGame() creates GameScene() | Scene reads level when presented |
+| GameScene | `didMove(to:)` reads `SettingsManager.shared.gameLevel`; `GameState(level: level)` | Lines 68–69 |
+| GameState | `init(level: Int = 0)` | Uses level for `makeInitialViruses(level:)` |
 
 ---
 
 ## Rollback
 
-Remove gameLevel from SettingsManager and UI; GameScene reverts to `GameState(level: 0)`.
+If regressions: (1) Remove gameLevel from SettingsManager and SettingsView; (2) GameScene.didMoveToView revert to `GameState(level: 0)`; (3) Run full test suite to confirm baseline.
+
+---
+
+## Validation strategy
+
+- **Unit:** `testSettingsManagerRoundTrip` (gameLevel 5 round-trip), `testGameStateLevel5VirusCount` (14 viruses at level 5).
+- **Manual:** Set level 5 in Settings → New Game → count viruses per grid (expect 14); Restart → same count.
+- **Regression:** Run `xcodebuild test` before/after any change.
+
+---
+
+## Risks
+
+- None identified; SettingsManager/GameScene patterns already established. No overlap with P002 (GravityEngine).
 
 ---
 

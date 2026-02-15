@@ -309,6 +309,7 @@ final class TableTopGameTests: XCTestCase {
 
     func testGameStateTurnAdvancesAfterLock() {
         let state = GameState(level: 0)
+        state.runResolutionSynchronously = true
         let initialPlayer = state.currentPlayerId
         state.hardDrop()
         if case .playing = state.phase {
@@ -318,6 +319,7 @@ final class TableTopGameTests: XCTestCase {
 
     func testGameStateNoDeadEndTurnAdvancesOrGameEnds() {
         var state = GameState(level: 0)
+        state.runResolutionSynchronously = true
         var steps = 0
         while steps < 500, case .playing = state.phase {
             state.hardDrop()
@@ -461,11 +463,50 @@ final class TableTopGameTests: XCTestCase {
         }
     }
 
+    // MARK: - P002 G2 Step-wise Resolution
+
+    /// P002 G2 Logic-Test: isResolving is false after lockCapsule completes (sync path).
+    func testIsResolvingFalseAfterLockCapsule() {
+        let state = GameState(level: 0)
+        state.runResolutionSynchronously = true
+        state.hardDrop()
+        XCTAssertFalse(state.isResolving)
+    }
+
+    /// P002 G2 Logic-Test: advanceResolutionStep returns nil when no resolution context.
+    func testAdvanceResolutionStepReturnsNilWithoutContext() {
+        let state = GameState(level: 0)
+        XCTAssertNil(state.advanceResolutionStep())
+    }
+
+    /// P002 G4 Logic-Test: canAcceptInput is false while isResolving; input blocked during resolution.
+    func testCanAcceptInputFalseWhileResolving() {
+        let state = GameState(level: 0)
+        state.runResolutionSynchronously = false
+        state.hardDrop()
+        XCTAssertTrue(state.isResolving, "After hardDrop with async path, isResolving should be true")
+        XCTAssertFalse(state.canAcceptInput, "Input must be blocked during isResolving")
+        while state.advanceResolutionStep() != nil { }
+        XCTAssertFalse(state.isResolving)
+    }
+
+    /// P002 G2 Logic-Test: lockCapsule step loop completes; turn advances, isResolving false, phase unchanged (still playing).
+    func testResolutionStepLoopProducesStableGrid() {
+        let state = GameState(level: 0)
+        state.runResolutionSynchronously = true
+        let initialPlayer = state.currentPlayerId
+        state.hardDrop()
+        XCTAssertEqual(state.currentPlayerId, (initialPlayer + 1) % 2)
+        XCTAssertFalse(state.isResolving)
+        if case .playing = state.phase { } else { XCTFail("Expected phase .playing after one hardDrop") }
+    }
+
     func testGameStateAiSnapshotAndApplyAIMove() {
         var state: GameState?
         var snapshot: AISnapshot?
         for _ in 0..<20 {
             let s = GameState(level: 0)
+            s.runResolutionSynchronously = true
             let snap = s.aiSnapshotForCurrentPlayer()
             if snap != nil {
                 state = s

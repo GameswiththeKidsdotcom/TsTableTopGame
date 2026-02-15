@@ -31,6 +31,17 @@ class GameScene: SKScene {
 
     private var dropAccumulator: TimeInterval = 0
     private let dropInterval: TimeInterval = 0.5
+
+    /// P002 G3: Cell cache for persistence; key "col_row".
+    private var leftCellNodes: [String: SKShapeNode] = [:]
+    private var rightCellNodes: [String: SKShapeNode] = [:]
+    private let dropDuration: TimeInterval = 0.12
+    /// P002 G3: True while animating a resolution step; blocks next advanceResolutionStep until done.
+    private var resolutionAnimationInProgress: Bool = false
+    /// P002 G3: Layout params from last layoutGrid for animation position conversion.
+    private var lastLeftOffsetX: CGFloat = 0
+    private var lastRightOffsetX: CGFloat = 0
+    private var lastOffsetY: CGFloat = 0
     private var aiDelayAccumulator: TimeInterval = 0
     /// C10: AI delay from SettingsManager (persisted).
     private var aiDelay: TimeInterval {
@@ -55,7 +66,8 @@ class GameScene: SKScene {
         rightHighlightNode.lineWidth = 3
         addChild(leftHighlightNode)
         addChild(rightHighlightNode)
-        gameState = GameState(level: 0)
+        let level = SettingsManager.shared.gameLevel
+        gameState = GameState(level: level)
         aiController = GreedyAI()
         layoutGrid()
         pushStateToDisplay()
@@ -63,11 +75,20 @@ class GameScene: SKScene {
 
     override func didChangeSize(_ oldSize: CGSize) {
         guard gameState != nil else { return }
+        leftCellNodes.removeAll()
+        rightCellNodes.removeAll()
         layoutGrid()
     }
 
     override func update(_ currentTime: TimeInterval) {
         guard let gameState = gameState else { return }
+
+        // P002 G3: When resolving, drive resolution steps; do not run drop/AI.
+        if gameState.isResolving {
+            driveResolutionIfReady()
+            return
+        }
+
         guard gameState.canAcceptInput else { return }
 
         let dt: TimeInterval = 0.016
@@ -131,11 +152,15 @@ class GameScene: SKScene {
         return nil
     }
 
+    /// P002 G3: Cell cache key for (col, row).
+    private func cellKey(col: Int, row: Int) -> String {
+        "\(col)_\(row)"
+    }
+
     /// C8: Side-by-side layout. Left half = P0, right half = P1. Per-grid cellSize = min((w/2)/8, h/16).
+    /// P002 G3: Uses cell cache; updates nodes in place instead of remove-all when possible.
     private func layoutGrid() {
         guard let gameState = gameState else { return }
-        leftGridNode.removeAllChildren()
-        rightGridNode.removeAllChildren()
         guard gridColumns > 0, gridRows > 0 else { return }
 
         let w = size.width
@@ -151,29 +176,48 @@ class GameScene: SKScene {
         let rightGridLeft = halfW + (halfW - gridPixelW) / 2
         leftGridFrame = CGRect(x: leftGridLeft, y: offsetY, width: gridPixelW, height: gridPixelH)
         rightGridFrame = CGRect(x: rightGridLeft, y: offsetY, width: gridPixelW, height: gridPixelH)
+        lastLeftOffsetX = leftGridLeft
+        lastRightOffsetX = rightGridLeft
+        lastOffsetY = offsetY
 
         for playerIndex in 0..<2 {
-            let gridState = gameState.gridState(forPlayer: playerIndex)
+            let gs = gameState.gridState(forPlayer: playerIndex)
             let offsetX: CGFloat = playerIndex == 0 ? leftGridLeft : rightGridLeft
             let parent = playerIndex == 0 ? leftGridNode : rightGridNode
+            let cache = playerIndex == 0 ? leftCellNodes : rightCellNodes
 
             for row in 0..<gridRows {
                 for col in 0..<gridColumns {
-                    let rect = SKShapeNode(rectOf: CGSize(width: cellSize - 1, height: cellSize - 1))
-                    rect.strokeColor = .darkGray
+                    let key = cellKey(col: col, row: row)
+                    let desiredColor: SKColor
                     if let capColor = isCapsuleSegment(col: col, row: row, playerIndex: playerIndex) {
-                        rect.fillColor = skColor(for: capColor)
-                    } else if let gridColor = gridState.color(at: col, row: row) {
-                        rect.fillColor = skColor(for: gridColor)
+                        desiredColor = skColor(for: capColor)
+                    } else if let gridColor = gs.color(at: col, row: row) {
+                        desiredColor = skColor(for: gridColor)
                     } else {
-                        rect.fillColor = .black
+                        desiredColor = .black
                     }
-                    rect.position = CGPoint(
+                    let targetPosition = CGPoint(
                         x: offsetX + cellSize * (CGFloat(col) + 0.5),
                         y: offsetY + cellSize * (CGFloat(row) + 0.5)
                     )
-                    rect.zPosition = 0
-                    parent.addChild(rect)
+
+                    if let node = cache[key] {
+                        node.fillColor = desiredColor
+                        node.position = targetPosition
+                    } else {
+                        let rect = SKShapeNode(rectOf: CGSize(width: cellSize - 1, height: cellSize - 1))
+                        rect.strokeColor = .darkGray
+                        rect.fillColor = desiredColor
+                        rect.position = targetPosition
+                        rect.zPosition = 0
+                        parent.addChild(rect)
+                        if playerIndex == 0 {
+                            leftCellNodes[key] = rect
+                        } else {
+                            rightCellNodes[key] = rect
+                        }
+                    }
                 }
             }
         }
@@ -201,6 +245,74 @@ class GameScene: SKScene {
         rightHighlightNode.isHidden = gameState.currentPlayerIndex != 1
 
         pushStateToDisplay()
+    }
+
+    /// P002 G3: Drive resolution when not animating. Call advanceResolutionStep, animate step, set completion.
+    private func driveResolutionIfReady() {
+        guard let gameState = gameState, gameState.isResolving else { return }
+        guard !resolutionAnimationInProgress else { return }
+
+        guard let step = gameState.advanceResolutionStep() else {
+            layoutGrid()
+            pushStateToDisplay()
+            return
+        }
+
+        resolutionAnimationInProgress = true
+        let pid = gameState.currentPlayerIndex
+        let offsetX = pid == 0 ? lastLeftOffsetX : lastRightOffsetX
+        let cache = pid == 0 ? leftCellNodes : rightCellNodes
+
+        func scenePosition(col: Int, row: Int) -> CGPoint {
+            CGPoint(
+                x: offsetX + cellSize * (CGFloat(col) + 0.5),
+                y: lastOffsetY + cellSize * (CGFloat(row) + 0.5)
+            )
+        }
+
+        var actions: [SKAction] = []
+
+        for pos in step.cleared {
+            let key = cellKey(col: pos.col, row: pos.row)
+            guard let node = cache[key] else { continue }
+            let seq = SKAction.sequence([
+                SKAction.scale(to: 0, duration: 0.05),
+                SKAction.removeFromParent()
+            ])
+            actions.append(SKAction.run { node.run(seq) })
+            if pid == 0 {
+                leftCellNodes.removeValue(forKey: key)
+            } else {
+                rightCellNodes.removeValue(forKey: key)
+            }
+        }
+
+        for move in step.moved {
+            let fromKey = cellKey(col: move.col, row: move.fromRow)
+            let toKey = cellKey(col: move.col, row: move.toRow)
+            guard let node = cache[fromKey] else { continue }
+            let targetPos = scenePosition(col: move.col, row: move.toRow)
+            let moveAction = SKAction.move(to: targetPos, duration: dropDuration)
+            actions.append(SKAction.run { node.run(moveAction) })
+            if pid == 0 {
+                leftCellNodes.removeValue(forKey: fromKey)
+                leftCellNodes[toKey] = node
+            } else {
+                rightCellNodes.removeValue(forKey: fromKey)
+                rightCellNodes[toKey] = node
+            }
+        }
+
+        if actions.isEmpty {
+            resolutionAnimationInProgress = false
+            return
+        }
+
+        let group = SKAction.group(actions)
+        let onComplete = SKAction.run { [weak self] in
+            self?.resolutionAnimationInProgress = false
+        }
+        run(SKAction.sequence([group, onComplete]))
     }
 
     private func pushStateToDisplay() {
