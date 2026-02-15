@@ -11,7 +11,7 @@ isProject: false
 
 **Confidence**: 90% (Investigator validated). Platform: v1 iOS/iPadOS only; Android/web = v2.
 
-**Next hand off (cut & paste)**: See [Master-Plan.md](Master-Plan.md) or [C10-validation-chunks.plan.md](P001/C10-validation-chunks.plan.md) for the current executable prompt.
+**Next hand off (cut & paste)**: See [Master-Plan.md](../Master-Plan.md) or [C10-validation-chunks.plan.md](C10-validation-chunks.plan.md) for the current executable prompt.
 
 ---
 
@@ -40,24 +40,24 @@ isProject: false
 
 | Chunk              | Outcome                                | Sub-Plan                                                                            |
 | ------------------ | -------------------------------------- | ----------------------------------------------------------------------------------- |
-| **C1**             | App launches, placeholder in simulator | [P001/archive/C1-bootstrap.plan.md](P001/archive/C1-bootstrap.plan.md) *(archived)* |
-| **C2**             | Empty 8×16 grid renders                | [P001/C2-grid.plan.md](P001/C2-grid.plan.md)                                        |
-| **C3**             | Viruses visible on grid                | [P001/C3-viruses.plan.md](P001/C3-viruses.plan.md)                                  |
-| **C4**             | Capsule move/rotate/drop playable      | [P001/C4-capsule.plan.md](P001/C4-capsule.plan.md)                                  |
-| **C5**             | Match + gravity work                   | [P001/C5-match-gravity.plan.md](P001/C5-match-gravity.plan.md)                      |
-| **C6**             | Turn flow, win/elimination (2 players) | [P001/C6-turn-flow.plan.md](P001/C6-turn-flow.plan.md)                              |
-| **C7 - Perfected** | Attack + garbage                       | [P001/C7-attack.plan.md](P001/C7-attack.plan.md)                                    |
-| **C8**             | 2 boards + avatars (head-to-head)      | [P001/C8-layout.plan.md](P001/C8-layout.plan.md)                                    |
-| **C9**             | AI opponent (1 AI + 1 human)           | [P001/C9-ai.plan.md](P001/C9-ai.plan.md)                                            |
-| **C10**            | Menus, game over, restart, settings    | [P001/C10-menus.plan.md](P001/C10-menus.plan.md)                                    |
-| **C10 validation** | Small executable chunks (C10-V1–V11)   | [P001/C10-validation-chunks.plan.md](P001/C10-validation-chunks.plan.md)             |
+| **C1**             | App launches, placeholder in simulator | [archive/C1-bootstrap.plan.md](archive/C1-bootstrap.plan.md) *(archived)* |
+| **C2**             | Empty 8×16 grid renders                | [C2-grid.plan.md](C2-grid.plan.md)                                        |
+| **C3**             | Viruses visible on grid                | [C3-viruses.plan.md](C3-viruses.plan.md)                                  |
+| **C4**             | Capsule move/rotate/drop playable      | [C4-capsule.plan.md](C4-capsule.plan.md)                                  |
+| **C5**             | Match + gravity work                   | [C5-match-gravity.plan.md](C5-match-gravity.plan.md)                      |
+| **C6**             | Turn flow, win/elimination (2 players) | [C6-turn-flow.plan.md](C6-turn-flow.plan.md)                              |
+| **C7 - Perfected** | Attack + garbage                       | [C7-attack.plan.md](C7-attack.plan.md)                                    |
+| **C8**             | 2 boards + avatars (head-to-head)      | [C8-layout.plan.md](C8-layout.plan.md)                                    |
+| **C9**             | AI opponent (1 AI + 1 human)           | [C9-ai.plan.md](C9-ai.plan.md)                                            |
+| **C10**            | Menus, game over, restart, settings    | [C10-menus.plan.md](C10-menus.plan.md)                                    |
+| **C10 validation** | Small executable chunks (C10-V1–V11)   | [C10-validation-chunks.plan.md](C10-validation-chunks.plan.md)             |
 
 
 ---
 
 ## Test Checkpoint Delegation
 
-- **Logic-Test** (P001-LT): After C5, C6, C7, C8—validate move validation, turn/win/tie, garbage targeting, AI contract. See [P001/logic-test.plan.md](P001/logic-test.plan.md).
+- **Logic-Test** (P001-LT): After C5, C6, C7, C8—validate move validation, turn/win/tie, garbage targeting, AI contract. See [logic-test.plan.md](logic-test.plan.md).
 - **UI-Test**: At C10—E2E user journeys, layout, contrast, iPhone/iPad viewports. Delegate when C10 reaches Test plan ready.
 
 ---

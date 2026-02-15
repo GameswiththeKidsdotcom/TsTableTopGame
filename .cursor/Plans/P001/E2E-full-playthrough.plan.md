@@ -2,7 +2,7 @@
 
 ## Next hand off (cut & paste) — Lane A
 
-Run **P001-E2E** full playthrough validation: open this file, run full `xcodebuild test` (unit + UI) and confirm all tests pass. Optionally implement **E2E-P8** (viewport matrix: overlay legibility on iPhone SE, 15 Pro Max, iPad Pro 11). Update P001-E2E state in Master-Plan when done. Agent: **UI-Test**. Expected outcome: full test suite green; optional E2E-P8 documented or implemented.
+**Done (2026-02-08).** P001-E2E full playthrough validation completed: full `xcodebuild test` (unit + UI) passed on iPhone 16; E2E-P8 viewport matrix documented as implemented. Master-Plan P001-E2E state set to **Testing complete**. No further hand off from this plan unless new E2E scope is added.
 
 ---
 
@@ -25,6 +25,8 @@ Per [.cursor/agents/e2e-harness.md](../../.cursor/agents/e2e-harness.md): design
 | **E2E-P7a** | Restart path: tap `restartButton`, assert overlay gone, game visible. | E2E-P6 |
 | **E2E-P7b** | Return to Menu path: tap `returnToMenuButton`, assert MenuView. | E2E-P6 |
 | **E2E-P8** (optional) | Viewport matrix: overlay legibility on iPhone SE, 15 Pro Max, iPad Pro 11. | E2E-P7a/P7b |
+
+**E2E-P8 status (2026-02-08):** Implemented. Overlay legibility asserted by `testC10V8GameOverOverlayLegibleOnViewports` (GameOver fixture win → title, P1/P2 cash, Restart/Return to Menu exist and hittable). CI viewport-matrix job (`.github/workflows/test.yml`) runs overlay fixture tests on iPhone SE (3rd gen), iPhone 15 Pro Max, and iPad Pro 11-inch (4th gen). Full playthrough primary device remains iPhone 15/16 per plan.
 
 ---
 
