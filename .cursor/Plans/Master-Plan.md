@@ -29,34 +29,33 @@ When in doubt, run one agent at a time. Planner: when updating hand offs, if a s
 
 ## Next hand off (cut & paste) — Lane A
 
-**P006 G1 — Level selection** (Builder). [P006-G1-level-selection.plan.md](.cursor/Plans/P006/P006-G1-level-selection.plan.md). Add level picker to Settings; pass to GameState(level:). Plan: `.cursor/Plans/P006/P006-G1-level-selection.plan.md`.
-
-**P002 UI-Test checkpoint complete (2026-02-14):** Fixture tests (testGameOverFixtureWin, testGameOverFixtureTie, testGameOverFixtureRestart, testNewGameShowsGameView) passed. Gravity drop animation ready for commit.
+**P001-C7-Garbage A1 — Fix** (Builder). [P001-C7-Garbage.plan.md](.cursor/Plans/subplans/P001-C7-Garbage/P001-C7-Garbage.plan.md). Add `case 1: cols = [0, 4]` to `AttackCalculator.garbagePositions`; add LT-C7-1 contract test (`testAttackCalculatorGarbagePositionsCount1`). Run full test suite. Logic-Test agent validates.
 
 ## Second hand off (cut & paste) — Lane B
 
-*Open. P002 complete; P006 G1 promoted to Lane A.*
+**P006 G1 — Level selection** (Builder). [P006-G1-level-selection.plan.md](.cursor/Plans/subplans/P006/P006-G1-level-selection.plan.md). Implementation complete; run full test suite; manual validation (level 5 → 14 viruses; Restart same count). If validation fails, implement missing wiring per Steps table. Confirm no regressions before commit. Non-conflict: Lane A (P001-C7-Garbage) touches AttackCalculator, tests; P006 G1 touches SettingsManager, SettingsView, GameScene — disjoint.
 
-**C11-A1**: Done. **C11-A2**: Done. **C11-A3**: Deferred until P005 monetization built; runbook ready ([asc-setup-runbook.md](.cursor/Plans/P001-C11/asc-setup-runbook.md)).
+**C11-A1**: Done. **C11-A2**: Done. **C11-A3**: Deferred until P005 monetization built; runbook ready ([asc-setup-runbook.md](.cursor/Plans/subplans/P001-C11/asc-setup-runbook.md)).
 
 
 ### Next priorities (summary)
 
 | Priority | What | Agent | Plan / notes |
 |----------|------|--------|---------------|
-| 1 | P002 — Complete (UI-Test checkpoint passed 2026-02-14) | — | P002/P002-gravity-animation.plan.md |
-| 2 | P001-RestartFix — Complete (R1+R2 done 2026-02-14) | — | P001-RestartFix/P001-RestartFix.plan.md |
-| 3 | E2E full playthrough — complete (full suite green 2026-02-08; E2E-P8 implemented) | — | .cursor/Plans/P001/E2E-full-playthrough.plan.md |
-| 4 | P001-C11 App Store prep (A4, A5) | Builder, human | P001-C11/P001-C11-app-store.plan.md (chunks A1–A5) |
-| 5 | P006 Spec gaps (G1 Level, G2 AI strength, G3 ContentView) | Builder | P006/P006-spec-gaps.plan.md (G1–G3) |
-| 5a | P006-E2E Smarter tap strategy (L1–L3) | Builder | P006/P006-E2E-smarter-tap.plan.md |
-| 6 | P003 AI animated drop | Builder | P003/P003-ai-animated-drop.plan.md (chunks A1–A2) |
-| 7 | C10 Manual/UI validation — complete (all C10-V1–V11 done 2026-02-08) | — | C10-validation-chunks.plan.md |
-| 8 | P004 Power-up System — P1 Model ready | Investigator, Builder | .cursor/Plans/P004-power-up.plan.md |
-| 9 | P005 Monetization — Pending | Investigator, Builder | P005/P005-monetization.plan.md (M1–M6) |
+| 1 | P001-C7-Garbage — Garbage count=1 fix (regression) | Builder, Logic-Test | subplans/P001-C7-Garbage/P001-C7-Garbage.plan.md |
+| 2 | P002 — Pushed 2026-02-14 | — | subplans/P002/P002-gravity-animation.plan.md |
+| 3 | P001-RestartFix — Complete (R1+R2 done 2026-02-14) | — | subplans/P001-RestartFix/P001-RestartFix.plan.md |
+| 4 | E2E full playthrough — complete (full suite green 2026-02-08; E2E-P8 implemented) | — | subplans/P001/E2E-full-playthrough.plan.md |
+| 5 | P001-C11 App Store prep (A4, A5) | Builder, human | subplans/P001-C11/P001-C11-app-store.plan.md (chunks A1–A5) |
+| 6 | P006 Spec gaps (G1 Level, G2 AI strength, G3 ContentView) | Builder | subplans/P006/P006-spec-gaps.plan.md (G1–G3) |
+| 6a | P006-E2E Smarter tap strategy (L1–L3) | Builder | subplans/P006/P006-E2E-smarter-tap.plan.md |
+| 7 | P003 AI animated drop | Builder | subplans/P003/P003-ai-animated-drop.plan.md (chunks A1–A2) |
+| 8 | C10 Manual/UI validation — complete (all C10-V1–V11 done 2026-02-08) | — | subplans/P001/C10-validation-chunks.plan.md |
+| 9 | P004 Power-up System — P1 Model ready | Investigator, Builder | subplans/P004/P004-power-up.plan.md |
+| 10 | P005 Monetization — Pending | Investigator, Builder | subplans/P005/P005-monetization.plan.md (M1–M6) |
 | — | C11-A3 ASC setup (human) | Human | After P005 (and P004) built; runbook ready |
 
-*P002 G4 next. P001-RestartFix R1+R2 complete. C11-A1/A2 done; C11-A3 deferred until P005 built. P006 (spec gaps) fleshed out; features-for-planner.md provides elaboration for Planner. P003 queued after P001-C11. P005: paid = no ads, power-ups anytime; free = ads after win only.*
+*P002 pushed 2026-02-14. P001-RestartFix R1+R2 complete. C11-A1/A2 done; C11-A3 deferred until P005 built. P006 (spec gaps) fleshed out; features-for-planner.md provides elaboration for Planner. P003 queued after P001-C11. P005: paid = no ads, power-ups anytime; free = ads after win only.*
 
 ---
 
@@ -83,19 +82,20 @@ Use exactly one of these values in the **Current state** column:
 
 | Plan ID | Plan name | Priority rank | Description | Current state | Confidence (root cause) | Confidence (solution path) |
 |---------|-----------|---------------|-------------|---------------|--------------------------|-----------------------------|
-| P001-RestartFix | Restart button at game over | 2 | Restart button at game ending does not work. Root cause: SpriteView does not replace presented SKScene when scene parameter changes. Fix: `.id(sceneIdentity)` on SpriteView; change identity in startNewGame(). Plan: [P001-RestartFix.plan.md](.cursor/Plans/P001-RestartFix/P001-RestartFix.plan.md). **R1+R2 complete 2026-02-14**; `testGameOverRealGameRestart` added. | Testing complete | 92% | 90% |
-| P001-E2E-WATCH | E2E watchable boot/wait fix | 2 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/Plans/P001-E2E-WATCH/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). **All chunks done** (A1–C2). **Pushed 2026-02-08.** | Complete and ready for github push | 95% | 92% |
-| P001 | TabletopGame Spec and Implementation | 2 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/P001/P001-tabletopgame.plan.md](.cursor/Plans/P001/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/P001/](.cursor/Plans/P001/) (C1–C10, logic-test, ui-test). C10 validation chunks: [C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md) (C10-V1–V11). Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Complete and ready for github push | N/A | 90% |
-| P001-LT | TabletopGame Logic-Test (user move validation) | 2 | Sub-plan of P001. See [.cursor/Plans/P001/logic-test.plan.md](.cursor/Plans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Testing complete | 92% | 88% |
-| P001-UI | TabletopGame UI-Test (E2E, layout, contrast) | 2 | Sub-plan of P001. See [.cursor/Plans/P001/ui-test.plan.md](.cursor/Plans/P001/ui-test.plan.md). E2E user journeys, win/lose/tie overlay validation, iPhone/iPad viewports, layout and contrast. Delegate at C10. | Testing complete | N/A | N/A |
-| P001-E2E | Full playthrough E2E harness | 2 | XCUITest full playthrough: Launch → Menu → New Game → Play until game over → Overlay → Restart/Return to Menu. Chunks E2E-P1–P8. Plan: [.cursor/Plans/P001/E2E-full-playthrough.plan.md](.cursor/Plans/P001/E2E-full-playthrough.plan.md). Watchable improvements: P001-E2E-WATCH. **Full suite green 2026-02-08** (unit + UI on iPhone 16). E2E-P8 viewport matrix implemented (testC10V8 + CI). | Testing complete | N/A | 90% |
-| P002 | Gravity drop animation | 3 | Animated gravity when matches cleared; pips drop slowly to final position. Plan: [.cursor/Plans/P002/P002-gravity-animation.plan.md](.cursor/Plans/P002/P002-gravity-animation.plan.md). Chunks G1–G4. **G1+G2+G3+G4 complete.** UI-Test checkpoint passed 2026-02-14 (testGameOverFixtureWin/Tie/Restart, testNewGameShowsGameView). Ready for commit. | Testing complete | 95% | 90% |
-| P001-C11 | App Store prep | 4 | Gap strategy for App Store submission. Plan: [.cursor/Plans/P001-C11/P001-C11-app-store.plan.md](.cursor/Plans/P001-C11/P001-C11-app-store.plan.md). Sub-plans: [.cursor/Plans/P001-C11/](.cursor/Plans/P001-C11/) (C11-A1–A5). Chunks: App icon, Support URL, ASC metadata, screenshots, upload/submit. A3 sequenced after P005 built; runbook will be updated for IAP/ads. | Validated | 92% | 90% |
-| P006 | Spec gap features | 5 | Level selection UI, AI strength (Easy/Hard), ContentView cleanup. Plan: [P006-spec-gaps.plan.md](.cursor/Plans/P006/P006-spec-gaps.plan.md). Sub-plans: [P006/](.cursor/Plans/P006/) (G1–G3). Reference: [features-for-planner.md](.cursor/Plans/features-for-planner.md). | Validated | 98% | 95% |
-| P006-E2E | E2E smarter tap strategy | 5 | Column-sweep tap strategy for full playthrough (P0-only); level 5 E2E. Plan: [P006-E2E-smarter-tap.plan.md](.cursor/Plans/P006/P006-E2E-smarter-tap.plan.md). Chunks L1–L3. | Validated | 95% | 92% |
-| P003 | AI animated drop | 6 | AI capsule drops row-by-row (visible) instead of instant hard-drop. Plan: [.cursor/Plans/P003/P003-ai-animated-drop.plan.md](.cursor/Plans/P003/P003-ai-animated-drop.plan.md). Chunks A1 (GameState place-only), A2 (GameScene two-phase AI). | Validated | 95% | 92% |
-| P004 | Power-up System | 7 | Purchase power-ups with cash; hold 1; Clear Row, Send Garbage, Double Cash. AI same rules. Plan: [P004-power-up.plan.md](.cursor/Plans/P004-power-up.plan.md). Sub-plans: [P004/](.cursor/Plans/P004/) (P1–P5). Planner/Blaster/Investigator reviewed; P2 gravity fix, P1 stub, P4 loop pattern applied. | Validated | 92% | 92% |
-| P005 | Monetization | 8 | Paid = no ads, power-ups anytime; free = ads after win only, power-ups turn-only. Plan: [P005-monetization.plan.md](.cursor/Plans/P005/P005-monetization.plan.md). Sub-plans: [P005/](.cursor/Plans/P005/) (M1–M6: IAPManager, Paywall, ASC, StoreKit testing, Ads after win, Power-up gating). | Pending analysis | N/A | N/A |
+| P001-C7-Garbage | Garbage count=1 empty row fix | 1 | garbagePositions(1)→[]; fix case 1→[0,4]; LT-C7-1 contract, LT-C7-2 integration; Blaster fidelity. Plan: [P001-C7-Garbage.plan.md](.cursor/Plans/subplans/P001-C7-Garbage/P001-C7-Garbage.plan.md). | Validated | 95% | 95% |
+| P001-RestartFix | Restart button at game over | 2 | Restart button at game ending does not work. Root cause: SpriteView does not replace presented SKScene when scene parameter changes. Fix: `.id(sceneIdentity)` on SpriteView; change identity in startNewGame(). Plan: [P001-RestartFix.plan.md](.cursor/Plans/subplans/P001-RestartFix/P001-RestartFix.plan.md). **R1+R2 complete 2026-02-14**; `testGameOverRealGameRestart` added. | Testing complete | 92% | 90% |
+| P001-E2E-WATCH | E2E watchable boot/wait fix | 2 | Active waits for menu and game HUD; script waits for Simulator boot before tests. Fixes watchable run so app and game are visible during E2E. Plan: [e2e_active_wait_and_simulator_boot](.cursor/Plans/subplans/P001-E2E-WATCH/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md). **All chunks done** (A1–C2). **Pushed 2026-02-08.** | Complete and ready for github push | 95% | 92% |
+| P001 | TabletopGame Spec and Implementation | 2 | Dr. Mario–style head-to-head (2-player) puzzle game (Swift/SwiftUI/SpriteKit). Main plan: [.cursor/Plans/subplans/P001/P001-tabletopgame.plan.md](.cursor/Plans/subplans/P001/P001-tabletopgame.plan.md). Sub-plans: [.cursor/Plans/subplans/P001/](.cursor/Plans/subplans/P001/) (C1–C10, logic-test, ui-test). C10 validation chunks: [C10-validation-chunks.plan.md](.cursor/Plans/subplans/P001/C10-validation-chunks.plan.md) (C10-V1–V11). Execute by build chunks for early iPhone simulator visibility. **Test checkpoints**: Logic-Test after C5–C8; UI-Test at C10. | Complete and ready for github push | N/A | 90% |
+| P001-LT | TabletopGame Logic-Test (user move validation) | 2 | Sub-plan of P001. See [.cursor/Plans/subplans/P001/logic-test.plan.md](.cursor/Plans/subplans/P001/logic-test.plan.md). Validate moves, turns, attack, elimination, win/tie. Delegate Logic-Test agent after C5, C6, C7, C8. | Testing complete | 92% | 88% |
+| P001-UI | TabletopGame UI-Test (E2E, layout, contrast) | 2 | Sub-plan of P001. See [.cursor/Plans/subplans/P001/ui-test.plan.md](.cursor/Plans/subplans/P001/ui-test.plan.md). E2E user journeys, win/lose/tie overlay validation, iPhone/iPad viewports, layout and contrast. Delegate at C10. | Testing complete | N/A | N/A |
+| P001-E2E | Full playthrough E2E harness | 2 | XCUITest full playthrough: Launch → Menu → New Game → Play until game over → Overlay → Restart/Return to Menu. Chunks E2E-P1–P8. Plan: [.cursor/Plans/subplans/P001/E2E-full-playthrough.plan.md](.cursor/Plans/subplans/P001/E2E-full-playthrough.plan.md). Watchable improvements: P001-E2E-WATCH. **Full suite green 2026-02-08** (unit + UI on iPhone 16). E2E-P8 viewport matrix implemented (testC10V8 + CI). | Testing complete | N/A | 90% |
+| P002 | Gravity drop animation | 3 | Animated gravity when matches cleared; pips drop slowly to final position. Plan: [.cursor/Plans/subplans/P002/P002-gravity-animation.plan.md](.cursor/Plans/subplans/P002/P002-gravity-animation.plan.md). Chunks G1–G4. **G1+G2+G3+G4 complete.** UI-Test checkpoint passed 2026-02-14. **Pushed 2026-02-14.** | Complete and ready for github push | 95% | 90% |
+| P001-C11 | App Store prep | 4 | Gap strategy for App Store submission. Plan: [.cursor/Plans/subplans/P001-C11/P001-C11-app-store.plan.md](.cursor/Plans/subplans/P001-C11/P001-C11-app-store.plan.md). Sub-plans: [.cursor/Plans/subplans/P001-C11/](.cursor/Plans/subplans/P001-C11/) (C11-A1–A5). Chunks: App icon, Support URL, ASC metadata, screenshots, upload/submit. A3 sequenced after P005 built; runbook will be updated for IAP/ads. | Validated | 92% | 90% |
+| P006 | Spec gap features | 5 | Level selection UI, AI strength (Easy/Hard), ContentView cleanup. Plan: [P006-spec-gaps.plan.md](.cursor/Plans/subplans/P006/P006-spec-gaps.plan.md). Sub-plans: [P006/](.cursor/Plans/subplans/P006/) (G1–G3). Reference: [features-for-planner.md](.cursor/Plans/features-for-planner.md). | Validated | 98% | 95% |
+| P006-E2E | E2E smarter tap strategy | 5 | Column-sweep tap strategy for full playthrough (P0-only); level 5 E2E. Plan: [P006-E2E-smarter-tap.plan.md](.cursor/Plans/subplans/P006/P006-E2E-smarter-tap.plan.md). Chunks L1–L3. | Validated | 95% | 92% |
+| P003 | AI animated drop | 6 | AI capsule drops row-by-row (visible) instead of instant hard-drop. Plan: [.cursor/Plans/subplans/P003/P003-ai-animated-drop.plan.md](.cursor/Plans/subplans/P003/P003-ai-animated-drop.plan.md). Chunks A1 (GameState place-only), A2 (GameScene two-phase AI). | Validated | 95% | 92% |
+| P004 | Power-up System | 7 | Purchase power-ups with cash; hold 1; Clear Row, Send Garbage, Double Cash. AI same rules. Plan: [P004-power-up.plan.md](.cursor/Plans/subplans/P004/P004-power-up.plan.md). Sub-plans: [P004/](.cursor/Plans/subplans/P004/) (P1–P5). Planner/Blaster/Investigator reviewed; P2 gravity fix, P1 stub, P4 loop pattern applied. | Validated | 92% | 92% |
+| P005 | Monetization | 8 | Paid = no ads, power-ups anytime; free = ads after win only, power-ups turn-only. Plan: [P005-monetization.plan.md](.cursor/Plans/subplans/P005/P005-monetization.plan.md). Sub-plans: [P005/](.cursor/Plans/subplans/P005/) (M1–M6: IAPManager, Paywall, ASC, StoreKit testing, Ads after win, Power-up gating). | Pending analysis | N/A | N/A |
 
 ---
 
@@ -103,7 +103,7 @@ Use exactly one of these values in the **Current state** column:
 
 When executing P001, track progress by **Planner Build Chunks** (C1–C10). After each chunk, run in iPhone simulator and confirm the visible outcome before advancing.
 
-**Chunk-level confidence**: Updated by Blaster/Investigator when running per-chunk fidelity (Step 5). Each sub-plan file under `.cursor/Plans/P001/` must contain a **Confidence** section; keep this table in sync with those sub-plans.
+**Chunk-level confidence**: Updated by Blaster/Investigator when running per-chunk fidelity (Step 5). Each sub-plan file under `.cursor/Plans/subplans/P001/` must contain a **Confidence** section; keep this table in sync with those sub-plans.
 
 | Chunk | Outcome | Status | Confidence (root cause) | Confidence (solution path) |
 |-------|---------|--------|--------------------------|-----------------------------|
@@ -119,13 +119,13 @@ When executing P001, track progress by **Planner Build Chunks** (C1–C10). Afte
 | C10 | Menus, game over, restart; settings persist | Done | 92% | 92% |
 | C11 | App Store prep | A1–A2 done; A3 deferred until P005 built; runbook ready | 92% | 90% |
 
-**C11 chunks (P001-C11)**: A1 App icon, A2 Support URL, A3 ASC setup, A4 Screenshots, A5 Upload/submit. See [P001-C11-app-store.plan.md](.cursor/Plans/P001-C11/P001-C11-app-store.plan.md).
+**C11 chunks (P001-C11)**: A1 App icon, A2 Support URL, A3 ASC setup, A4 Screenshots, A5 Upload/submit. See [P001-C11-app-store.plan.md](.cursor/Plans/subplans/P001-C11/P001-C11-app-store.plan.md).
 
 ---
 
 ## P006-E2E Build Chunk Progress (Smarter Tap + Level 5)
 
-Blaster pipeline complete. Per-chunk fidelity validated. See [P006-E2E-smarter-tap.plan.md](.cursor/Plans/P006/P006-E2E-smarter-tap.plan.md).
+Blaster pipeline complete. Per-chunk fidelity validated. See [P006-E2E-smarter-tap.plan.md](.cursor/Plans/subplans/P006/P006-E2E-smarter-tap.plan.md).
 
 | Chunk | Outcome | Status | Confidence (root cause) | Confidence (solution path) |
 |-------|---------|--------|--------------------------|-----------------------------|
@@ -139,7 +139,7 @@ Blaster pipeline complete. Per-chunk fidelity validated. See [P006-E2E-smarter-t
 
 ## P001 C10 Validation Chunks (Small Executable Pieces)
 
-C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plans/P001/C10-validation-chunks.plan.md](.cursor/Plans/P001/C10-validation-chunks.plan.md). **E2E execution strategy** (phases, regression command, XCUITest, builder steps): See C10-validation-chunks.plan.md and E2E-full-playthrough.plan.md; use E2E optimized test plan in context if referenced elsewhere.
+C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plans/subplans/P001/C10-validation-chunks.plan.md](.cursor/Plans/subplans/P001/C10-validation-chunks.plan.md). **E2E execution strategy** (phases, regression command, XCUITest, builder steps): See C10-validation-chunks.plan.md and E2E-full-playthrough.plan.md; use E2E optimized test plan in context if referenced elsewhere.
 
 **Plan status**: Chunk plan and confidence validated by Blaster/Investigator/Logic-Test/UI-Test.
 
@@ -171,64 +171,66 @@ C10 code is built. Remaining work decomposed for AI execution. See [.cursor/Plan
 
 ## Where plans live
 
-- **Master-Plan**: `.cursor/Plans/Master-Plan.md` — only file at parent level.
-- **Main plans (index)**: `.cursor/Plans/<plan-id>/<plan-id>-<short-name>.plan.md` (e.g. `P001/P001-tabletopgame.plan.md`) — short index with links to sub-plans.
-- **Sub-plans**: `.cursor/Plans/<plan-id>/<sub-id>-<short-name>.plan.md` (e.g. `P001/C2-grid.plan.md`) — full steps, validation, rollback per chunk.
-- **Archived subplans**: `.cursor/Plans/P001/archive/` — completed and validated chunks (e.g. C1-bootstrap).
-- **E2E watchable fix (P001-E2E-WATCH)**: `.cursor/Plans/P001-E2E-WATCH/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md` — active waits, Simulator boot wait; chunks A1–C2.
-- **Gravity animation (P002)**: `.cursor/Plans/P002/P002-gravity-animation.plan.md` — pips drop slowly when matches cleared; chunks G1–G4.
-- **App Store prep (P001-C11)**: `.cursor/Plans/P001-C11/P001-C11-app-store.plan.md` — index; sub-plans under `.cursor/Plans/P001-C11/` (C11-A1–A5).
-- **AI animated drop (P003)**: `.cursor/Plans/P003/P003-ai-animated-drop.plan.md` — AI capsule drops row-by-row; chunks A1–A2.
-- **Power-up (P004)**: Planner review at `.cursor/Plans/P004/P004-power-up-planner-review.md`. When ready, create main plan at `P004/P004-power-up.plan.md` and sub-plans under `.cursor/Plans/P004/` (P1–P5).
-- **Monetization (P005)**: [P005-monetization.plan.md](.cursor/Plans/P005/P005-monetization.plan.md) — Paid = no ads, power-ups anytime; free = ads after win only. Sub-plans (M1–M6).
-- **Spec gaps (P006)**: [P006-spec-gaps.plan.md](.cursor/Plans/P006/P006-spec-gaps.plan.md) — Level selection, AI strength, ContentView cleanup. Sub-plans (G1–G3).
-- **E2E smarter tap (P006-E2E)**: [P006-E2E-smarter-tap.plan.md](.cursor/Plans/P006/P006-E2E-smarter-tap.plan.md) — SmarterTapStrategy, P0-only tap, level 5 playthrough. Chunks L1–L3.
+- **Master-Plan**: `.cursor/Plans/Master-Plan.md` — only file at Plans parent level.
+- **Sub-plans folder**: `.cursor/Plans/subplans/<plan-id>/` — all plan work lives here.
+- **Main plans (index)**: `.cursor/Plans/subplans/<plan-id>/<plan-id>-<short-name>.plan.md` — short index with links to sub-plans.
+- **Sub-plans**: `.cursor/Plans/subplans/<plan-id>/<sub-id>-<short-name>.plan.md` — full steps, validation, rollback per chunk. Sub-plans may nest (e.g. P006-E2E under P006).
+- **Per-plan archives**: `.cursor/Plans/subplans/<plan-id>/archive/` — completed chunks (e.g. P001/archive/C1-bootstrap).
+- **Top-level archives**: `.cursor/Plans/archives/` — completed or superseded whole plans.
+- **E2E watchable fix (P001-E2E-WATCH)**: `.cursor/Plans/subplans/P001-E2E-WATCH/e2e_active_wait_and_simulator_boot_afb0c50c.plan.md` — active waits, Simulator boot wait; chunks A1–C2.
+- **Gravity animation (P002)**: `.cursor/Plans/subplans/P002/P002-gravity-animation.plan.md` — pips drop slowly when matches cleared; chunks G1–G4.
+- **App Store prep (P001-C11)**: `.cursor/Plans/subplans/P001-C11/P001-C11-app-store.plan.md` — index; sub-plans under `.cursor/Plans/subplans/P001-C11/` (C11-A1–A5).
+- **AI animated drop (P003)**: `.cursor/Plans/subplans/P003/P003-ai-animated-drop.plan.md` — AI capsule drops row-by-row; chunks A1–A2.
+- **Power-up (P004)**: Main plan at `.cursor/Plans/subplans/P004/P004-power-up.plan.md`; planner review at `P004-power-up-planner-review.md`. Sub-plans (P1–P5) under `.cursor/Plans/subplans/P004/`.
+- **Monetization (P005)**: [P005-monetization.plan.md](.cursor/Plans/subplans/P005/P005-monetization.plan.md) — Paid = no ads, power-ups anytime; free = ads after win only. Sub-plans (M1–M6).
+- **Spec gaps (P006)**: [P006-spec-gaps.plan.md](.cursor/Plans/subplans/P006/P006-spec-gaps.plan.md) — Level selection, AI strength, ContentView cleanup. Sub-plans (G1–G3).
+- **E2E smarter tap (P006-E2E)**: [P006-E2E-smarter-tap.plan.md](.cursor/Plans/subplans/P006/P006-E2E-smarter-tap.plan.md) — SmarterTapStrategy, P0-only tap, level 5 playthrough. Chunks L1–L3.
 - **Features for Planner**: [features-for-planner.md](.cursor/Plans/features-for-planner.md) — Elaborated feature set (Investigator + ideation + Blaster scope) for Planner decomposition. Reference when creating or refining plans.
 
-### Plan folder layout (current)
+### Plan folder layout
 
 ```
 .cursor/Plans/
-├── Master-Plan.md                      # ONLY file at parent
-├── P001-RestartFix/
-│   └── P001-RestartFix.plan.md        # Restart button fix
-├── P001/
-│   ├── P001-tabletopgame.plan.md      # index; links to P001/*
-│   ├── archive/
-│   │   └── C1-bootstrap.plan.md
-│   ├── C2-grid.plan.md … C10-menus.plan.md
-│   ├── C10-validation-chunks.plan.md
-│   ├── E2E-full-playthrough.plan.md
-│   ├── logic-test.plan.md
-│   └── ui-test.plan.md
-├── P001-C11/
-│   ├── P001-C11-app-store.plan.md     # index; chunks A1–A5
-│   ├── C11-A1-app-icon.plan.md … C11-A5-upload-submit.plan.md
-│   ├── asc-setup-runbook.md
-│   └── support-url.md
-├── P001-E2E-WATCH/
-│   └── e2e_active_wait_and_simulator_boot_afb0c50c.plan.md
-├── P002/
-│   └── P002-gravity-animation.plan.md  # chunks G1–G4
-├── P003/
-│   └── P003-ai-animated-drop.plan.md  # chunks A1–A2
-├── P004/
-│   └── P004-power-up-planner-review.md
-├── P006/
-│   ├── P006-spec-gaps.plan.md         # index; chunks G1–G3
-│   ├── P006-G1-level-selection.plan.md
-│   ├── P006-G2-ai-strength.plan.md
-│   ├── P006-G3-contentview-cleanup.plan.md
-│   ├── P006-E2E-smarter-tap.plan.md   # index; chunks L1–L3
-│   ├── P006-E2E-L1-strategy.plan.md
-│   ├── P006-E2E-L2-integration.plan.md
-│   └── P006-E2E-L3-level5.plan.md
-├── features-for-planner.md            # elaborated features for Planner
-└── P005/
-    ├── P005-monetization.plan.md      # index; M1–M6
-    ├── M1-iap-manager.plan.md … M4-storekit-testing.plan.md
-    ├── M5-ads-after-win.plan.md
-    └── M6-powerup-gating.plan.md
+├── Master-Plan.md                      # ONLY file at parent; single source of truth
+├── features-for-planner.md             # Reference for Planner decomposition
+├── subplans/                           # All active plan work
+│   ├── P001-C7-Garbage/
+│   │   └── P001-C7-Garbage.plan.md
+│   ├── P001-RestartFix/
+│   │   └── P001-RestartFix.plan.md
+│   ├── P001/
+│   │   ├── P001-tabletopgame.plan.md   # index
+│   │   ├── archive/
+│   │   │   └── C1-bootstrap.plan.md
+│   │   ├── C2-grid.plan.md … C10-menus.plan.md
+│   │   ├── C10-validation-chunks.plan.md
+│   │   ├── E2E-full-playthrough.plan.md
+│   │   ├── logic-test.plan.md
+│   │   └── ui-test.plan.md
+│   ├── P001-C11/
+│   │   ├── P001-C11-app-store.plan.md
+│   │   ├── C11-A1-app-icon.plan.md … C11-A5-upload-submit.plan.md
+│   │   ├── asc-setup-runbook.md
+│   │   └── support-url.md
+│   ├── P001-E2E-WATCH/
+│   │   └── e2e_active_wait_and_simulator_boot_afb0c50c.plan.md
+│   ├── P002/
+│   │   └── P002-gravity-animation.plan.md
+│   ├── P003/
+│   │   └── P003-ai-animated-drop.plan.md
+│   ├── P004/
+│   │   ├── P004-power-up.plan.md       # main index
+│   │   ├── P004-power-up-planner-review.md
+│   │   └── P1-model.plan.md … P5-tests.plan.md
+│   ├── P005/
+│   │   ├── P005-monetization.plan.md
+│   │   └── M1-iap-manager.plan.md … M6-powerup-gating.plan.md
+│   └── P006/
+│       ├── P006-spec-gaps.plan.md      # index; chunks G1–G3
+│       ├── P006-G1-level-selection.plan.md … P006-G3-contentview-cleanup.plan.md
+│       ├── P006-E2E-smarter-tap.plan.md   # nested index; chunks L1–L3
+│       └── P006-E2E-L1-strategy.plan.md … P006-E2E-L3-level5.plan.md
+└── archives/                           # Completed/superseded whole plans (when needed)
 ```
 
-All matrix links use paths under `.cursor/Plans/` (capital P). Keep sub-plan files small; one logical unit per file.
+All matrix links use paths under `.cursor/Plans/subplans/`. Keep sub-plan files small; one logical unit per file. Sub-plans may nest larger plans broken into smaller chunks.
